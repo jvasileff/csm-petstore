@@ -1,0 +1,7 @@
+/.ceylon/config.old
+/.exploded/
+/.gradle/
+/classes/
+/modules/
+/modules-deps/
+/build/
