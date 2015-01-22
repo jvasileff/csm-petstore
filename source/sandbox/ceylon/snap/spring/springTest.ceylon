@@ -60,6 +60,16 @@ import org.springframework.transaction.annotation {
 import javax.annotation {
     postConstruct
 }
+import org.apache.log4j {
+    L4JLogger = Logger,
+    ConsoleAppender,
+    PatternLayout,
+    Level
+}
+import ceylon.logging {
+    logger,
+    Logger
+}
 
 late Instant startupTime;
 
@@ -68,8 +78,8 @@ late Instant startupTime;
 // Run Method
 //
 /////////////////////////////////////////////////
-
 shared void run() {
+    initializeLogger();
     value ctx = AnnotationConfigApplicationContext(javaClass<AppConfig>());
     assert(is Application application = ctx.getBean("application"));
     application.main();
@@ -77,10 +87,27 @@ shared void run() {
 
 /////////////////////////////////////////////////
 //
+// Logging
+//
+/////////////////////////////////////////////////
+Logger log = logger(`package sandbox.ceylon.snap.spring`);
+
+shared void initializeLogger() {
+    value console = ConsoleAppender();
+    value pattern = "....[%p|%c] %m%n";
+    console.layout = PatternLayout(pattern);
+    console.threshold = Level.\iINFO;
+    console.activateOptions();
+    L4JLogger.rootLogger.addAppender(console);
+
+    logger = log4jLogger;
+}
+
+/////////////////////////////////////////////////
+//
 // Configuration
 //
 /////////////////////////////////////////////////
-
 configuration
 propertySource {
     ignoreResourceNotFound = true;
@@ -93,7 +120,7 @@ class AppConfig() {
 
     late Environment environment;
 
-    inject void setEnvironment(Environment environment)
+    shared inject void setEnvironment(Environment environment)
         =>  this.environment = environment;
 
     shared bean default Instant startupTime()
@@ -132,8 +159,8 @@ component aspect class AspectConfigs() {
             Anything result = pjp.proceed();
             return result;
         } finally {
-            print("        (execution time for ``pjp.string`` " +
-                "was ``system.nanoseconds - start``ns");
+            log.info("elapsed time for ``pjp.string``: " +
+                     "``system.nanoseconds - start``ns");
         }
     }
 }
@@ -143,7 +170,6 @@ component aspect class AspectConfigs() {
 // Application
 //
 /////////////////////////////////////////////////
-
 service class Application {
     Repository repository;
 
