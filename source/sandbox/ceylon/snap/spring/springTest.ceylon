@@ -1,18 +1,24 @@
-import ceylon.collection {
-    LinkedList
-}
 import ceylon.dbc {
     Sql,
     newConnectionFromDataSource
 }
 import ceylon.interop.java {
-    javaClass
+    javaClass,
+    createJavaObjectArray,
+    CeylonList
+}
+import ceylon.logging {
+    logger,
+    Logger
 }
 import ceylon.time {
     Instant,
     now
 }
 
+import javax.annotation {
+    postConstruct
+}
 import javax.inject {
     inject
 }
@@ -20,6 +26,20 @@ import javax.sql {
     DataSource
 }
 
+import org.apache.ibatis.session {
+    SqlSessionFactory,
+    LocalCacheScope,
+    SqlSession
+}
+import org.apache.ibatis.type {
+    TypeHandler
+}
+import org.apache.log4j {
+    L4JLogger=Logger,
+    ConsoleAppender,
+    PatternLayout,
+    Level
+}
 import org.apache.tomcat.jdbc.pool {
     TomcatDataSource=DataSource
 }
@@ -29,6 +49,13 @@ import org.aspectj.lang {
 import org.aspectj.lang.annotation {
     aspect,
     around
+}
+import org.mybatis.spring {
+    SqlSessionFactoryBean,
+    SqlSessionTemplate
+}
+import org.mybatis.spring.annotation {
+    mapperScan
 }
 import org.springframework.context.annotation {
     AnnotationConfigApplicationContext,
@@ -47,6 +74,7 @@ import org.springframework.jdbc.datasource {
 }
 import org.springframework.stereotype {
     service,
+    Component,
     component,
     repository
 }
@@ -57,18 +85,17 @@ import org.springframework.transaction.annotation {
     enableTransactionManagement,
     transactional
 }
-import javax.annotation {
-    postConstruct
+
+import sandbox.ceylon.snap.spring.domain {
+    Language
 }
-import org.apache.log4j {
-    L4JLogger = Logger,
-    ConsoleAppender,
-    PatternLayout,
-    Level
+import sandbox.ceylon.snap.spring.mapper {
+    LanguageMapper
 }
-import ceylon.logging {
-    logger,
-    Logger
+import sandbox.ceylon.snap.spring.mapper.support {
+    InstantTypeHandler,
+    IntegerTypeHandler,
+    StringTypeHandler
 }
 
 late Instant startupTime;
@@ -116,6 +143,11 @@ propertySource {
 componentScan({"sandbox.ceylon.snap.spring"})
 enableAspectJAutoProxy(false)
 enableTransactionManagement
+mapperScan {
+    basePackages = { "sandbox.ceylon.snap.spring.mapper" };
+    sqlSessionFactoryRef = "sqlSessionFactory";
+    annotationClass = `interface Component`;
+}
 class AppConfig() {
 
     late Environment environment;
@@ -149,6 +181,49 @@ class AppConfig() {
     // TODO Review Sql's use of thread locals
     shared bean default Sql sql()
         =>  Sql(newConnectionFromDataSource(dataSource()));
+
+    shared bean default SqlSessionFactory sqlSessionFactory() {
+        SqlSessionFactoryBean ssfb = SqlSessionFactoryBean();
+        ssfb.setDataSource(dataSource());
+
+        // FIXME type inferencing?
+        // manually set TypeHandlers
+        ssfb.setTypeHandlers(
+                createJavaObjectArray<TypeHandler<out Object>>({
+            IntegerTypeHandler(),
+            StringTypeHandler(),
+            InstantTypeHandler()
+            //LocalDateTypeHandler(),
+            //LocalTimeTypeHandler(),
+            //LocalDateTimeTypeHandler() }
+        }));
+
+        // scan for TypeHandlers
+        ssfb.setTypeHandlersPackage("sandbox.ceylon.snap.mapper.h2");
+
+        // scan for mapper and result map XML w/hack to specify multiple patterns
+        //ssfb.setMapperLocations(ObjectArrays.concat(
+        //    new PathMatchingResourcePatternResolver().getResources(
+        //        "classpath*:/com/froglogistics/gt/mapper/postgresql/resultMap-*.xml"),
+        //    new PathMatchingResourcePatternResolver().getResources(
+        //        "classpath*:/com/froglogistics/gt/mapper/postgresql/*Mapper.xml"),
+        //    org.springframework.core.io.Resource.class));
+
+        SqlSessionFactory sqlSessionFactory = ssfb.\iobject;
+
+        // see http://code.google.com/p/mybatis/issues/detail?id=482
+        // and http://code.google.com/p/mybatis/issues/detail?id=126
+        sqlSessionFactory.configuration.localCacheScope = LocalCacheScope.\iSTATEMENT;
+        sqlSessionFactory.configuration.cacheEnabled = false;
+        sqlSessionFactory.configuration.lazyLoadingEnabled = false;
+        sqlSessionFactory.configuration.callSettersOnNulls = true;
+
+        return sqlSessionFactory;
+    }
+
+  shared bean default SqlSession sqlSession()
+    =>  SqlSessionTemplate(sqlSessionFactory());
+
 }
 
 component aspect class AspectConfigs() {
@@ -172,11 +247,14 @@ component aspect class AspectConfigs() {
 /////////////////////////////////////////////////
 service class Application {
     Repository repository;
+    LanguageMapper languageMapper;
 
     shared inject new Application(
                 Repository repository,
-                Instant startupTime) {
+                Instant startupTime,
+                LanguageMapper languageMapper) {
         this.repository = repository;
+        this.languageMapper = languageMapper;
         package.startupTime = startupTime;
     }
 
@@ -202,10 +280,6 @@ service class Application {
     }
 }
 
-shared class Language(Integer id, String name) {
-    shared actual String string => "``id``, ``name``";
-}
-
 interface Repository {
     shared formal void insertRows();
     shared formal void deleteRows(Boolean fail);
@@ -213,40 +287,33 @@ interface Repository {
 }
 
 transactional repository class RepositorySql satisfies Repository {
+    LanguageMapper languageMapper;
     Sql sql;
 
-    shared inject new RepositorySql(Sql sql) {
+    shared inject new RepositorySql(Sql sql, LanguageMapper languageMapper) {
         this.sql = sql;
+        this.languageMapper = languageMapper;
     }
 
-    postConstruct shared void initialize() {
-        sql.Statement("create table jvm_langs(
-                            id bigint primary key,
-                            name varchar(100))").execute();
-    }
+    postConstruct shared void initialize()
+        =>  languageMapper.initialize();
+
+    shared actual List<Language> selectRows()
+        =>  CeylonList(languageMapper.findAll());
 
     shared actual void insertRows() {
-        value insert = "insert into jvm_langs values (?, ?)";
-        sql.Statement(insert).execute(1, "Ceylon");
-        sql.Statement(insert).execute(2, "Groovy");
-        sql.Statement(insert).execute(3, "Jacl");
+        languageMapper.create(Language.Of(1, "Ceylon"));
+        languageMapper.create(Language.Of(2, "Groovy"));
+        languageMapper.create(Language.Of(3, "Jacl"));
     }
 
     shared actual void deleteRows(Boolean fail) {
-        sql.Statement("delete from jvm_langs").execute();
+        for (language in CeylonList(languageMapper.findAll())) {
+            assert(exists id = language.id);
+            languageMapper.delete(id);
+        }
         if (fail) {
             throw; // trigger rollback
         }
-    }
-
-    shared actual List<Language> selectRows() {
-        value result = LinkedList<Language>();
-        sql.Select("select id, name from jvm_langs")
-                .forEachRow()(void(row) {
-            assert (is Integer id = row["id"]);
-            assert (is String name = row["name"]);
-            result.add(Language(id, name));
-        });
-        return result;
     }
 }
