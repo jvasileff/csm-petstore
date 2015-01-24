@@ -20,7 +20,7 @@ import sandbox.ceylon.snap.spring.mapper {
     LanguageMapper
 }
 
-shared interface LanguageDao satisfies SSDao<Language, Integer> {
+shared interface LanguageDao satisfies PSDao<Language, Integer> {
     shared formal List<Language> findAll();
 }
 

@@ -17,7 +17,7 @@ import sandbox.ceylon.snap.spring.domain {
     Language
 }
 
-component shared interface LanguageMapper satisfies SSMapper<Language, Integer> {
+component shared interface LanguageMapper satisfies PSMapper<Language, Integer> {
 
     select({"create table jvm_langs(
                 id bigint primary key,

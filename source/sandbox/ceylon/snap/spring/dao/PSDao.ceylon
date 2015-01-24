@@ -1,9 +1,9 @@
 import sandbox.ceylon.snap.spring.domain {
-    SSDomainObject
+    PSDomainObject
 }
 
-shared interface SSDao<DomainObject, PrimaryKey>
-        given DomainObject satisfies SSDomainObject<PrimaryKey>
+shared interface PSDao<DomainObject, PrimaryKey>
+        given DomainObject satisfies PSDomainObject<PrimaryKey>
         given PrimaryKey satisfies Comparable<PrimaryKey> {
 
     shared formal DomainObject? findByPK(PrimaryKey id);

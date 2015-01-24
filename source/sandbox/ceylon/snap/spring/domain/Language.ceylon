@@ -1,4 +1,4 @@
-shared class Language satisfies SSDomainObject<Integer> {
+shared class Language satisfies PSDomainObject<Integer> {
 
     late shared variable Integer? id;
     late shared variable String? name;
