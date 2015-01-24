@@ -9,21 +9,10 @@
 jvm_langs.id, jvm_langs.name
 </sql>
 
-    <select id="initialize">
-        create table jvm_langs(
-                id bigint primary key,
-                name varchar(100))
-    </select>
-
     <select id="findByPK" resultType="sandbox.ceylon.snap.spring.domain.Language">
         select  <include refid="languageColumns"/>
         from    jvm_langs
         where   id = #{id,jdbcType=NUMERIC}
-    </select>
-
-    <select id="findAll" resultType="sandbox.ceylon.snap.spring.domain.Language">
-        select  <include refid="languageColumns"/>
-        from    jvm_langs
     </select>
 
     <insert id="create">
