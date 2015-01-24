@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="sandbox.ceylon.snap.spring.mapper.LanguageMapper">
+
+<sql id="languageColumns">
+jvm_langs.id, jvm_langs.name
+</sql>
+
+    <select id="initialize">
+        create table jvm_langs(
+                id bigint primary key,
+                name varchar(100))
+    </select>
+
+    <select id="findByPK" resultType="sandbox.ceylon.snap.spring.domain.Language">
+        select  <include refid="languageColumns"/>
+        from    jvm_langs
+        where   id = #{id,jdbcType=NUMERIC}
+    </select>
+
+    <select id="findAll" resultType="sandbox.ceylon.snap.spring.domain.Language">
+        select  <include refid="languageColumns"/>
+        from    jvm_langs
+    </select>
+
+    <insert id="create">
+        insert into jvm_langs (
+                id,
+                name
+        ) values (
+                #{id,jdbcType=NUMERIC},
+                #{name,jdbcType=VARCHAR})
+    </insert>
+
+    <update id="update">
+        update  jvm_langs
+        set     name = #{name,jdbcType=VARCHAR}
+        where   id = #{id,jdbcType=NUMERIC}
+    </update>
+
+    <update id="delete">
+        delete
+        from    jvm_langs
+        where   id = #{id,jdbcType=NUMERIC}
+    </update>
+
+</mapper>

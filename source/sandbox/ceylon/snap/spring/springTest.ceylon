@@ -57,6 +57,9 @@ import org.mybatis.spring {
 import org.mybatis.spring.annotation {
     mapperScan
 }
+import org.springframework.context {
+    ApplicationContext
+}
 import org.springframework.context.annotation {
     AnnotationConfigApplicationContext,
     configuration,
@@ -182,7 +185,9 @@ class AppConfig() {
     shared bean default Sql sql()
         =>  Sql(newConnectionFromDataSource(dataSource()));
 
-    shared bean default SqlSessionFactory sqlSessionFactory() {
+    shared bean default SqlSessionFactory sqlSessionFactory(
+            ApplicationContext applicationContext) {
+
         SqlSessionFactoryBean ssfb = SqlSessionFactoryBean();
         ssfb.setDataSource(dataSource());
 
@@ -200,13 +205,9 @@ class AppConfig() {
         // scan for TypeHandlers
         ssfb.setTypeHandlersPackage("sandbox.ceylon.snap.mapper.h2");
 
-        // scan for mapper and result map XML w/hack to specify multiple patterns
-        //ssfb.setMapperLocations(ObjectArrays.concat(
-        //    new PathMatchingResourcePatternResolver().getResources(
-        //        "classpath*:/com/froglogistics/gt/mapper/postgresql/resultMap-*.xml"),
-        //    new PathMatchingResourcePatternResolver().getResources(
-        //        "classpath*:/com/froglogistics/gt/mapper/postgresql/*Mapper.xml"),
-        //    org.springframework.core.io.Resource.class));
+        // scan for mapper and result map XML
+        ssfb.setMapperLocations(applicationContext.getResources(
+            "classpath:sandbox/ceylon/snap/spring/mapper/*.xml"));
 
         SqlSessionFactory sqlSessionFactory = ssfb.\iobject;
 
@@ -220,9 +221,8 @@ class AppConfig() {
         return sqlSessionFactory;
     }
 
-  shared bean default SqlSession sqlSession()
-    =>  SqlSessionTemplate(sqlSessionFactory());
-
+    shared bean default SqlSession sqlSession(SqlSessionFactory ssf)
+        =>  SqlSessionTemplate(ssf);
 }
 
 component aspect class AspectConfigs() {
