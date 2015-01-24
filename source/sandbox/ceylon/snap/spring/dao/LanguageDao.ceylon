@@ -24,13 +24,9 @@ shared interface LanguageDao satisfies SSDao<Language, Integer> {
     shared formal List<Language> findAll();
 }
 
-transactional component class LanguageDaoImpl()
-        extends BaseDao<Language, Integer>() satisfies LanguageDao {
-
-    shared late actual LanguageMapper mapper;
-
-    shared inject void setMapper(LanguageMapper mapper)
-        =>  this.mapper = mapper;
+transactional component inject class LanguageDaoImpl(LanguageMapper mapper)
+        extends BaseDao<Language, Integer>(mapper)
+        satisfies LanguageDao {
 
     shared actual List<Language> findAll()
         =>  CeylonList(mapper.findAll());

@@ -14,4 +14,5 @@ shared interface SSMapper<DomainObject, PrimaryKey>
     shared formal Integer update(DomainObject obj);
 
     shared formal PrimaryKey insert(DomainObject obj);
+
 }

@@ -5,12 +5,11 @@ import sandbox.ceylon.snap.spring.mapper {
     SSMapper
 }
 
-abstract class BaseDao<DomainObject, PrimaryKey>()
+abstract class BaseDao<DomainObject, PrimaryKey>(
+        SSMapper<DomainObject, PrimaryKey> mapper)
         satisfies SSDao<DomainObject, PrimaryKey>
         given DomainObject satisfies SSDomainObject<PrimaryKey>
         given PrimaryKey satisfies Comparable<PrimaryKey> {
-
-    shared formal SSMapper<DomainObject, PrimaryKey> mapper;
 
     shared actual DomainObject? findByPK(PrimaryKey key)
         =>  mapper.findByPK(key);

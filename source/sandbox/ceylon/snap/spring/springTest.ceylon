@@ -186,10 +186,9 @@ class AppConfig() {
         SqlSessionFactoryBean ssfb = SqlSessionFactoryBean();
         ssfb.setDataSource(dataSource());
 
-        // FIXME type inferencing?
         // manually set TypeHandlers
-        ssfb.setTypeHandlers(
-                createJavaObjectArray<TypeHandler<out Object>>({
+        ssfb.setTypeHandlers(createJavaObjectArray
+                <TypeHandler<out Object>>({
             IntegerTypeHandler(),
             StringTypeHandler(),
             InstantTypeHandler()
@@ -245,18 +244,12 @@ component aspect class AspectConfigs() {
 // Application
 //
 /////////////////////////////////////////////////
-service class Application {
-    Repository repository;
-    LanguageMapper languageMapper;
+service inject class Application(
+        Repository repository,
+        Instant startupTime,
+        LanguageMapper languageMapper) {
 
-    shared inject new Application(
-                Repository repository,
-                Instant startupTime,
-                LanguageMapper languageMapper) {
-        this.repository = repository;
-        this.languageMapper = languageMapper;
-        package.startupTime = startupTime;
-    }
+    package.startupTime = startupTime;
 
     shared void main() {
         print("Application started at ``startupTime.dateTime()``");
@@ -286,14 +279,10 @@ interface Repository {
     shared formal List<Language> selectRows();
 }
 
-transactional repository class RepositorySql satisfies Repository {
-    LanguageMapper languageMapper;
-    Sql sql;
-
-    shared inject new RepositorySql(Sql sql, LanguageMapper languageMapper) {
-        this.sql = sql;
-        this.languageMapper = languageMapper;
-    }
+transactional repository inject class RepositorySql(
+        Sql sql,
+        LanguageMapper languageMapper)
+        satisfies Repository {
 
     postConstruct shared void initialize()
         =>  languageMapper.initialize();
