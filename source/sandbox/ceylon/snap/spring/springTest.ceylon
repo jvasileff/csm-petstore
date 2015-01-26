@@ -20,7 +20,8 @@ import javax.annotation {
     postConstruct
 }
 import javax.inject {
-    inject
+    inject,
+    inject__SETTER
 }
 import javax.sql {
     DataSource
@@ -153,10 +154,7 @@ mapperScan {
 }
 class AppConfig() {
 
-    late Environment environment;
-
-    shared inject void setEnvironment(Environment environment)
-        =>  this.environment = environment;
+    late inject__SETTER Environment environment;
 
     shared bean default Instant startupTime()
         =>  now();
