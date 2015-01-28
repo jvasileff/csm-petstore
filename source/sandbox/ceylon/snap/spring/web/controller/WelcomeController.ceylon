@@ -4,10 +4,13 @@ import org.springframework.stereotype {
 import org.springframework.web.bind.annotation {
     responseBody,
     requestMapping,
-    RequestMethod
+    RequestMethod { get = GET }
 }
 import sandbox.ceylon.snap.spring.web.view {
     welcomePage
+}
+import ceylon.logging {
+    Logger, logger
 }
 
 shared controller
@@ -18,19 +21,16 @@ class WelcomeController() {
     String robotsTxt()
         =>  "User-agent: *\nDisallow: /\n";
 
-    requestMapping {
-            \ivalue={"/"};
-            method={RequestMethod.\iGET}; }
+    requestMapping {\ivalue={"/"}; method={get}; }
     shared
     String rootRequest()
         =>  "redirect:/welcome.html";
 
-    requestMapping {
-            \ivalue={"/welcome.html"};
-            method={RequestMethod.\iGET};
-    }
+    requestMapping {\ivalue={"/welcome.html"}; method={get};}
     shared responseBody
     String welcome()
         =>  welcomePage();
 
 }
+
+Logger log = logger(`package`);

@@ -39,6 +39,11 @@ import org.springframework.web.servlet.support {
 import sandbox.ceylon.snap.spring {
     useLog4jLogger
 }
+import ceylon.logging {
+    Logger, logger
+}
+
+Logger log = logger(`package`);
 
 // FIXME interop - in java we can do Integer.MIN_VALUE
 shared order(-1000) // process first so that our filters will run first
@@ -49,8 +54,12 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
 
     shared actual
     void onStartup(ServletContext servletContext) {
-        // configure logging
+        // initialize Ceylon
+        CeylonConfig.setup(servletContext);
+
+        // initialize logging
         initializeLogger();
+        log.info("Logging Initialized");
 
         // configure filters that should run before Sring Security filter
         value dfp = DelegatingFilterProxy();
@@ -81,7 +90,7 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
 
 void initializeLogger() {
     // TODO use servlet config instead:
-    //Log4jServletContextListener log4jListener = new Log4jServletContextListener();
+    //Log4jServletContextListener log4jListener = Log4jServletContextListener();
     //log4jListener.configureLog4j(servletContext);
     //servletContext.addListener(log4jListener);
 
