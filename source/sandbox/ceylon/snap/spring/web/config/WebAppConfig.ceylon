@@ -22,7 +22,7 @@ import org.springframework.web.filter {
 configuration shared
 class WebAppConfig() {
 
-    shared bean {name={"webAppFilters"};}
+    shared default bean {name={"webAppFilters"};}
     Filter webAppFilters() {
         value compositeFilter = CompositeFilter();
         compositeFilter.setFilters(
@@ -31,14 +31,14 @@ class WebAppConfig() {
         return compositeFilter;
     }
 
-    shared bean
+    shared default bean
     Filter characterEncodingFilter() {
         value filter = CharacterEncodingFilter();
         filter.setEncoding("UTF-8");
         return filter;
     }
 
-    shared bean
+    shared default bean
     Filter hiddenHttpMethodFilter()
         =>  HiddenHttpMethodFilter();
 

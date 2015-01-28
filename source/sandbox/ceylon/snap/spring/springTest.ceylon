@@ -109,11 +109,15 @@ late Instant startupTime;
 // Run Method
 //
 /////////////////////////////////////////////////
-shared void run() {
+shared void runCommandline() {
     initializeLogger();
     value ctx = AnnotationConfigApplicationContext(javaClass<AppConfig>());
     assert(is Application application = ctx.getBean("application"));
     application.main();
+}
+
+shared void run() {
+    print("this run method is dumb");
 }
 
 /////////////////////////////////////////////////

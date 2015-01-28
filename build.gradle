@@ -29,6 +29,7 @@ ext.versions = [
 configurations {
     all*.exclude group: 'commons-logging'        // replaced by org.slf4j:jcl-over-slf4j
     all*.exclude group: 'com.google.collections' // replaced by com.google.guava:guava
+    all*.exclude group: 'javax.servlet' // don't add to fat-jar
 }
 
 dependencies {
