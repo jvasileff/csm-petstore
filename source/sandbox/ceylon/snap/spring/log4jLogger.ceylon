@@ -11,12 +11,17 @@ import ceylon.logging {
     lwarn=warn,
     linfo=info,
     ldebug=debug,
-    ltrace=trace
+    ltrace=trace,
+    logger
 }
 
 import org.apache.log4j {
     L4JLogger=Logger,
     Level
+}
+
+shared void useLog4jLogger() {
+    logger = log4jLogger;
 }
 
 Logger log4jLogger(Category category) {

@@ -58,7 +58,12 @@ dependencies {
         "org.postgresql:postgresql:${versions.postgresql}",
         "org.slf4j:slf4j-log4j12:${versions.slf4j}",
         "org.slf4j:jcl-over-slf4j:${versions.slf4j}",
-        "log4j:log4j:${versions.log4j}"
+        "log4j:log4j:${versions.log4j}",
+        "javax.servlet:javax.servlet-api:${versions.servlet_api}",
+        "commons-fileupload:commons-fileupload:${versions.commons_fileupload}",
+        "org.springframework:spring-web:${versions.spring}",
+        "org.springframework:spring-webmvc:${versions.spring}",
+        "org.springframework.security:spring-security-web:${versions.spring_security}"
 }
 
 task fatJar(type: Jar) {
