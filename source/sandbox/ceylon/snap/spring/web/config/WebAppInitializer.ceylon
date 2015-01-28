@@ -53,11 +53,8 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
         initializeLogger();
 
         // configure filters that should run before Sring Security filter
-        // The target of the DelegatingFilterProxy will be a
-        // CompositeFilter defined in WebAppConfig
         value dfp = DelegatingFilterProxy();
-        // https://github.com/ceylon/ceylon-compiler/issues/2019
-        //dfp.targetFilterLifecycle = false; // false is the default anyway
+        dfp.setTargetFilterLifecycle(false); // emphasizing the default
         value reg = servletContext.addFilter("webAppFilters", dfp);
         reg.addMappingForUrlPatterns(
             enumSetOfAll(javaClass<DispatcherType>()),

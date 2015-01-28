@@ -45,23 +45,7 @@ shared String welcomePage() {
                             text="CSM Petstore";
                         }
                     },
-                    Div {
-                        id="navbar";
-                        classNames="collapse navbar-collapse";
-                        Ul {
-                            classNames="nav navbar-nav";
-                            Li {
-                                classNames="active";
-                                A { href="#"; text="Home"; }
-                            },
-                            Li {
-                                A { href="#"; text="About"; }
-                            },
-                            Li {
-                                A { href="#"; text="Contact"; }
-                            }
-                        }
-                    }
+                    buildNavBar(about)
                 }
             },
             Div {
@@ -86,27 +70,22 @@ shared String welcomePage() {
 
 }
 
+abstract class TopPage(shared String name) of home | about | contact {}
+object home extends TopPage("Home") {}
+object about extends TopPage("About") {}
+object contact extends TopPage("Contact") {}
 
-shared class Div(text = "", String? id = null, CssClass classNames = [],
-            String? style = null, String? accessKey = null,
-            String? contextMenu = null, TextDirection? dir = null,
-            Boolean? draggable = null, DropZone? dropZone = null,
-            Boolean? inert = null, Boolean? hidden = null,
-            String? lang = null, Boolean? spellcheck = null,
-            Integer? tabIndex = null, String? title = null,
-            Boolean? translate = null, Aria? aria = null,
-            NonstandardAttributes nonstandardAttributes = empty,
-            DataContainer data = empty,
-            children = {})
-        extends BaseElement(id, classNames, style, accessKey, contextMenu,
-            dir, draggable, dropZone, inert, hidden, lang, spellcheck,
-            tabIndex, title, translate, aria, nonstandardAttributes, data)
-        satisfies TextNode & BlockElement & ParentNode<BlockOrInline> {
-
-    shared actual String text;
-
-    shared actual {<BlockOrInline|{BlockOrInline*}|Snippet<BlockOrInline>|Null>*} children;
-
-    tag = Tag("div");
-
-}
+Div buildNavBar(TopPage current)
+    => Div {
+        id="navbar";
+        classNames="collapse navbar-collapse";
+        Ul {
+            classNames="nav navbar-nav";
+            children = { home, about, contact }.map<Li>((TopPage page)
+                => Li {
+                    classNames = if (page == current) then "active" else [];
+                    A { href="#"; text=page.name; }
+                }
+            );
+        }
+    };
