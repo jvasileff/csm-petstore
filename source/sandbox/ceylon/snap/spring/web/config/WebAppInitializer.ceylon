@@ -3,6 +3,14 @@ import ceylon.interop.java {
     javaClass,
     createJavaStringArray
 }
+import ceylon.logging {
+    Logger,
+    logger
+}
+
+import com.redhat.ceylon.war {
+    WarInitializer
+}
 
 import java.lang {
     Class,
@@ -39,9 +47,6 @@ import org.springframework.web.servlet.support {
 import sandbox.ceylon.snap.spring {
     useLog4jLogger
 }
-import ceylon.logging {
-    Logger, logger
-}
 
 Logger log = logger(`package`);
 
@@ -55,7 +60,8 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
     shared actual
     void onStartup(ServletContext servletContext) {
         // initialize Ceylon
-        CeylonConfig.setup(servletContext);
+        //CeylonConfig.setup(servletContext);
+        initializeCeylon(servletContext);
 
         // initialize logging
         initializeLogger();
@@ -102,4 +108,10 @@ void initializeLogger() {
     L4JLogger.rootLogger.addAppender(console);
 
     useLog4jLogger();
+}
+
+void initializeCeylon(ServletContext servletContext) {
+    value warInitializer = WarInitializer();
+    warInitializer.initialize(servletContext);
+    servletContext.addListener(warInitializer);
 }

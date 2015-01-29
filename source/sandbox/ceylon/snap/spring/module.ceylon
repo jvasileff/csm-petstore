@@ -9,4 +9,5 @@ module sandbox.ceylon.snap.spring "0.0.1" {
     import javax.annotation "7";
     import java.base "7";
     import javax.servlet "3.1.0";
+    import com.redhat.ceylon.war "1.1.1";
 }
