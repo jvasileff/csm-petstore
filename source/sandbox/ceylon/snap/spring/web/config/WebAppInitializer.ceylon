@@ -44,7 +44,7 @@ import org.springframework.web.servlet.support {
     AbstractAnnotationConfigDispatcherServletInitializer
 }
 
-import sandbox.ceylon.snap.spring {
+import sandbox.ceylon.snap.spring.logging {
     useLog4jLogger
 }
 
@@ -79,6 +79,8 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
 
         // Spring context, dispatcher servlet, and dispatcher servlet filters
         super.onStartup(servletContext);
+
+        log.info(() => "Initialization Complete");
     }
 
     shared actual
@@ -101,7 +103,8 @@ void initializeLogger() {
     //servletContext.addListener(log4jListener);
 
     value console = ConsoleAppender();
-    value pattern = "....[%p|%c] %m%n";
+    value pattern = "%-5p [%t:%X{reference}] (%F:%L) - %m%n";
+    // %d %-5p [%t:%X{reference}] %c - %m%n
     console.layout = PatternLayout(pattern);
     console.threshold = Level.\iINFO;
     console.activateOptions();

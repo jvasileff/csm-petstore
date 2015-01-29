@@ -93,6 +93,9 @@ import org.springframework.transaction.annotation {
 import sandbox.ceylon.snap.spring.domain {
     Language
 }
+import sandbox.ceylon.snap.spring.logging {
+    useLog4jLogger
+}
 import sandbox.ceylon.snap.spring.mapper {
     LanguageMapper
 }
@@ -129,13 +132,14 @@ Logger log = logger(`package sandbox.ceylon.snap.spring`);
 
 shared void initializeLogger() {
     value console = ConsoleAppender();
-    value pattern = "....[%p|%c] %m%n";
+    value pattern = "%-5p [%t:%X{reference}] (%F:%L) - %m%n";
+    // %d %-5p [%t:%X{reference}] %c - %m%n
     console.layout = PatternLayout(pattern);
     console.threshold = Level.\iINFO;
     console.activateOptions();
     L4JLogger.rootLogger.addAppender(console);
 
-    logger = log4jLogger;
+    useLog4jLogger();
 }
 
 /////////////////////////////////////////////////
