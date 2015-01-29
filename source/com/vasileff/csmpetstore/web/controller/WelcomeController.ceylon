@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation {
     requestMapping,
     RequestMethod { get = GET }
 }
-import sandbox.ceylon.snap.spring.web.view {
+import com.vasileff.csmpetstore.web.view {
     welcomePage
 }
 import ceylon.logging {

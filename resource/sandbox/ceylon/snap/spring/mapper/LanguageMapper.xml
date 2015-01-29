@@ -3,13 +3,13 @@
   PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="sandbox.ceylon.snap.spring.mapper.LanguageMapper">
+<mapper namespace="com.vasileff.csmpetstore.mapper.LanguageMapper">
 
 <sql id="languageColumns">
 jvm_langs.id, jvm_langs.name
 </sql>
 
-    <select id="findByPK" resultType="sandbox.ceylon.snap.spring.domain.Language">
+    <select id="findByPK" resultType="com.vasileff.csmpetstore.domain.Language">
         select  <include refid="languageColumns"/>
         from    jvm_langs
         where   id = #{id,jdbcType=NUMERIC}

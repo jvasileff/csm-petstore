@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation {
 }
 
 shared configuration enableWebMvc
-componentScan({"sandbox.ceylon.snap.spring.web.controller"})
+componentScan({"com.vasileff.csmpetstore.web.controller"})
 class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared actual

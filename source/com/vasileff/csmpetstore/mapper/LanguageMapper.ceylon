@@ -6,7 +6,7 @@ import org.springframework.stereotype {
     component
 }
 
-import sandbox.ceylon.snap.spring.domain {
+import com.vasileff.csmpetstore.domain {
     Language
 }
 import org.apache.ibatis.annotations {

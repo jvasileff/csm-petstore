@@ -1,4 +1,4 @@
-import sandbox.ceylon.snap.spring.domain {
+import com.vasileff.csmpetstore.domain {
     PSDomainObject
 }
 

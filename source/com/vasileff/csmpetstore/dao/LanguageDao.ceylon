@@ -13,10 +13,10 @@ import org.springframework.transaction.annotation {
     transactional
 }
 
-import sandbox.ceylon.snap.spring.domain {
+import com.vasileff.csmpetstore.domain {
     Language
 }
-import sandbox.ceylon.snap.spring.mapper {
+import com.vasileff.csmpetstore.mapper {
     LanguageMapper
 }
 

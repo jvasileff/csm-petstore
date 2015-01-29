@@ -90,16 +90,16 @@ import org.springframework.transaction.annotation {
     transactional
 }
 
-import sandbox.ceylon.snap.spring.domain {
+import com.vasileff.csmpetstore.domain {
     Language
 }
-import sandbox.ceylon.snap.spring.logging {
+import com.vasileff.csmpetstore.logging {
     useLog4jLogger
 }
-import sandbox.ceylon.snap.spring.mapper {
+import com.vasileff.csmpetstore.mapper {
     LanguageMapper
 }
-import sandbox.ceylon.snap.spring.mapper.support {
+import com.vasileff.csmpetstore.mapper.support {
     InstantTypeHandler,
     IntegerTypeHandler,
     StringTypeHandler
@@ -128,7 +128,7 @@ shared void run() {
 // Logging
 //
 /////////////////////////////////////////////////
-Logger log = logger(`package sandbox.ceylon.snap.spring`);
+Logger log = logger(`package com.vasileff.csmpetstore`);
 
 shared void initializeLogger() {
     value console = ConsoleAppender();
@@ -152,11 +152,11 @@ propertySource {
     ignoreResourceNotFound = true;
     \ivalue = {"classpath:/application.properties"};
 }
-componentScan({"sandbox.ceylon.snap.spring"})
+componentScan({"com.vasileff.csmpetstore"})
 enableAspectJAutoProxy(false)
 enableTransactionManagement
 mapperScan {
-    basePackages = { "sandbox.ceylon.snap.spring.mapper" };
+    basePackages = { "com.vasileff.csmpetstore.mapper" };
     sqlSessionFactoryRef = "sqlSessionFactory";
     annotationClass = `interface Component`;
 }
@@ -213,7 +213,7 @@ class AppConfig() {
 
         // scan for mapper and result map XML
         ssfb.setMapperLocations(applicationContext.getResources(
-            "classpath:sandbox/ceylon/snap/spring/mapper/*.xml"));
+            "classpath:com.vasileff.csmpetstore/mapper/*.xml"));
 
         SqlSessionFactory sqlSessionFactory = ssfb.\iobject;
 

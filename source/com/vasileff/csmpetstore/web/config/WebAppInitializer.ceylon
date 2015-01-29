@@ -44,7 +44,7 @@ import org.springframework.web.servlet.support {
     AbstractAnnotationConfigDispatcherServletInitializer
 }
 
-import sandbox.ceylon.snap.spring.logging {
+import com.vasileff.csmpetstore.logging {
     useLog4jLogger
 }
 

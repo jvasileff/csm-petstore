@@ -1,7 +1,7 @@
-import sandbox.ceylon.snap.spring.domain {
+import com.vasileff.csmpetstore.domain {
     PSDomainObject
 }
-import sandbox.ceylon.snap.spring.mapper {
+import com.vasileff.csmpetstore.mapper {
     PSMapper
 }
 
