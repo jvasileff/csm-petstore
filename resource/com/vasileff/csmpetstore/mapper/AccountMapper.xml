@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.vasileff.csmpetstore.mapper.AccountMapper">
+
+<sql id="accountColumns">
+account.username, account.name, account.email, account.country
+</sql>
+
+    <select id="findByPK" resultType="com.vasileff.csmpetstore.domain.Language">
+        select  <include refid="accountColumns"/>
+        from    account
+        where   username = #{username,jdbcType=VARCHAR}
+    </select>
+
+    <insert id="create">
+        insert into account (
+	        username,
+	        name,
+	        email,
+	        country
+        ) values (
+            #{username,jdbcType=VARCHAR},
+            #{name,jdbcType=VARCHAR},
+            #{email,jdbcType=VARCHAR},
+            #{country,jdbcType=VARCHAR}
+        )
+    </insert>
+
+    <update id="update">
+        update  account
+        set     name = #{name,jdbcType=VARCHAR},
+                email = #{email,jdbcType=VARCHAR},
+                country = #{country,jdbcType=VARCHAR}
+        where   username = #{username,jdbcType=VARCHAR}
+    </update>
+
+    <update id="delete">
+        delete
+        from    account
+        where   username = #{username,jdbcType=NUMERIC}
+    </update>
+
+</mapper>
