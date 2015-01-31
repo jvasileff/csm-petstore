@@ -1,0 +1,23 @@
+<!-- 
+https://forum.hibernate.org/viewtopic.php?f=26&t=1013744
+http://download.oracle.com/otn-pub/jcp/bean_validation-1.0-fr-oth-JSpec/bean_validation-1_0-final-spec.pdf?AuthParam=1422675037_408e7c13f1e53ff4702b45b21468b642
+-->
+<constraint-mappings
+        xmlns="http://jboss.org/xml/ns/javax/validation/mapping"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://jboss.org/xml/ns/javax/validation/mapping validation-mapping-1.1.xsd" version="1.1">
+
+    <constraint-definition annotation="javax.validation.constraints.Size">
+        <validated-by include-existing-validators="true">
+            <value>com.vasileff.csmpetstore.validator.SizeValidatorForCeylonString</value>
+        </validated-by>
+    </constraint-definition>
+
+    <constraint-definition annotation="javax.validation.constraints.Pattern">
+        <validated-by include-existing-validators="true">
+            <value>com.vasileff.csmpetstore.validator.PatternValidatorForCeylonString</value>
+        </validated-by>
+    </constraint-definition>
+
+</constraint-mappings>
+

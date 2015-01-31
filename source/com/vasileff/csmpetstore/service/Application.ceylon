@@ -57,7 +57,7 @@ class Application(
         print ("deleteRows() was committed!");
 
         value account = Account();
-        account.username="u";
+        account.username="#@jvasileff";
         account.fullName="name";
         account.email="john@vasileff.com";
         account.country="US";

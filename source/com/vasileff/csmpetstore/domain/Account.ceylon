@@ -2,26 +2,16 @@ import ceylon.language {
     CString=String
 }
 
-//import com.vasileff.csmpetstore.domain {
-//    size=size__GETTER
-//}
-
-import java.lang {
-    JavaString=String
-}
-
 import javax.validation.constraints {
-    //size=size__GETTER,
-    notNull=notNull__GETTER
-    //,pattern=pattern__GETTER
+    size=size__GETTER,
+    notNull=notNull__GETTER,
+    pattern=pattern__GETTER
 }
-
-shared alias JString=>JavaString;
 
 shared class Account satisfies PSDomainObject<String> {
 
     size { min=3; max=75; }
-    //pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
+    pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
     notNull late shared variable
     String? username;
 
@@ -54,18 +44,8 @@ shared class Account satisfies PSDomainObject<String> {
 
     shared actual String string
         =>  username else "null";
-        //=>  TypeUtils.ceylonString(username) else "null";
 
     shared actual String? getPK()
         =>  username;
-        //=>  ceylonString(username);
-        //=> nothing;
-}
 
-//
-//	public static ceylon.language.String ceylonString(java.lang.Object string) {
-//		if (string != null) {
-//			return ceylon.language.String.instance((String) string);
-//		}
-//		return null;
-//	}
+}
