@@ -141,7 +141,7 @@ class AppConfig() {
         }));
 
         // scan for TypeHandlers
-        ssfb.setTypeHandlersPackage("com.vasileff.csmpetstore.mapper.h2");
+        //ssfb.setTypeHandlersPackage("com.vasileff.csmpetstore.mapper.h2");
 
         // scan for mapper and result map XML
         ssfb.setMapperLocations(applicationContext.getResources(

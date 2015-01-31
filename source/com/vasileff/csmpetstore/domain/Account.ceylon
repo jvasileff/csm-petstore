@@ -2,9 +2,9 @@ import ceylon.language {
     CString=String
 }
 
-import com.vasileff.csmpetstore.domain {
-    size=size__GETTER
-}
+//import com.vasileff.csmpetstore.domain {
+//    size=size__GETTER
+//}
 
 import java.lang {
     JavaString=String
