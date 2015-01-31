@@ -22,12 +22,19 @@ import ceylon.logging {
     Logger,
     logger
 }
+import javax.validation {
+    Validator
+}
+import com.vasileff.csmpetstore.domain {
+    Account
+}
 
 service inject shared
 class Application(
         Repository repository,
         Instant startupTime,
-        LanguageMapper languageMapper) {
+        LanguageMapper languageMapper,
+        Validator validator) {
 
     shared void main() {
         print("Application started at ``startupTime.dateTime()``");
@@ -48,6 +55,14 @@ class Application(
         repository.deleteRows(false);
         assert(0 == repository.selectRows().size);
         print ("deleteRows() was committed!");
+
+        value account = Account();
+        account.username="u";
+        account.fullName="name";
+        account.email="john@vasileff.com";
+        account.country="US";
+        value result = validator.validate(account);
+        print(result);
     }
 }
 

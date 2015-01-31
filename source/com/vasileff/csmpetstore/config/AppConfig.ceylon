@@ -63,6 +63,12 @@ import org.springframework.transaction {
 import org.springframework.transaction.annotation {
     enableTransactionManagement
 }
+import javax.validation {
+    Validator
+}
+import org.springframework.validation.beanvalidation {
+    LocalValidatorFactoryBean
+}
 
 propertySource {
     ignoreResourceNotFound = true;
@@ -85,11 +91,11 @@ class AppConfig() {
     late inject__SETTER
     Environment environment;
 
-    shared bean default
+    shared default bean
     Instant startupTime()
         =>  now();
 
-    shared bean default
+    shared default bean{destroyMethod="close";}
     DataSource rawDataSource() {
         value ds = TomcatDataSource();
         ds.driverClassName = environment.getProperty("jdbc.driver", "org.h2.Driver");
@@ -111,6 +117,10 @@ class AppConfig() {
     shared bean default
     PlatformTransactionManager txManager()
         =>  DataSourceTransactionManager(rawDataSource());
+
+    shared bean default
+    Validator validator()
+        =>  LocalValidatorFactoryBean();
 
     shared bean default
     SqlSessionFactory sqlSessionFactory(

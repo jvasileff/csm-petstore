@@ -1,40 +1,39 @@
-import javax.validation.constraints {
-    size,
-    size__GETTER,
-    notNull,
-    notNull__GETTER,
-    pattern,
-    pattern__GETTER,
-    pattern__FIELD
-}
-import java.lang {
-    JString=String
-}
 import ceylon.language {
     CString=String
 }
-//import com.vasileff.csmpetstore {
-//    TypeUtils { ceylonString }
-//}
 
+import com.vasileff.csmpetstore.domain {
+    size=size__GETTER
+}
+
+import java.lang {
+    JavaString=String
+}
+
+import javax.validation.constraints {
+    notNull=notNull__GETTER
+    //,pattern=pattern__GETTER
+}
+
+shared alias JString=>JavaString;
 
 shared class Account satisfies PSDomainObject<String> {
 
-    size__GETTER { min=3; max=75; }
-    pattern__FIELD { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
-    notNull__GETTER late shared variable 
-    JString? username;
+    size { min=3; max=75; }
+    //pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
+    notNull late shared variable
+    String? username;
 
-    size__GETTER { min=1; max=75; }
+    size { min=1; max=75; }
     late shared variable
-    JString? email;
+    String? email;
 
-    size__GETTER { min=1; max=50; }
-    notNull__GETTER late shared variable
-    JString? fullName;
+    size { min=1; max=50; }
+    notNull late shared variable
+    String? fullName;
 
-    size__GETTER { max=50; }
-    late shared variable JString? country;
+    size { max=50; }
+    late shared variable String? country;
 
     //late shared variable String? status;
     //late shared variable String? address1;
@@ -52,15 +51,15 @@ shared class Account satisfies PSDomainObject<String> {
 
     shared new Account() {}
 
-//    shared actual String string
-//        =>  TypeUtils.ceylonString(username) else "null";
-//
+    shared actual String string
+        =>  username else "null";
+        //=>  TypeUtils.ceylonString(username) else "null";
+
     shared actual String? getPK()
+        =>  username;
         //=>  ceylonString(username);
-        => nothing;
-
+        //=> nothing;
 }
-
 
 //
 //	public static ceylon.language.String ceylonString(java.lang.Object string) {
