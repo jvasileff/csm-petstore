@@ -17,7 +17,7 @@ import com.vasileff.csmpetstore.service {
 }
 
 import org.apache.log4j {
-    L4JLogger=Logger,
+    JLog4jLogger=Logger,
     ConsoleAppender,
     PatternLayout,
     Level
@@ -26,7 +26,7 @@ import org.springframework.context.annotation {
     AnnotationConfigApplicationContext
 }
 
-Logger log = logger(`package com.vasileff.csmpetstore`);
+Logger log = logger(`package`);
 
 shared void initializeLogger() {
     value console = ConsoleAppender();
@@ -35,8 +35,8 @@ shared void initializeLogger() {
     console.layout = PatternLayout(pattern);
     console.threshold = Level.\iINFO;
     console.activateOptions();
-    L4JLogger.rootLogger.addAppender(console);
-
+    JLog4jLogger.rootLogger.addAppender(console);
+    JLog4jLogger.rootLogger.setPriority(Level.\iDEBUG);
     useLog4jLogger();
 }
 
