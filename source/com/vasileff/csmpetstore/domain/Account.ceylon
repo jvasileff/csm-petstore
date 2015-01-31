@@ -11,6 +11,7 @@ import java.lang {
 }
 
 import javax.validation.constraints {
+    //size=size__GETTER,
     notNull=notNull__GETTER
     //,pattern=pattern__GETTER
 }
