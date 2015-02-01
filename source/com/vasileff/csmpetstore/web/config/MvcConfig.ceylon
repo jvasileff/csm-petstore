@@ -27,7 +27,7 @@ import org.springframework.web.servlet.config.annotation {
     PathMatchConfigurer
 }
 import java.lang {
-    Boolean
+    JBoolean=Boolean
 }
 
 componentScan({
@@ -61,7 +61,7 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared actual void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
         // FIXME Ceylon integration problem for Booleans!
-        pathMatchConfigurer.setUseTrailingSlashMatch(Boolean.\iFALSE);
+        pathMatchConfigurer.setUseTrailingSlashMatch(JBoolean.\iFALSE);
     }
 
 }

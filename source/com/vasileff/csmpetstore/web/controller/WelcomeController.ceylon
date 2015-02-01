@@ -6,7 +6,8 @@ import ceylon.logging {
 import com.vasileff.csmpetstore.web.view {
     WelcomeView,
     AboutView,
-    ContactView
+    ContactView,
+    home
 }
 
 import javax.inject {
@@ -41,8 +42,8 @@ class WelcomeController(
         =>  "User-agent: *\nDisallow: /\n";
 
     shared requestMapping {\ivalue={"/"}; method={get}; }
-    String rootRequest()
-        =>  "redirect:/welcome";
+    View rootRequest()
+        =>  redirect(home.url);
 
     shared requestMapping {\ivalue={"/welcome"}; method={get};}
     View welcome()
