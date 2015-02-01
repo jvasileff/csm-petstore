@@ -1,22 +1,34 @@
+import ceylon.logging {
+    Logger,
+    logger
+}
+
+import com.vasileff.csmpetstore.web.view {
+    WelcomeView
+}
+
+import javax.inject {
+    inject=inject__CONSTRUCTOR
+}
+
 import org.springframework.stereotype {
     controller
 }
 import org.springframework.web.bind.annotation {
     responseBody,
     requestMapping,
-    RequestMethod { get = GET }
+    RequestMethod {
+        get=\iGET
+    }
 }
-import com.vasileff.csmpetstore.web.view {
-    welcomePage
-}
-import ceylon.logging {
-    Logger, logger
+import org.springframework.web.servlet {
+    View
 }
 
 Logger log = logger(`package`);
 
-shared controller
-class WelcomeController() {
+shared controller inject
+class WelcomeController(WelcomeView welcomeView) {
 
     requestMapping({"/robots.txt"})
     shared responseBody
@@ -29,8 +41,8 @@ class WelcomeController() {
         =>  "redirect:/welcome.html";
 
     requestMapping {\ivalue={"/welcome.html"}; method={get};}
-    shared responseBody
-    String welcome()
-        =>  welcomePage();
+    shared
+    View welcome()
+        =>  welcomeView;
 
 }

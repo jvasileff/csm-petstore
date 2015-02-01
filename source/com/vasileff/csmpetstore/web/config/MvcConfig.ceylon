@@ -26,8 +26,11 @@ import org.springframework.web.servlet.config.annotation {
     ResourceHandlerRegistry
 }
 
+componentScan({
+    "com.vasileff.csmpetstore.web.view",
+    "com.vasileff.csmpetstore.web.controller"
+})
 shared configuration enableWebMvc
-componentScan({"com.vasileff.csmpetstore.web.controller"})
 class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared actual
