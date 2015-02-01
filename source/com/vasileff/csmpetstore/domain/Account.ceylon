@@ -10,6 +10,9 @@ import javax.validation.constraints {
 
 shared class Account satisfies PSDomainObject<String> {
 
+    shared
+    new Account() {}
+
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
     notNull late shared variable
@@ -40,12 +43,12 @@ shared class Account satisfies PSDomainObject<String> {
     //late shared variable Boolean? bannerOption;
     //late shared variable String? bannerName;
 
-    shared new Account() {}
-
-    shared actual String string
+    shared actual
+    String string
         =>  username else "null";
 
-    shared actual String? getPK()
+    shared actual
+    String? getPK()
         =>  username;
 
 }

@@ -13,19 +13,22 @@ import org.apache.ibatis.annotations {
     select
 }
 
-component shared interface LanguageMapper
-        satisfies PSMapper<Language, Integer> {
+component shared
+interface LanguageMapper satisfies Mapper<Language, Integer> {
 
     select({
-       "create table jvm_langs(
-        id      bigint primary key,
-        name    varchar(100))"})
-    shared formal void initialize();
+       "CREATE TABLE jvm_langs (
+            id      BIGINT PRIMARY KEY,
+            name    VARCHAR(100)
+        )"})
+    shared formal
+    void initialize();
 
     select({
-       "select  id,
+       "SELECT  id,
                 name
-        from    jvm_langs"})
-    shared formal JList<Language> findAll();
+        FROM    jvm_langs"})
+    shared formal
+    JList<Language> findAll();
 
 }

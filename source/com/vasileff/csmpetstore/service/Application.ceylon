@@ -29,6 +29,8 @@ import com.vasileff.csmpetstore.domain {
     Account
 }
 
+Logger log = logger(`package`);
+
 service inject shared
 class Application(
         Repository repository,
@@ -36,7 +38,8 @@ class Application(
         LanguageMapper languageMapper,
         Validator validator) {
 
-    shared void main() {
+    shared
+    void main() {
         print("Application started at ``startupTime.dateTime()``");
         repository.insertRows();
         repository.selectRows().each(print);
@@ -66,12 +69,10 @@ class Application(
     }
 }
 
-Logger log = logger(`package com.vasileff.csmpetstore`);
-
 shared component aspect
 class AspectConfigs() {
-    around("execution(* Repository.*(..))")
-    shared Anything profile(ProceedingJoinPoint pjp) {
+    shared around("execution(* Repository.*(..))")
+    Anything profile(ProceedingJoinPoint pjp) {
         value start = system.nanoseconds;
         try {
             Anything result = pjp.proceed();

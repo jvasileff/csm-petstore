@@ -18,12 +18,10 @@ import org.hibernate.validator.internal.constraintvalidators {
 
 shared
 class SizeValidatorForCeylonString()
-extends ConstraintValidatorAdapter<Size, JString, String>(
-    SizeValidatorForCharSequence(),
-    javaString) {}
+extends ConstraintValidatorAdapter<Size, JString, String>
+    (SizeValidatorForCharSequence(), javaString) {}
 
 shared
 class PatternValidatorForCeylonString()
-extends ConstraintValidatorAdapter<Pattern, JString, String>(
-    PatternValidator(),
-    javaString) {}
+extends ConstraintValidatorAdapter<Pattern, JString, String>
+    (PatternValidator(), javaString) {}

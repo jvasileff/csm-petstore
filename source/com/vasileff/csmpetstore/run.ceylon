@@ -28,7 +28,8 @@ import org.springframework.context.annotation {
 
 Logger log = logger(`package`);
 
-shared void initializeLogger() {
+shared
+void initializeLogger() {
     value console = ConsoleAppender();
     value pattern = "%-5p [%t:%X{reference}] (%F:%L) - %m%n";
     // %d %-5p [%t:%X{reference}] %c - %m%n
@@ -40,7 +41,8 @@ shared void initializeLogger() {
     useLog4jLogger();
 }
 
-shared void run() {
+shared
+void run() {
     initializeLogger();
     value ctx = AnnotationConfigApplicationContext(javaClass<AppConfig>());
     assert(is Application application = ctx.getBean("application"));

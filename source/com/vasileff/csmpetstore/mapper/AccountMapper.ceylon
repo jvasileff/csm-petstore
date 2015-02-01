@@ -13,24 +13,26 @@ import org.springframework.stereotype {
     component
 }
 
-component shared interface AccountMapper
-        satisfies PSMapper<Account, String> {
+component shared
+interface AccountMapper satisfies Mapper<Account, String> {
 
-    select({
-       "create table account(
-            username    varchar(75) primary key,
-            full_name   varchar(50) not null,
-            email       varchar(75),
-            country     varchar(50)
-        )"})
-    shared formal void createTable();
+    select({   "CREATE TABLE ACCOUNT (
+                    username    VARCHAR(75) PRIMARY KEY,
+                    full_name   VARCHAR(50) NOT NULL,
+                    email       VARCHAR(75),
+                    country     VARCHAR(50))"
+    })
+    shared formal
+    void createTable();
 
-    select({
-       "select  username,
-                full_name,
-                email,
-                country
-        from    account"})
-    shared formal JList<Account> findAll();
+    select({   "SELECT  username,
+                        full_name,
+                        email,
+                        country
+                FROM    account
+                ORDER BY username"
+    })
+    shared formal
+    JList<Account> findAll();
 
 }

@@ -20,14 +20,18 @@ import com.vasileff.csmpetstore.mapper {
     LanguageMapper
 }
 
-shared interface LanguageDao satisfies PSDao<Language, Integer> {
-    shared formal List<Language> findAll();
+shared
+interface LanguageDao satisfies PSDao<Language, Integer> {
+    shared formal
+    List<Language> findAll();
 }
 
-transactional component inject class LanguageDaoImpl(LanguageMapper mapper)
+transactional component inject
+class LanguageDaoImpl(LanguageMapper mapper)
         extends BaseDao<Language, Integer>(mapper)
         satisfies LanguageDao {
 
-    shared actual List<Language> findAll()
+    shared actual
+    List<Language> findAll()
         =>  CeylonList(mapper.findAll());
 }

@@ -35,19 +35,23 @@ class RepositoryDefault(
         LanguageMapper languageMapper)
         satisfies Repository {
 
-    postConstruct shared void initialize()
+    postConstruct shared
+    void initialize()
         =>  languageMapper.initialize();
 
-    shared actual List<Language> selectRows()
+    shared actual
+    List<Language> selectRows()
         =>  CeylonList(languageMapper.findAll());
 
-    shared actual void insertRows() {
+    shared actual
+    void insertRows() {
         languageMapper.create(Language.Of(1, "Ceylon"));
         languageMapper.create(Language.Of(2, "Groovy"));
         languageMapper.create(Language.Of(3, "Jacl"));
     }
 
-    shared actual void deleteRows(Boolean fail) {
+    shared actual
+    void deleteRows(Boolean fail) {
         for (language in CeylonList(languageMapper.findAll())) {
             assert(exists id = language.id);
             languageMapper.delete(id);

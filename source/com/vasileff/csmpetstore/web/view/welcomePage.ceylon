@@ -5,7 +5,8 @@ import ceylon.html.serializer {
     NodeSerializer
 }
 
-shared String welcomePage() {
+shared
+String welcomePage() {
 
     value html = Html {
         doctype = html5;
@@ -70,7 +71,9 @@ shared String welcomePage() {
 
 }
 
-abstract class TopPage(shared String name) of home | about | contact {}
+abstract
+class TopPage(shared String name) of home | about | contact {}
+
 object home extends TopPage("Home") {}
 object about extends TopPage("About") {}
 object contact extends TopPage("Contact") {}

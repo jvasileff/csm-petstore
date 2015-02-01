@@ -20,14 +20,18 @@ import org.springframework.transaction.annotation {
     transactional
 }
 
-shared interface AccountDao satisfies PSDao<Account, String> {
-    shared formal List<Account> findAll();
+shared
+interface AccountDao satisfies PSDao<Account, String> {
+    shared formal
+    List<Account> findAll();
 }
 
-transactional component inject class AccountDaoImpl(AccountMapper mapper)
+transactional component inject
+class AccountDaoImpl(AccountMapper mapper)
         extends BaseDao<Account, String>(mapper)
         satisfies AccountDao {
 
-    shared actual List<Account> findAll()
+    shared actual
+    List<Account> findAll()
         =>  CeylonList(mapper.findAll());
 }
