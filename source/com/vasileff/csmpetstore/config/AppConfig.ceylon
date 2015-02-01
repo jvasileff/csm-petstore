@@ -13,7 +13,7 @@ import com.vasileff.csmpetstore.mapper.support {
 }
 
 import javax.inject {
-    inject__SETTER
+    inject=inject__SETTER
 }
 import javax.sql {
     DataSource
@@ -81,14 +81,17 @@ componentScan({
 mapperScan {
     basePackages = { "com.vasileff.csmpetstore.mapper" };
     sqlSessionFactoryRef = "sqlSessionFactory";
-    annotationClass = `interface Component`;
+    annotationClass = `Component`;
 }
 enableAspectJAutoProxy(false)
 enableTransactionManagement
 configuration shared
 class AppConfig() {
 
-    late inject__SETTER
+    // Spring 4.1.2+ generates warnings when creating mapper beans, see
+    // https://jira.spring.io/browse/SPR-12397
+
+    late inject
     Environment environment;
 
     shared default bean
@@ -141,7 +144,7 @@ class AppConfig() {
         }));
 
         // scan for TypeHandlers
-        //ssfb.setTypeHandlersPackage("com.vasileff.csmpetstore.mapper.h2");
+        ssfb.setTypeHandlersPackage("com.vasileff.csmpetstore.mapper.h2");
 
         // scan for mapper and result map XML
         ssfb.setMapperLocations(applicationContext.getResources(
