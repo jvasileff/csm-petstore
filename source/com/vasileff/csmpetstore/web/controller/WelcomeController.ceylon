@@ -4,7 +4,9 @@ import ceylon.logging {
 }
 
 import com.vasileff.csmpetstore.web.view {
-    WelcomeView
+    WelcomeView,
+    AboutView,
+    ContactView
 }
 
 import javax.inject {
@@ -28,21 +30,30 @@ import org.springframework.web.servlet {
 Logger log = logger(`package`);
 
 shared controller inject
-class WelcomeController(WelcomeView welcomeView) {
+class WelcomeController(
+        WelcomeView welcomeView,
+        AboutView aboutView,
+        ContactView contactView) {
 
     requestMapping({"/robots.txt"})
     shared responseBody
     String robotsTxt()
         =>  "User-agent: *\nDisallow: /\n";
 
-    requestMapping {\ivalue={"/"}; method={get}; }
-    shared
+    shared requestMapping {\ivalue={"/"}; method={get}; }
     String rootRequest()
-        =>  "redirect:/welcome.html";
+        =>  "redirect:/welcome";
 
-    requestMapping {\ivalue={"/welcome.html"}; method={get};}
-    shared
+    shared requestMapping {\ivalue={"/welcome"}; method={get};}
     View welcome()
         =>  welcomeView;
+
+    shared requestMapping {\ivalue={"/about"}; method={get};}
+    View about()
+        =>  aboutView;
+
+    shared requestMapping {\ivalue={"/contact"}; method={get};}
+    View contact()
+        =>  contactView;
 
 }

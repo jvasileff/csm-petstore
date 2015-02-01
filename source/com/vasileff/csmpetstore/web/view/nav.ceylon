@@ -47,7 +47,7 @@ Nav nav(TopPage current)
                         children = { home, about, contact }.map<Li>((TopPage page)
                             => Li {
                                 classNames = if (page == current) then "active" else [];
-                                A { href="#"; text=page.name; }
+                                A { href=page.url; text=page.name; }
                             }
                         );
                     }

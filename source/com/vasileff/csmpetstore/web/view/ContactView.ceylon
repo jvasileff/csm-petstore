@@ -11,18 +11,17 @@ import org.springframework.stereotype {
 }
 
 shared component
-class WelcomeView() extends HtmlView() {
+class ContactView() extends HtmlView() {
 
     shared actual
     Html generateHtml(Map<JString, Object> model)
         =>  page {
-                currentPage = home;
-                title = "Welcome";
-                H1 { "Hello from Ceylon"; },
+                currentPage = contact;
+                title = "Contact";
+                H1 { "Contact information for the Petstore"; },
                 P {
                     classNames="lead";
                     text="This is a paragraph with some text.";
                 }
             };
-
 }
