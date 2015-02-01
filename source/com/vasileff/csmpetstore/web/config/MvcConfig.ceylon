@@ -1,5 +1,5 @@
 import com.google.common.collect {
-    ImmutableList
+    ImmutableList { listOf = \iof }
 }
 
 import java.nio.charset {
@@ -23,7 +23,11 @@ import org.springframework.http.converter {
 import org.springframework.web.servlet.config.annotation {
     enableWebMvc,
     WebMvcConfigurerAdapter,
-    ResourceHandlerRegistry
+    ResourceHandlerRegistry,
+    PathMatchConfigurer
+}
+import java.lang {
+    Boolean
 }
 
 componentScan({
@@ -43,14 +47,21 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
     shared actual
     void configureMessageConverters(
             List<HttpMessageConverter<out Object>> list) {
+
         value textConverter = StringHttpMessageConverter();
-        textConverter.supportedMediaTypes = ImmutableList<Nothing>.\iof(
+        textConverter.supportedMediaTypes = listOf(
             MediaType("text", "plain", Charset.forName("UTF-8")));
         list.add(textConverter);
 
         value htmlConverter = StringHttpMessageConverter();
-        textConverter.supportedMediaTypes = ImmutableList<Nothing>.\iof(
+        htmlConverter.supportedMediaTypes = listOf(
             MediaType("text", "html", Charset.forName("UTF-8")));
         list.add(htmlConverter);
     }
+
+    shared actual void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
+        // FIXME Ceylon integration problem for Booleans!
+        pathMatchConfigurer.setUseTrailingSlashMatch(Boolean.\iFALSE);
+    }
+
 }
