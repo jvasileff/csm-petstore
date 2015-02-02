@@ -18,10 +18,13 @@ class WelcomeView() extends HtmlView() {
         =>  page {
                 currentPage = home;
                 title = "Welcome";
-                H1 { "Hello from Ceylon"; },
-                P {
-                    classNames="lead";
-                    text="This is a paragraph with some text.";
+                Div {
+                    classNames="starter-template";
+                    H1 { "Hello from Ceylon"; },
+                    P {
+                        classNames="lead";
+                        text="This is a paragraph with some text.";
+                    }
                 }
             };
 

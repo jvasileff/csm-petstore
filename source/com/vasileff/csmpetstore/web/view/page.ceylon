@@ -19,10 +19,7 @@ Html page(currentPage, title, children) {
             nav(currentPage),
             Div {
                 classNames="container";
-                Div {
-                    classNames="starter-template";
-                    *children
-                }
+                *children
             },
             Script { src = "https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"; },
             Script { src = "https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"; }

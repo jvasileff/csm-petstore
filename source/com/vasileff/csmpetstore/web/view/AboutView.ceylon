@@ -18,10 +18,13 @@ class AboutView() extends HtmlView() {
         =>  page {
                 currentPage = about;
                 title = "About";
-                H1 { "All about the petstore"; },
-                P {
-                    classNames="lead";
-                    text="This is a paragraph with some text.";
+                Div {
+                    classNames="starter-template";
+                    H1 { "All about the petstore"; },
+                    P {
+                        classNames="lead";
+                        text="This is a paragraph with some text.";
+                    }
                 }
             };
 
