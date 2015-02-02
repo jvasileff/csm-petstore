@@ -1,7 +1,12 @@
 import com.google.common.collect {
-    ImmutableList { listOf = \iof }
+    ImmutableList {
+        listOf=\iof
+    }
 }
 
+import java.lang {
+    JBoolean=Boolean
+}
 import java.nio.charset {
     Charset
 }
@@ -11,7 +16,8 @@ import java.util {
 
 import org.springframework.context.annotation {
     configuration,
-    componentScan
+    componentScan,
+    bean
 }
 import org.springframework.http {
     MediaType
@@ -20,14 +26,14 @@ import org.springframework.http.converter {
     HttpMessageConverter,
     StringHttpMessageConverter
 }
+import org.springframework.web.method.support {
+    HandlerMethodArgumentResolver
+}
 import org.springframework.web.servlet.config.annotation {
     enableWebMvc,
     WebMvcConfigurerAdapter,
     ResourceHandlerRegistry,
     PathMatchConfigurer
-}
-import java.lang {
-    JBoolean=Boolean
 }
 
 componentScan({
@@ -59,9 +65,16 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         list.add(htmlConverter);
     }
 
-    shared actual void configurePathMatch(PathMatchConfigurer pathMatchConfigurer) {
+    shared actual
+    void configurePathMatch(PathMatchConfigurer pathMatchConfigurer)
         // FIXME Ceylon integration problem for Booleans!
-        pathMatchConfigurer.setUseTrailingSlashMatch(JBoolean.\iFALSE);
-    }
+        =>  pathMatchConfigurer.setUseTrailingSlashMatch(JBoolean.\iFALSE);
 
+    shared actual
+    void addArgumentResolvers(List<HandlerMethodArgumentResolver> list)
+        =>  list.add(ceylonModelMapArgumentResolver());
+
+    shared default bean
+    HandlerMethodArgumentResolver ceylonModelMapArgumentResolver()
+        =>  CeylonModelArgumentResolver();
 }

@@ -3,6 +3,9 @@ import ceylon.logging {
     logger
 }
 
+import com.vasileff.csmpetstore.web {
+    Model
+}
 import com.vasileff.csmpetstore.web.view {
     WelcomeView,
     AboutView,
@@ -22,7 +25,8 @@ import org.springframework.web.bind.annotation {
     requestMapping,
     RequestMethod {
         get=\iGET
-    }
+    },
+    modelAttribute
 }
 import org.springframework.web.servlet {
     View
@@ -36,6 +40,9 @@ class WelcomeController(
         AboutView aboutView,
         ContactView contactView) {
 
+    shared modelAttribute("dummyKey")
+    String dummyKey => "dummyVal";
+
     requestMapping({"/robots.txt"})
     shared responseBody
     String robotsTxt()
@@ -46,7 +53,7 @@ class WelcomeController(
         =>  redirect(home.url);
 
     shared requestMapping {\ivalue={"/welcome"}; method={get};}
-    View welcome()
+    View welcome(Model model)
         =>  welcomeView;
 
     shared requestMapping {\ivalue={"/about"}; method={get};}

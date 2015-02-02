@@ -1,32 +1,40 @@
+import ceylon.html {
+    Html
+}
+import ceylon.html.serializer {
+    NodeSerializer
+}
+import ceylon.interop.java {
+    createJavaByteArray
+}
 import ceylon.io.charset {
     utf8
+}
+
+import com.vasileff.csmpetstore.support {
+    CeylonStringMap
+}
+import com.vasileff.csmpetstore.web {
+    Model
+}
+
+import java.io {
+    ByteArrayOutputStream
 }
 import java.lang {
     JString=String
 }
 import java.util {
-    JMap=Map,
-    Collections
+    JMap=Map
 }
-import org.springframework.web.servlet {
-    View
-}
+
 import javax.servlet.http {
     HttpServletRequest,
     HttpServletResponse
 }
-import ceylon.interop.java {
-    createJavaByteArray,
-    CeylonMap
-}
-import ceylon.html.serializer {
-    NodeSerializer
-}
-import ceylon.html {
-    Html
-}
-import java.io {
-    ByteArrayOutputStream
+
+import org.springframework.web.servlet {
+    View
 }
 
 shared abstract
@@ -40,23 +48,10 @@ class HtmlView() satisfies View {
             HttpServletRequest httpServletRequest,
             HttpServletResponse httpServletResponse) {
 
-        //Map<String, Object> cModel = HashMap {
-        //    for (key->entry in CeylonMap2(model))
-        //        key.string -> entry
-        //};
-
-        //Map<String, Object> cModel = HashMap {
-        //    entries = CeylonIterable(model.entrySet()).map((entry)
-        //        => entry.key.string->entry.\ivalue);
-        //};
-
-        Map<JString, Object> cModel =
-            CeylonMap(Collections.unmodifiableMap(model));
-
         value baos = ByteArrayOutputStream(1024);
         void writeBytes(String string)
             =>  baos.write(createJavaByteArray(utf8.encode(string)));
-        NodeSerializer(writeBytes).serialize(generateHtml(cModel));
+        NodeSerializer(writeBytes).serialize(generateHtml(CeylonStringMap(model)));
 
         httpServletResponse.contentType = contentType;
         httpServletResponse.setContentLength(baos.size());
@@ -65,7 +60,7 @@ class HtmlView() satisfies View {
     }
 
     shared formal
-    Html generateHtml(Map<JString, Object> model);
+    Html generateHtml(Model model);
 }
 
 //shared abstract
@@ -76,11 +71,11 @@ class HtmlView() satisfies View {
 //        contentType = "text/html;charset=UTF-8";
 //    }
 //
-//    shared actual // FIXME see compiler bug #
+//    shared actual // FIXME see https://github.com/ceylon/ceylon-compiler/issues/2020
 //    void setApplicationContext(ApplicationContext ctx)
 //        =>  super.applicationContext = ctx;
 //
-//    shared actual // FIXME see compiler bug #
+//    shared actual // FIXME see https://github.com/ceylon/ceylon-compiler/issues/2020
 //    void setBeanName(String beanName)
 //        =>  super.beanName = beanName;
 //
@@ -109,4 +104,3 @@ class HtmlView() satisfies View {
 //    shared formal
 //    String generateHtml(Map<JString, Object> model);
 //}
-

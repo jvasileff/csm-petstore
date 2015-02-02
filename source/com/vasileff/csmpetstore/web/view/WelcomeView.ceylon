@@ -2,8 +2,8 @@ import ceylon.html {
     ...
 }
 
-import java.lang {
-    JString=String
+import com.vasileff.csmpetstore.web {
+    Model
 }
 
 import org.springframework.stereotype {
@@ -14,7 +14,7 @@ shared component
 class WelcomeView() extends HtmlView() {
 
     shared actual
-    Html generateHtml(Map<JString, Object> model)
+    Html generateHtml(Model model)
         =>  page {
                 currentPage = home;
                 title = "Welcome";
