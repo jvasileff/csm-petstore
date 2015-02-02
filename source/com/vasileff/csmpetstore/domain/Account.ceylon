@@ -16,7 +16,7 @@ shared class Account satisfies PSDomainObject<String> {
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
     notNull late shared variable
-    String? username;
+    String username;
 
     size { min=1; max=75; }
     late shared variable
@@ -24,7 +24,7 @@ shared class Account satisfies PSDomainObject<String> {
 
     size { min=1; max=50; }
     notNull late shared variable
-    String? fullName;
+    String fullName;
 
     size { max=50; }
     late shared variable String? country;

@@ -109,10 +109,9 @@ void initializeLogger() {
     console.threshold = Level.\iTRACE;
     console.activateOptions();
     L4JLogger.rootLogger.addAppender(console);
+    L4JLogger.rootLogger.setPriority(Level.\iINFO);
 
     useLog4jLogger();
-
-    L4JLogger.rootLogger.setPriority(Level.\iTRACE);
 }
 
 void initializeCeylon(ServletContext servletContext) {

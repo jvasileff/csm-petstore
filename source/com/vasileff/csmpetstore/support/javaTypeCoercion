@@ -1,0 +1,14 @@
+import java.lang {
+    JBoolean=Boolean,
+    JDouble=Double,
+    JLong=Long
+}
+
+shared JBoolean javaBoolean(Boolean x)
+    =>  JBoolean.valueOf(x);
+
+shared JLong javaLong(Integer x)
+    =>  JLong.valueOf(x);
+
+shared JDouble javaDouble(Float x)
+    =>  JDouble.valueOf(x);

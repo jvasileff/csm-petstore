@@ -57,12 +57,17 @@ class WelcomeController(
         =>  redirect(home.url);
 
     shared requestMapping {\ivalue={"/welcome"}; method={get};}
-    View welcome(Model model)
-        =>  welcomeView;
+    View welcome(Model model, Account account) {
+        account.country = null;
+        account.email = null;
+        account.fullName = "";
+        account.username = "";
+        return welcomeView;
+    }
 
     shared requestMapping {\ivalue={"/about"}; method={get, post};}
     View about(Account account) {
-        log.info(account.fullName else "null");
+        log.info(account.fullName);
         return aboutView;
     }
 
