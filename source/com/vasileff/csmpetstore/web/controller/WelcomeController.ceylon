@@ -24,12 +24,16 @@ import org.springframework.web.bind.annotation {
     responseBody,
     requestMapping,
     RequestMethod {
-        get=\iGET
+        get=\iGET,
+        post=\iPOST
     },
     modelAttribute
 }
 import org.springframework.web.servlet {
     View
+}
+import com.vasileff.csmpetstore.domain {
+    Account
 }
 
 Logger log = logger(`package`);
@@ -56,9 +60,11 @@ class WelcomeController(
     View welcome(Model model)
         =>  welcomeView;
 
-    shared requestMapping {\ivalue={"/about"}; method={get};}
-    View about()
-        =>  aboutView;
+    shared requestMapping {\ivalue={"/about"}; method={get, post};}
+    View about(Account account) {
+        log.info(account.fullName else "null");
+        return aboutView;
+    }
 
     shared requestMapping {\ivalue={"/contact"}; method={get};}
     View contact()

@@ -106,11 +106,13 @@ void initializeLogger() {
     value pattern = "%-5p [%t:%X{reference}] (%F:%L) - %m%n";
     // %d %-5p [%t:%X{reference}] %c - %m%n
     console.layout = PatternLayout(pattern);
-    console.threshold = Level.\iINFO;
+    console.threshold = Level.\iTRACE;
     console.activateOptions();
     L4JLogger.rootLogger.addAppender(console);
 
     useLog4jLogger();
+
+    L4JLogger.rootLogger.setPriority(Level.\iTRACE);
 }
 
 void initializeCeylon(ServletContext servletContext) {

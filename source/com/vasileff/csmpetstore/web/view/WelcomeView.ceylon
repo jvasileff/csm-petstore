@@ -25,6 +25,48 @@ class WelcomeView() extends HtmlView() {
                         classNames="lead";
                         text="This is a paragraph with some text.";
                     }
+                },
+                Div {
+                    Form {
+                        action = "about";
+                        method = "POST";
+                        id = "account";
+                        Div {
+                            classNames = "form-group";
+                            Label {
+                                forControl = "email";
+                                text = "Email Address";
+                            },
+                            Input {
+                                classNames = "form-control";
+                                type = email;
+                                id = "email";
+                                name = "email";
+                                placeholder = "Enter Email";
+                            }
+                        },
+                        Div {
+                            classNames = "form-group";
+                            Label {
+                                forControl = "fullName";
+                                text = "Full Name";
+                            },
+                            Input {
+                                classNames = "form-control";
+                                type = text;
+                                id = "fullName";
+                                name = "fullName";
+                                placeholder = "Your Name";
+                            }
+                        },
+                        Div {
+                            Button {
+                                classNames = "btn btn-default";
+                                type = submit;
+                                text = "Submit";
+                            }
+                        }
+                    }
                 }
             };
 

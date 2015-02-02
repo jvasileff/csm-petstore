@@ -43,9 +43,9 @@ shared class Account satisfies PSDomainObject<String> {
     //late shared variable Boolean? bannerOption;
     //late shared variable String? bannerName;
 
-    shared actual
-    String string
-        =>  username else "null";
+    //shared actual // FIXME late init
+    //String string
+    //    =>  username else "null";
 
     shared actual
     String? getPK()
