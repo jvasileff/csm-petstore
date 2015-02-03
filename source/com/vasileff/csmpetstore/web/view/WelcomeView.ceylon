@@ -35,35 +35,40 @@ class WelcomeView() extends HtmlView() {
                     action = "about";
                     method = "POST";
                     id = "account";
-                    Div {
-                        classNames = "form-group";
-                        Label {
-                            forControl = "email";
-                            text = "Email Address";
-                        },
-                        Input {
-                            classNames = "form-control";
-                            type = email;
-                            id = "email";
-                            name = "email";
-                            placeholder = "Enter Email";
-                            valueOf = account.email;
-                        }
+                    formGroup {
+                        id = "username";
+                        labelText = "Username";
+                        placeholder = "Enter Username";
+                        type = text;
+                        valueOf = account.username;
                     },
-                    Div {
-                        classNames = "form-group";
-                        Label {
-                            forControl = "fullName";
-                            text = "Full Name";
-                        },
-                        Input {
-                            classNames = "form-control";
-                            type = text;
-                            id = "fullName";
-                            name = "fullName";
-                            placeholder = "Your Name";
-                            valueOf = account.fullName;
-                        }
+                    formGroup {
+                        id = "email";
+                        labelText = "Email Address";
+                        placeholder = "Enter Email";
+                        type = text;
+                        valueOf = account.email else "";
+                    },
+                    formGroup {
+                        id = "fullName";
+                        labelText = "Full Name";
+                        placeholder = "Your Name";
+                        type = text;
+                        valueOf = account.fullName;
+                    },
+                    formGroup {
+                        id = "testBoolean";
+                        labelText = "Test Boolean";
+                        placeholder = "true or false";
+                        type = text;
+                        valueOf = account.testBoolean.string;
+                    },
+                    formGroup {
+                        id = "testInteger";
+                        labelText = "Test Integer";
+                        placeholder = "Enter Some Number";
+                        type = text;
+                        valueOf = account.testInteger.string;
                     },
                     Div {
                         Button {

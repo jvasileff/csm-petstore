@@ -3,6 +3,9 @@ import ceylon.logging {
     logger
 }
 
+import com.vasileff.csmpetstore.domain {
+    Account
+}
 import com.vasileff.csmpetstore.web {
     Model
 }
@@ -16,9 +19,15 @@ import com.vasileff.csmpetstore.web.view {
 import javax.inject {
     inject=inject__CONSTRUCTOR
 }
+import javax.validation {
+    valid
+}
 
 import org.springframework.stereotype {
     controller
+}
+import org.springframework.validation {
+    BindingResult
 }
 import org.springframework.web.bind.annotation {
     responseBody,
@@ -32,9 +41,6 @@ import org.springframework.web.bind.annotation {
 import org.springframework.web.servlet {
     View
 }
-import com.vasileff.csmpetstore.domain {
-    Account
-}
 
 Logger log = logger(`package`);
 
@@ -46,6 +52,14 @@ class WelcomeController(
 
     shared modelAttribute("dummyKey")
     String dummyKey => "dummyVal";
+
+    shared modelAttribute
+    Account emptyAccount {
+        value account = Account();
+        account.username = "";
+        account.country = "";
+        return account;
+    }
 
     requestMapping({"/robots.txt"})
     shared responseBody
@@ -62,12 +76,17 @@ class WelcomeController(
         account.email = null;
         account.fullName = "";
         account.username = "";
+        account.testBoolean = false;
+        account.testInteger = 0;
         return welcomeView;
     }
 
     shared requestMapping {\ivalue={"/about"}; method={get, post};}
-    View about(Account account) {
-        log.info(account.fullName);
+    View about(valid Account account, BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            log.warn(() => "binding errors: " + bindingResult.allErrors.string);
+            return welcomeView;
+        }
         return aboutView;
     }
 

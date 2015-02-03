@@ -27,7 +27,14 @@ shared class Account satisfies PSDomainObject<String> {
     String fullName;
 
     size { max=50; }
-    late shared variable String? country;
+    late shared variable
+    String? country;
+
+    late shared variable
+    Boolean testBoolean;
+
+    late shared variable
+    Integer testInteger;
 
     //late shared variable String? status;
     //late shared variable String? address1;

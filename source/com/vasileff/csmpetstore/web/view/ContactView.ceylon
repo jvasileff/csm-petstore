@@ -28,21 +28,14 @@ class ContactView() extends HtmlView() {
                 },
                 Div {
                     H3 { "Model Map Dump"; },
-                    Table {
-                        // FIXME: What about a <caption> element?
-                        classNames = ["table", "table-bordered"];
-                        header = {
-                            Th { "Key"; },
-                            Th { "Item"; }
-                        };
-                        rows = model.map((entry) =>
-                            Tr {
-                                Td { entry.key; },
-                                Td { entry.item.string; }
-                            }
-                        );
+                    table {
+                        classNames = {"table-bordered"};
+                        header = ["Key", "Item"];
+                        rows = model.map((entry)
+                            => [entry.key, entry.item.string]);
                     }
                 }
             };
 
 }
+
