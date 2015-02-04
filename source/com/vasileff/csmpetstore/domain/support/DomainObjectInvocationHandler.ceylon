@@ -1,5 +1,6 @@
 import ceylon.collection {
-    HashMap
+    HashMap,
+    HashSet
 }
 import ceylon.interop.java {
     javaClass,
@@ -31,7 +32,7 @@ Logger log = logger(`package`);
 shared
 class DomainObjectInvocationHandler<DomainObject, PK>()
         satisfies CeylonInvocationHandler<DomainObject>
-        given DomainObject satisfies PSDomainObject<PK>
+        given DomainObject satisfies PSDomainObject<PK> & DO2<DomainObject>
         given PK satisfies Comparable<PK> {
 
     assert (is Interface<DomainObject> domainObjectInterface = `DomainObject`);
@@ -56,16 +57,35 @@ class DomainObjectInvocationHandler<DomainObject, PK>()
     Anything invoke(
             DomainObject? proxy,
             Method<DomainObject> method,
-            {Anything*} arguments) {
-        if (method.declaration.name == "getPK") {
+            [Anything*] arguments) {
+
+        if (method == `DomainObject.getPK`) {
             return storage.primaryKey;
         }
-        else if (method.declaration.name == "primaryKeySet") {
+        else if (method == `DomainObject.primaryKeySet`) {
             // FIXME this cleanup belongs in the adapter
             return JBoolean(storage.primaryKeySet);
         }
+        else if (method == `DomainObject.isSet`) {
+            if (nonempty arguments) {
+                assert (is {Attribute<DomainObject>*} properties = arguments.first);
+                return JBoolean.valueOf(storage.isSet(*properties));
+            }
+            return JBoolean.valueOf(storage.isSet());
+        }
+        else if (method == `DomainObject.isUpdated`) {
+            if (nonempty arguments) {
+                assert (is {Attribute<DomainObject>*} properties = arguments.first);
+                return JBoolean.valueOf(storage.isUpdated(*properties));
+            }
+            return JBoolean.valueOf(storage.isUpdated());            
+        }
+        else if (method == `DomainObject.clearUpdated`) {
+            storage.clearUpdated();
+            return null;
+        }
         else {
-            return nothing;
+            throw Exception ("unhandled method " + method.string);
         }
     }
 
@@ -80,7 +100,9 @@ class DomainObjectStorage<DomainObject, PK>(domainObjectInterface)
     shared
     alias Property => Attribute<DomainObject>;
 
-    value properties = HashMap<Property, Anything>();
+    value propertyMap = HashMap<Property, Anything>();
+
+    value updatedPropertySet = HashSet<Property>();
 
     Attribute<DomainObject, PK, Nothing> primaryKeyProperty;
 
@@ -97,7 +119,8 @@ class DomainObjectStorage<DomainObject, PK>(domainObjectInterface)
     void setProperty(Property property, Anything newValue) {
         log.trace(() => "setting property " + property.string);
         checkIsField(property);
-        properties.put(property, newValue);
+        updatedPropertySet.add(property);
+        propertyMap.put(property, newValue);
     }
 
     shared
@@ -105,18 +128,30 @@ class DomainObjectStorage<DomainObject, PK>(domainObjectInterface)
         log.trace(() => "getting property " + property.string);
         checkIsField(property);
         checkDefined(property);
-        return properties[property];
+        return propertyMap[property];
     }
 
     shared
     Boolean primaryKeySet
-        =>  properties.defines(primaryKeyProperty);
+        =>  propertyMap.defines(primaryKeyProperty);
 
     shared
     PK? primaryKey {
         assert (is PK? pk = getProperty(primaryKeyProperty));
         return pk;
     }
+
+    shared
+    Boolean isSet(Property* properties)
+        =>  propertyMap.definesAny(properties);
+
+    shared
+    Boolean isUpdated(Property* properties)
+        =>  updatedPropertySet.containsAny(properties);
+
+    shared
+    void clearUpdated()
+        =>  updatedPropertySet.clear();
 
     void checkIsField(Property property) {
         if (property.declaration.annotations<FieldAnnotation>().empty) {
@@ -125,7 +160,7 @@ class DomainObjectStorage<DomainObject, PK>(domainObjectInterface)
     }
 
     void checkDefined(Property property) {
-        if (!properties.defines(property)) {
+        if (!propertyMap.defines(property)) {
             throw Exception(property.declaration.name + " has not been set.");
         }
     }
@@ -134,7 +169,7 @@ class DomainObjectStorage<DomainObject, PK>(domainObjectInterface)
 shared
 DomainObject domainObject<DomainObject, PK>
         (Interface<DomainObject> domainObjectInterface)
-        given DomainObject satisfies PSDomainObject<PK>
+        given DomainObject satisfies PSDomainObject<PK> & DO2<DomainObject>
         given PK satisfies Comparable<PK> {
 
     value clazz = javaClass<DomainObject>();
@@ -160,4 +195,13 @@ void testDomainObject() {
     account.username = "jvasileff";
     print(account.username);
     print(account.getPK());
+    print(account.isSet(`Account2.username`));
+    print(account.isSet(`Account2.username`, `Account2.email`));
+    print(account.isSet(`Account2.email`));
+    print(account.isSet());
+    print(account.isUpdated());
+    print(account.isUpdated(`Account2.username`));
+    print(account.isUpdated(`Account2.username`, `Account2.email`));
+    print(account.isUpdated(`Account2.email`));
+    account.clearUpdated();
 }

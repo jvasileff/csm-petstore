@@ -61,7 +61,7 @@ class SampleCeylonInvocationHandler(User user)
     shared actual
     Anything invoke(User? proxy,
                     Method<User> method,
-                    {Anything*} arguments) {
+                    [Anything*] arguments) {
         print("arguments: ``arguments``");
         return method.bind(user).apply(*arguments);
     }

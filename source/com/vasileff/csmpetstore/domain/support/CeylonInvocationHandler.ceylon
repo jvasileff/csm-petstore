@@ -20,6 +20,6 @@ shared interface CeylonInvocationHandler<Container> {
     Anything invoke(
             Container? proxy,
             Method<Container> method,
-            {Anything*} arguments);
+            [Anything*] arguments);
 
 }

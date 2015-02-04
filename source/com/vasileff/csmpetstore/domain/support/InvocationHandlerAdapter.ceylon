@@ -52,7 +52,7 @@ class InvocationHandlerAdapter<Container>(
     }
 
     shared actual
-    Object? invoke(Object proxy, JMethod method, ObjectArray<Object> args) {
+    Object? invoke(Object proxy, JMethod method, ObjectArray<Object>? args) {
         // FIXME will this work? What about generic containers?
         assert(is Container proxy);
 
@@ -65,14 +65,18 @@ class InvocationHandlerAdapter<Container>(
                 return result;
             }
             else {
+                assert (exists args);
                 value newValue = coerceToCeylon(model.type, args.get(0));
                 handler.setAttribute(proxy, model, newValue);
                 return null;
             }
         }
         case (is Method<Container>) {
+            ObjectArray<String>? x = ObjectArray<String>(10);
             // FIXME Type translations
-            assert (is Object? result = handler.invoke(proxy, model, args.array));
+            // see https://github.com/ceylon/ceylon-compiler/issues/2042
+            value ceylonArgs = if (exists args) then args.array.sequence() else [];
+            assert (is Object? result = handler.invoke(proxy, model, ceylonArgs));
             return result;
         }
         case (is Null) {
@@ -88,7 +92,7 @@ Object? coerceToCeylon(Type<Anything> expectedType, Object? item)
         else if (is Type<Integer> expectedType,
                  is JInteger item) then
             item.longValue()
-       else if (is Type<Boolean> expectedType,
+        else if (is Type<Boolean> expectedType,
                  is JBoolean item) then
             item.booleanValue()
         else

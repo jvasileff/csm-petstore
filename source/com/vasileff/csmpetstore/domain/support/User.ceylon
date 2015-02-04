@@ -10,6 +10,9 @@ import javax.validation.constraints {
     notNull=notNull__GETTER,
     pattern=pattern__GETTER
 }
+import ceylon.language.meta.model {
+    Attribute
+}
 
 shared interface User satisfies PSDomainObject<Integer> {
 
@@ -58,7 +61,18 @@ shared class UserImpl() satisfies User & User2 {
     shared actual Array<Integer>? exNullableArrayInteger = null;
 }
 
-shared interface Account2 satisfies PSDomainObject<String> {
+shared interface DO2<DomainObject> {
+    shared formal Boolean primaryKeySet();
+    
+    //shared formal Boolean isSet(Attribute<Account2>* property);
+    shared formal Boolean isSet(Attribute<DomainObject>* property);
+
+    shared formal Boolean isUpdated(Attribute<DomainObject>* property);
+
+    shared formal void clearUpdated();
+}
+
+shared interface Account2 satisfies PSDomainObject<String>, DO2<Account2> {
 
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
@@ -106,6 +120,12 @@ shared interface Account2 satisfies PSDomainObject<String> {
     //String? getPK()
     //    =>  username;
     
-    shared formal Boolean primaryKeySet();
+//    shared formal Boolean primaryKeySet();
+//    
+//    shared formal Boolean isSet(Attribute<Account2>* property);
+//
+//    shared formal Boolean isUpdated(Attribute<Account2>* property);
+//
+//    shared formal void clearUpdated();
 
 }
