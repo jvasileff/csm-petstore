@@ -15,6 +15,7 @@ import ceylon.language.meta.model {
 import java.lang {
     JString=String,
     JInteger=Integer,
+    JBoolean=Boolean,
     JClass=Class,
     ObjectArray
 }
@@ -42,7 +43,12 @@ class InvocationHandlerAdapter<Container>(
     }
 
     for (method in containerInterface.getMethods<Container>()) {
-        models.put(method.declaration.name, method);
+        variable value methodName = method.declaration.name;
+        if (methodName.startsWith("get") || methodName.startsWith("set")) {
+            methodName = "$" + methodName;
+        }
+        log.trace(() => "Adding method " + methodName);
+        models.put(methodName, method);
     }
 
     shared actual
@@ -82,6 +88,9 @@ Object? coerceToCeylon(Type<Anything> expectedType, Object? item)
         else if (is Type<Integer> expectedType,
                  is JInteger item) then
             item.longValue()
+       else if (is Type<Boolean> expectedType,
+                 is JBoolean item) then
+            item.booleanValue()
         else
             item;
 
@@ -91,6 +100,9 @@ Object? coerceToJava(JClass<out Object> expectedType, Object? item)
             javaString(item)
         else if (expectedType == javaClass<JInteger>(),
                  is Integer item) then
-            JInteger(item)
+            JInteger.valueOf(item)
+        else if (expectedType == javaClass<JBoolean>(),
+                 is Boolean item) then
+            JBoolean.valueOf(item)
         else
             item;

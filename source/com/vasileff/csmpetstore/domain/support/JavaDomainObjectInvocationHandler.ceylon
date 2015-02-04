@@ -55,7 +55,7 @@ class JavaDomainObjectInvocationHandler() satisfies InvocationHandler {
 }
 
 shared
-DomainObject domainObject<DomainObject, PK>(Interface<DomainObject> i)
+DomainObject javaBasedDomainObject<DomainObject, PK>(Interface<DomainObject> i)
         given DomainObject satisfies PSDomainObject<PK>
         given PK satisfies Comparable<PK> {
 
