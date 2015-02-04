@@ -1,8 +1,7 @@
 shared
-interface PSDomainObject<PrimaryKey>
+interface PSDomainObject<out PrimaryKey>
         given PrimaryKey satisfies Comparable<PrimaryKey> {
 
-    shared formal
-    PrimaryKey? getPK();
+    shared formal PrimaryKey? getPK();
 
 }
