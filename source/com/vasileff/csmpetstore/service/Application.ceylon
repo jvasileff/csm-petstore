@@ -63,12 +63,13 @@ class Application(
         print ("deleteRows() was committed!");
 
         value account = createDomainObject(`Account`);
+        print(account);
         account.username="#@jvasileff";
         account.fullName="name";
         account.email="john@vasileff.com";
         account.country="US";
         
-        
+        print(account);
         print(account.hash);
         
         value result = validator.validate(account);

@@ -26,14 +26,17 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         primaryKeyProperty = candidates.first;
     } else {
         throw Exception(
-            "Cannot initialize `` `DomainObjectType` ``: exactly one non-nullable " +
+            "Cannot initialize `` `DomainObjectType` ``; exactly one non-nullable " +
             "attribute must be annotated with `primaryKey`");
     }
+
+    [Property*] toStringAttributes =
+        domainObjectInterface.getAttributes<DomainObjectType>(`ToStringAnnotation`);
 
     shared
     void set(Property property, Anything newValue) {
         log.trace(() => "setting property " + property.string);
-        checkIsField(property);
+        checkField(property);
         updatedPropertySet.add(property);
         propertyMap.put(property, newValue);
     }
@@ -41,7 +44,7 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
     shared
     Anything get(Property property) {
         log.trace(() => "getting property " + property.string);
-        checkIsField(property);
+        checkField(property);
         checkDefined(property);
         return propertyMap[property];
     }
@@ -71,15 +74,13 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         =>  isSet(primaryKeyProperty);
 
     shared actual
-    String string {
-        value result = StringBuilder();
-        result.append(domainObjectInterface.declaration.name);
-        if (isPrimaryKeySet()) {
-            result.append(" pk=");
-            result.append(primaryKey()?.string else "<null>");
-        }
-        return result.string;
-    }
+    String string
+        =>  let (vals = ", ".join(toStringAttributes.map((property)
+                    =>  property.declaration.name + "=" + (
+                            if (isSet(property))
+                            then (get(property)?.string else "<null>")
+                            else "<uninitialized>"))))
+            domainObjectInterface.declaration.name + "{" + vals + "}";
 
     shared
     void clearUpdated()
@@ -87,21 +88,25 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
 
     shared
     Integer hashCode(DomainObjectType thisProxy)
-        // FIXME better hashcode
-        =>  this.hash;
+        =>  primaryKeyOrNull(thisProxy)?.hash else this.hash;
+
+    Anything primaryKeyOrNull(DomainObjectType target)
+        // going through the proxy is pretty inefficient
+        =>  if (target.isPrimaryKeySet())
+            then target.primaryKey()
+            else null;
 
     shared
-    Boolean equalTo(DomainObjectType thisProxy, Anything other) {
-        // FIXME better equals
-        if (!is DomainObjectType other) {
-            return false;
-        }
-        else {
-            return thisProxy === other;
-        }
-    }
+    Boolean equalTo(DomainObjectType thisProxy, Anything other)
+        =>  if (!is DomainObjectType other) then
+                false
+            else if (exists pk1 = primaryKeyOrNull(thisProxy),
+                     exists pk2 = primaryKeyOrNull(other)) then
+                pk1 == pk2
+            else
+                thisProxy === other;
 
-    void checkIsField(Property property) {
+    void checkField(Property property) {
         if (property.declaration.annotations<FieldAnnotation>().empty) {
             throw Exception(property.declaration.name + " is not a field.");
         }

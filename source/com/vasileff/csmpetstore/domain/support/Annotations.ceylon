@@ -15,3 +15,10 @@ class PrimaryKeyAnnotation()
 
 shared annotation
 PrimaryKeyAnnotation primaryKey() => PrimaryKeyAnnotation();
+
+shared final annotation
+class ToStringAnnotation(Integer order)
+        satisfies OptionalAnnotation<ToStringAnnotation, ValueDeclaration>{}
+
+shared annotation
+ToStringAnnotation toString(Integer order = 0) => ToStringAnnotation(order);

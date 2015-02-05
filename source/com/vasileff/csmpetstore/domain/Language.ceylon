@@ -2,17 +2,18 @@ import com.vasileff.csmpetstore.domain.support {
     DomainObject,
     field,
     primaryKey,
-    createDomainObject
+    createDomainObject,
+    toString
 }
 
 shared
 interface Language satisfies DomainObject<Integer, Language> {
 
-    field primaryKey
+    field primaryKey toString
     shared formal variable
     Integer id;
 
-    field
+    field  toString
     shared formal variable
     String? name;
 

@@ -10,24 +10,28 @@ import javax.validation.constraints {
 import com.vasileff.csmpetstore.domain.support {
     DomainObject,
     field,
-    primaryKey
+    primaryKey,
+    toString
 }
 
 shared
 interface Account satisfies DomainObject<String, Account> {
 
     field primaryKey notNull
+    toString(1)
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
     shared variable formal
     String username;
 
     field
+    toString(2)
     size { min=1; max=75; }
     shared variable formal
     String? email;
 
     field notNull
+    toString(3)
     size { min=1; max=50; }
     shared variable formal
     String fullName;
