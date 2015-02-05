@@ -6,12 +6,12 @@ shared final annotation
 class FieldAnnotation()
         satisfies OptionalAnnotation<FieldAnnotation, ValueDeclaration>{}
 
-shared annotation FieldAnnotation field()
-    =>  FieldAnnotation();
+shared annotation
+FieldAnnotation field() => FieldAnnotation();
 
 shared final annotation
 class PrimaryKeyAnnotation()
         satisfies OptionalAnnotation<PrimaryKeyAnnotation, ValueDeclaration>{}
 
-shared annotation PrimaryKeyAnnotation primaryKey()
-    =>  PrimaryKeyAnnotation();
+shared annotation
+PrimaryKeyAnnotation primaryKey() => PrimaryKeyAnnotation();

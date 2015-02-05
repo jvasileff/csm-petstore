@@ -3,7 +3,7 @@ import ceylon.language.meta.model {
     Method
 }
 
-shared interface CeylonInvocationHandler<Container> {
+shared interface InvocationHandler<Container> {
 
     shared formal
     void setAttribute(

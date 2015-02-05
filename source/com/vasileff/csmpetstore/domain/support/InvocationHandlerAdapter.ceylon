@@ -20,15 +20,15 @@ import java.lang {
     ObjectArray
 }
 import java.lang.reflect {
-    InvocationHandler,
+    JInvocationHandler=InvocationHandler,
     JMethod=Method
 }
 
 shared
 class InvocationHandlerAdapter<Container>(
         Interface<Container> containerInterface,
-        CeylonInvocationHandler<Container> handler)
-        satisfies InvocationHandler {
+        InvocationHandler<Container> handler)
+        satisfies JInvocationHandler {
 
     value models = HashMap<String, Attribute<Container>|Method<Container>>();
 
@@ -60,9 +60,8 @@ class InvocationHandlerAdapter<Container>(
         switch (model = models.get(methodName))
         case (is Attribute<Container>) {
             if (methodName.startsWith("get")) {
-                assert(is Object? rawResult = handler.getAttribute(proxy, model));
-                value result = coerceToJava(method.returnType, rawResult);
-                return result;
+                value rawResult = handler.getAttribute(proxy, model);
+                return coerceToJava(method.returnType, rawResult);
             }
             else {
                 assert (exists args);
@@ -72,41 +71,58 @@ class InvocationHandlerAdapter<Container>(
             }
         }
         case (is Method<Container>) {
-            ObjectArray<String>? x = ObjectArray<String>(10);
-            // FIXME Type translations
-            // see https://github.com/ceylon/ceylon-compiler/issues/2042
-            value ceylonArgs = if (exists args) then args.array.sequence() else [];
-            assert (is Object? result = handler.invoke(proxy, model, ceylonArgs));
-            return result;
+            value ceylonArgs = coerceArgumentsToCeylon(model.parameterTypes, args);
+            value rawResult = handler.invoke(proxy, model, ceylonArgs);
+            return coerceToJava(method.returnType, rawResult);
         }
         case (is Null) {
             throw Exception("unexpected method: " + methodName);
         }
     }
+
+    Object? impartObjectness(Anything any) {
+        assert (is Object? any);
+        return any;
+    }
+    
+    Object? coerceToCeylon(Type<Anything> expectedType, Object? item)
+        =>  if (is Type<String> expectedType,
+                is JString item) then
+                item.string
+            else if (is Type<Integer> expectedType,
+                     is JInteger item) then
+                item.longValue()
+            else if (is Type<Boolean> expectedType,
+                     is JBoolean item) then
+                item.booleanValue()
+            else if (is Type<Sequential<Anything>> expectedType,
+                     is Null item) then
+                empty
+            else
+                item;
+    
+    Object? coerceToJava(JClass<out Object> expectedType, Anything item)
+        =>  if (expectedType == javaClass<JString>(),
+                is String item) then
+                javaString(item)
+            else if (expectedType == javaClass<JInteger>(),
+                     is Integer item) then
+                JInteger.valueOf(item)
+            else if (expectedType == javaClass<JBoolean>() ||
+                     expectedType == JBoolean.\iTYPE,
+                     is Boolean item) then
+                JBoolean.valueOf(item)
+            else
+                impartObjectness(item);
+    
+    [Anything*] coerceArgumentsToCeylon(
+            [Type<Anything>*] expectedTypes, ObjectArray<Object>? args)
+        =>  if (nonempty expectedTypes)
+            then [ for (i->expectedType in expectedTypes.indexed)
+                    coerceToCeylon(
+                        expectedType,
+                        if (exists args)
+                            then args.get(i)
+                            else null) ]
+            else [];
 }
-
-Object? coerceToCeylon(Type<Anything> expectedType, Object? item)
-    =>  if (is Type<String> expectedType,
-            is JString item) then
-            item.string
-        else if (is Type<Integer> expectedType,
-                 is JInteger item) then
-            item.longValue()
-        else if (is Type<Boolean> expectedType,
-                 is JBoolean item) then
-            item.booleanValue()
-        else
-            item;
-
-Object? coerceToJava(JClass<out Object> expectedType, Object? item)
-    =>  if (expectedType == javaClass<JString>(),
-            is String item) then
-            javaString(item)
-        else if (expectedType == javaClass<JInteger>(),
-                 is Integer item) then
-            JInteger.valueOf(item)
-        else if (expectedType == javaClass<JBoolean>(),
-                 is Boolean item) then
-            JBoolean.valueOf(item)
-        else
-            item;
