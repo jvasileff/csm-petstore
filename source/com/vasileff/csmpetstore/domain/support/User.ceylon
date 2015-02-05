@@ -1,37 +1,13 @@
-import ceylon.language {
-    CString=String
-}
-import ceylon.language.meta.model {
-    Attribute
-}
-
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
-}
-
 import javax.validation.constraints {
     size=size__GETTER,
     pattern=pattern__GETTER
 }
 
-shared interface DO2<DomainObjectType> {
-
-    shared formal Boolean isPrimaryKeySet();
-
-    shared formal Boolean isSet(Attribute<DomainObjectType>* property);
-
-    shared formal Boolean propertiesUpdated(Attribute<DomainObjectType>* property);
-
-    shared formal void clearUpdated();
-
-}
-
-shared interface Account2 satisfies PSDomainObject<String>, DO2<Account2> {
+shared interface User satisfies DomainObject<String, User> {
 
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
-    primaryKey
-    shared variable formal field
+    shared variable formal primaryKey field
     String username;
 
     size { min=1; max=75; }
@@ -51,21 +27,5 @@ shared interface Account2 satisfies PSDomainObject<String>, DO2<Account2> {
 
     shared variable formal field
     Integer testInteger;
-
-    //shared actual // FIXME late init
-    //String string
-    //    =>  username else "null";
-
-    //shared actual
-    //String? getPK()
-    //    =>  username;
-    
-//    shared formal Boolean primaryKeySet();
-//    
-//    shared formal Boolean isSet(Attribute<Account2>* property);
-//
-//    shared formal Boolean isUpdated(Attribute<Account2>* property);
-//
-//    shared formal void clearUpdated();
 
 }

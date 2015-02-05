@@ -1,13 +1,9 @@
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
-}
 import ceylon.language.meta.model {
     Interface
 }
 
 shared
-DomainObjectType createDomainObject<DomainObjectType, PK>
+DomainObjectType createDomainObject<DomainObjectType, PrimaryKey>
         (Interface<DomainObjectType> domainObjectInterface)
-        given DomainObjectType satisfies PSDomainObject<PK> & DO2<DomainObjectType>
-        given PK satisfies Comparable<PK>
-    =>  createProxyInstance(DomainObjectInvocationHandler<DomainObjectType, PK>());
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType>
+    =>  createProxyInstance(DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>());

@@ -5,25 +5,24 @@ import ceylon.collection {
 shared
 void testDomainObject() {
 
-    Account2 account = createDomainObject(`Account2`);
-    print(account.isPrimaryKeySet());
-    account.username = "jvasileff";
-    print(account.username);
-    print(account.getPK());
-    print(account.isSet(`Account2.username`));
-    print(account.isSet(`Account2.username`, `Account2.email`));
-    print(account.isSet(`Account2.email`));
-    print(account.isSet());
-    print(account.propertiesUpdated());
-    print(account.propertiesUpdated(`Account2.username`));
-    print(account.propertiesUpdated(`Account2.username`, `Account2.email`));
-    print(account.propertiesUpdated(`Account2.email`));
-    account.clearUpdated();
-
-    List<Account2> list = ArrayList { createDomainObject(`Account2`) };
+    User user = createDomainObject(`User`);
+    print(user.isPrimaryKeySet());
+    user.username = "jvasileff";
+    print(user.username);
+    print(user.primaryKey());
+    print(user.isSet(`User.username`));
+    print(user.isSet(`User.username`, `User.email`));
+    print(user.isSet(`User.email`));
+    print(user.isSet());
+    print(user.isUpdated());
+    print(user.isUpdated(`User.username`));
+    print(user.isUpdated(`User.username`, `User.email`));
+    print(user.isUpdated(`User.email`));
+    user.clearUpdated();
+    List<User> list = ArrayList { createDomainObject(`User`) };
     value x = list.first;
     switch(x)
-    case (is Account2) {
+    case (is User) {
         print ("yes, is account2");
     }
     case (is Null) {

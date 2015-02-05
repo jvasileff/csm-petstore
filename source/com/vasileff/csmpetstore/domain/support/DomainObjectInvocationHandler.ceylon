@@ -8,17 +8,12 @@ import ceylon.logging {
     logger
 }
 
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
-}
-
 Logger log = logger(`package`);
 
 shared
 class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
         satisfies InvocationHandler<DomainObjectType>
-        given DomainObjectType satisfies PSDomainObject<PrimaryKey> & DO2<DomainObjectType>
-        given PrimaryKey satisfies Comparable<PrimaryKey> {
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     assert (is Interface<DomainObjectType> domainObjectInterface = `DomainObjectType`);
     value storage = DomainObjectDelegate<DomainObjectType,PrimaryKey>(domainObjectInterface);
@@ -42,7 +37,7 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
             Method<DomainObjectType> method,
             [Anything*] arguments) {
 
-        if (method == `DomainObjectType.getPK`) {
+        if (method == `DomainObjectType.primaryKey`) {
             return storage.primaryKey;
         }
         else if (method == `DomainObjectType.isPrimaryKeySet`) {
@@ -52,7 +47,7 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
             return storage.isSet(*properties);
         }
-        else if (method == `DomainObjectType.propertiesUpdated`) {
+        else if (method == `DomainObjectType.isUpdated`) {
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
             return storage.isUpdated(*properties);
         }

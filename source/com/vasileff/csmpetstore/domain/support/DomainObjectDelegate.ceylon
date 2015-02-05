@@ -1,18 +1,14 @@
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
+import ceylon.collection {
+    HashMap,
+    HashSet
 }
 import ceylon.language.meta.model {
     Interface,
     Attribute
 }
-import ceylon.collection {
-    HashMap,
-    HashSet
-}
 
-class DomainObjectDelegate<DomainObjectType, PK>(domainObjectInterface)
-        given DomainObjectType satisfies PSDomainObject<PK>
-        given PK satisfies Comparable<PK> {
+class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     shared alias Property => Attribute<DomainObjectType>;
 
@@ -22,10 +18,10 @@ class DomainObjectDelegate<DomainObjectType, PK>(domainObjectInterface)
 
     value updatedPropertySet = HashSet<Property>();
 
-    Attribute<DomainObjectType, PK, Nothing> primaryKeyProperty;
+    Attribute<DomainObjectType, PrimaryKey, Nothing> primaryKeyProperty;
 
     if (nonempty candidates = domainObjectInterface
-            .getAttributes<DomainObjectType, PK, Nothing>
+            .getAttributes<DomainObjectType, PrimaryKey, Nothing>
                 (`PrimaryKeyAnnotation`), candidates.size == 1) {
         primaryKeyProperty = candidates.first;
     } else {
@@ -54,8 +50,8 @@ class DomainObjectDelegate<DomainObjectType, PK>(domainObjectInterface)
         =>  propertyMap.defines(primaryKeyProperty);
 
     shared
-    PK? primaryKey {
-        assert (is PK? pk = get(primaryKeyProperty));
+    PrimaryKey? primaryKey {
+        assert (is PrimaryKey? pk = get(primaryKeyProperty));
         return pk;
     }
 

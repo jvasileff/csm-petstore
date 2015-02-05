@@ -14,11 +14,11 @@ shared interface DomainObject<out PrimaryKey, Other> of Other
 
     shared formal Boolean isPrimaryKeySet();
 
-    shared formal Boolean isSet(Attribute<Other>* property);
+    shared formal Boolean isSet(Attribute<Other>* properties);
 
     shared formal void clearSet();
 
-    shared formal Boolean isUpdated(Attribute<Other>* property);
+    shared formal Boolean isUpdated(Attribute<Other>* properties);
 
     shared formal void clearUpdated();
 
