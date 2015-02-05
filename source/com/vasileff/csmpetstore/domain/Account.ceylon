@@ -13,31 +13,37 @@ import com.vasileff.csmpetstore.domain.support {
     primaryKey
 }
 
-shared interface Account satisfies DomainObject<String, Account> {
-
+shared
+interface Account satisfies DomainObject<String, Account> {
 
     field primaryKey notNull
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
-    shared variable formal String username;
+    shared variable formal
+    String username;
 
     field
     size { min=1; max=75; }
-    shared variable formal String? email;
+    shared variable formal
+    String? email;
 
     field notNull
     size { min=1; max=50; }
-    shared variable formal String fullName;
+    shared variable formal
+    String fullName;
 
     field
     size { max=50; }
-    shared variable formal String? country;
+    shared variable formal
+    String? country;
 
     field
-    shared variable formal Boolean testBoolean;
+    shared variable formal
+    Boolean testBoolean;
 
     field
-    shared variable formal Integer testInteger;
+    shared variable formal
+    Integer testInteger;
 
     //late shared variable String? status;
     //late shared variable String? address1;

@@ -51,12 +51,6 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         =>  propertyMap.defines(primaryKeyProperty);
 
     shared
-    PrimaryKey? primaryKey {
-        assert (is PrimaryKey? pk = get(primaryKeyProperty));
-        return pk;
-    }
-
-    shared
     Boolean isSet(Property* properties)
         =>  if (properties.empty)
             then !propertyMap.empty
@@ -67,10 +61,45 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         =>  if (properties.empty)
             then !updatedPropertySet.empty
             else updatedPropertySet.containsAny(properties);
+    
+    shared
+    Anything primaryKey()
+        =>  get(primaryKeyProperty);
+
+    shared 
+    Boolean isPrimaryKeySet()
+        =>  isSet(primaryKeyProperty);
+
+    shared actual
+    String string {
+        value result = StringBuilder();
+        result.append(domainObjectInterface.declaration.name);
+        if (isPrimaryKeySet()) {
+            result.append(" pk=");
+            result.append(primaryKey()?.string else "<null>");
+        }
+        return result.string;
+    }
 
     shared
     void clearUpdated()
         =>  updatedPropertySet.clear();
+
+    shared
+    Integer hashCode(DomainObjectType thisProxy)
+        // FIXME better hashcode
+        =>  this.hash;
+
+    shared
+    Boolean equalTo(DomainObjectType thisProxy, Anything other) {
+        // FIXME better equals
+        if (!is DomainObjectType other) {
+            return false;
+        }
+        else {
+            return thisProxy === other;
+        }
+    }
 
     void checkIsField(Property property) {
         if (property.declaration.annotations<FieldAnnotation>().empty) {

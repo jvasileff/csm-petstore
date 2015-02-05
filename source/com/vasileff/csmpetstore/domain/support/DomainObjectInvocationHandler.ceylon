@@ -16,47 +16,58 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
         given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     assert (is Interface<DomainObjectType> domainObjectInterface = `DomainObjectType`);
-    value storage = DomainObjectDelegate<DomainObjectType,PrimaryKey>(domainObjectInterface);
+    value delegate = DomainObjectDelegate<DomainObjectType,PrimaryKey>(domainObjectInterface);
 
     shared actual
     Anything getAttribute(
-            DomainObjectType? proxy,
+            DomainObjectType proxy,
             Attribute<DomainObjectType> attribute)
-        => storage.get(attribute);
+        =>  if (attribute == `DomainObjectType.string`) then
+                delegate.string
+            else if (attribute == `DomainObjectType.hash`) then
+                delegate.hash
+            else
+                delegate.get(attribute);
 
     shared actual
     void setAttribute(
-            DomainObjectType? proxy,
+            DomainObjectType proxy,
             Attribute<DomainObjectType> attribute,
                 Anything val)
-        =>  storage.set(attribute, val);
+        =>  delegate.set(attribute, val);
 
     shared actual
     Anything invoke(
-            DomainObjectType? proxy,
+            DomainObjectType proxy,
             Method<DomainObjectType> method,
             [Anything*] arguments) {
 
         if (method == `DomainObjectType.primaryKey`) {
-            return storage.primaryKey;
+            return delegate.primaryKey;
         }
         else if (method == `DomainObjectType.isPrimaryKeySet`) {
-            return storage.primaryKeySet;
+            return delegate.primaryKeySet;
         }
         else if (method == `DomainObjectType.isSet`) {
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
-            return storage.isSet(*properties);
+            return delegate.isSet(*properties);
         }
         else if (method == `DomainObjectType.isUpdated`) {
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
-            return storage.isUpdated(*properties);
+            return delegate.isUpdated(*properties);
         }
         else if (method == `DomainObjectType.clearUpdated`) {
-            storage.clearUpdated();
+            delegate.clearUpdated();
             return null;
         }
+        else if (method == `DomainObjectType.hash`) {
+            return delegate.hashCode(proxy);
+        }
+        else if (method == `DomainObjectType.equals`) {
+            return delegate.equalTo(proxy, arguments.first);
+        }
         else {
-            throw Exception ("unhandled method " + method.string);
+            throw Exception ("Unhandled method ``method.string``.");
         }
     }
 }

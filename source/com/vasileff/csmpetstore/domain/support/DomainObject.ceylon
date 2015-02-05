@@ -3,6 +3,7 @@ import ceylon.language.meta.model {
 }
 
 shared interface DomainObject<out PrimaryKey, Other> of Other
+        satisfies Identifiable 
         given Other satisfies DomainObject<PrimaryKey, Other> {
 
     //Compound primary keys should be tuples

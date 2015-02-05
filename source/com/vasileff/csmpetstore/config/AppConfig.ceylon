@@ -78,7 +78,8 @@ import java.lang {
     Class
 }
 import com.vasileff.csmpetstore.domain {
-    Language
+    Language,
+    Account
 }
 import ceylon.collection {
     HashMap
@@ -187,11 +188,13 @@ class AppConfig() {
     shared bean default
     SqlSession sqlSession(SqlSessionFactory ssf)
         =>  SqlSessionTemplate(ssf);
-    
+
     shared bean default
     Map<Class<out Object>, Object()> constructors() {
         return HashMap {
-            javaClass<Language>() -> (() => createDomainObject(`Language`)) };
+            javaClass<Language>() -> (() => createDomainObject(`Language`)),
+            javaClass<Account>() -> (() => createDomainObject(`Account`))
+        };
     }
 
 }

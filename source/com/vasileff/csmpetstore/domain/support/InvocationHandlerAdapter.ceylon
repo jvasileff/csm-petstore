@@ -33,12 +33,19 @@ class InvocationHandlerAdapter<Container>(
     value models = HashMap<String, Attribute<Container>|Method<Container>>();
 
     for (attribute in containerInterface.getAttributes<Container>()) {
-        // TODO: translate hashCode -> hash and toString -> string
         value attributeName = attribute.declaration.name;
-        value uppercased = attributeName[0:1].uppercased + attributeName[1...];
-        models.put("get" + uppercased, attribute);
-        if (attribute.declaration.variable) {
-            models.put("set" + uppercased, attribute);        
+        if (attributeName == "hash") {
+            models.put("hashCode", attribute);
+        }
+        else if (attributeName == "string") {
+            models.put("toString", attribute);
+        }
+        else {
+            value uppercased = attributeName[0:1].uppercased + attributeName[1...];
+            models.put("get" + uppercased, attribute);
+            if (attribute.declaration.variable) {
+                models.put("set" + uppercased, attribute);        
+            }
         }
     }
 
@@ -65,7 +72,9 @@ class InvocationHandlerAdapter<Container>(
         value methodName = method.name;
         switch (model = models.get(methodName))
         case (is Attribute<Container>) {
-            if (methodName.startsWith("get")) {
+            if (methodName.startsWith("get") ||
+                    methodName == "hashCode" ||
+                    methodName == "toString") {
                 value rawResult = handler.getAttribute(proxy, model);
                 return coerceToJava(method.returnType, rawResult);
             }
@@ -90,7 +99,7 @@ class InvocationHandlerAdapter<Container>(
         assert (is Object? any);
         return any;
     }
-    
+
     Object? coerceToCeylon(Type<Anything> expectedType, Object? item)
         =>  if (is Type<String> expectedType,
                 is JString item) then
@@ -106,12 +115,13 @@ class InvocationHandlerAdapter<Container>(
                 empty
             else
                 item;
-    
+
     Object? coerceToJava(JClass<out Object> expectedType, Anything item)
         =>  if (expectedType == javaClass<JString>(),
                 is String item) then
                 javaString(item)
-            else if (expectedType == javaClass<JInteger>(),
+            else if (expectedType == javaClass<JInteger>() ||
+                     expectedType == JInteger.\iTYPE,
                      is Integer item) then
                 JInteger.valueOf(item)
             else if (expectedType == javaClass<JBoolean>() ||
@@ -120,7 +130,7 @@ class InvocationHandlerAdapter<Container>(
                 JBoolean.valueOf(item)
             else
                 impartObjectness(item);
-    
+
     [Anything*] coerceArgumentsToCeylon(
             [Type<Anything>*] expectedTypes, ObjectArray<Object>? args)
         =>  if (nonempty expectedTypes)

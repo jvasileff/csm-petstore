@@ -67,6 +67,10 @@ class Application(
         account.fullName="name";
         account.email="john@vasileff.com";
         account.country="US";
+        
+        
+        print(account.hash);
+        
         value result = validator.validate(account);
         print(result);
     }
