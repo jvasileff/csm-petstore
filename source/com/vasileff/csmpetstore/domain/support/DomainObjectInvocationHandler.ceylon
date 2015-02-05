@@ -27,14 +27,14 @@ class DomainObjectInvocationHandler<DomainObject, PK>()
     Anything getAttribute(
             DomainObject? proxy,
             Attribute<DomainObject> attribute)
-        => storage.getProperty(attribute);
+        => storage.get(attribute);
 
     shared actual
     void setAttribute(
             DomainObject? proxy,
             Attribute<DomainObject> attribute,
                 Anything val)
-        =>  storage.setProperty(attribute, val);
+        =>  storage.set(attribute, val);
 
     shared actual
     Anything invoke(

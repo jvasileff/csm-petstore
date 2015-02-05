@@ -34,7 +34,7 @@ class DomainObjectDelegate<DomainObject, PK>(domainObjectInterface)
     }
 
     shared
-    void setProperty(Property property, Anything newValue) {
+    void set(Property property, Anything newValue) {
         log.trace(() => "setting property " + property.string);
         checkIsField(property);
         updatedPropertySet.add(property);
@@ -42,7 +42,7 @@ class DomainObjectDelegate<DomainObject, PK>(domainObjectInterface)
     }
 
     shared
-    Anything getProperty(Property property) {
+    Anything get(Property property) {
         log.trace(() => "getting property " + property.string);
         checkIsField(property);
         checkDefined(property);
@@ -55,7 +55,7 @@ class DomainObjectDelegate<DomainObject, PK>(domainObjectInterface)
 
     shared
     PK? primaryKey {
-        assert (is PK? pk = getProperty(primaryKeyProperty));
+        assert (is PK? pk = get(primaryKeyProperty));
         return pk;
     }
 
