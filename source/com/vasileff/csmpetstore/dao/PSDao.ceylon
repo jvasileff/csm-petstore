@@ -1,20 +1,19 @@
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
+import com.vasileff.csmpetstore.domain.support {
+    DomainObject
 }
 
 shared
-interface PSDao<DomainObject, PrimaryKey>
-        given DomainObject satisfies PSDomainObject<PrimaryKey>
-        given PrimaryKey satisfies Comparable<PrimaryKey> {
+interface PSDao<DomainObjectType, PrimaryKey>
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     shared formal
-    DomainObject? findByPK(PrimaryKey id);
+    DomainObjectType? findByPK(PrimaryKey id);
 
     shared formal
-    void insert(DomainObject obj);
+    void insert(DomainObjectType obj);
 
     shared formal
-    void update(DomainObject obj);
+    void update(DomainObjectType obj);
 
     shared formal
     Integer delete(PrimaryKey key);

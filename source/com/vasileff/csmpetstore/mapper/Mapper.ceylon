@@ -1,24 +1,24 @@
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
+import com.vasileff.csmpetstore.domain.support {
+    DomainObject
 }
+
 shared
-interface Mapper<DomainObject, PrimaryKey>
-        given DomainObject satisfies PSDomainObject<PrimaryKey>
-        given PrimaryKey satisfies Comparable<PrimaryKey> {
+interface Mapper<DomainObjectType, PrimaryKey>
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     shared formal
-    DomainObject? findByPK(PrimaryKey key);
+    DomainObjectType? findByPK(PrimaryKey key);
 
     shared formal
     Integer delete(PrimaryKey key);
 
     shared formal
-    Integer create(DomainObject obj);
+    Integer create(DomainObjectType obj);
 
     shared formal
-    Integer update(DomainObject obj);
+    Integer update(DomainObjectType obj);
 
     shared formal
-    PrimaryKey insert(DomainObject obj);
+    PrimaryKey insert(DomainObjectType obj);
 
 }

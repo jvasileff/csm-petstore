@@ -3,7 +3,8 @@ import ceylon.interop.java {
 }
 
 import com.vasileff.csmpetstore.domain {
-    Language
+    Language,
+    languageOf
 }
 import com.vasileff.csmpetstore.mapper {
     LanguageMapper
@@ -45,16 +46,15 @@ class RepositoryDefault(
 
     shared actual
     void insertRows() {
-        languageMapper.create(Language.Of(1, "Ceylon"));
-        languageMapper.create(Language.Of(2, "Groovy"));
-        languageMapper.create(Language.Of(3, "Jacl"));
+        languageMapper.create(languageOf(1, "Ceylon"));
+        languageMapper.create(languageOf(2, "Groovy"));
+        languageMapper.create(languageOf(3, "Jacl"));
     }
 
     shared actual
     void deleteRows(Boolean fail) {
         for (language in CeylonList(languageMapper.findAll())) {
-            assert(exists id = language.id);
-            languageMapper.delete(id);
+            languageMapper.delete(language.id);
         }
         if (fail) {
             throw; // trigger rollback

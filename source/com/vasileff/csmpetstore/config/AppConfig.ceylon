@@ -1,5 +1,6 @@
 import ceylon.interop.java {
-    createJavaObjectArray
+    createJavaObjectArray,
+    javaClass
 }
 import ceylon.time {
     now,
@@ -69,6 +70,24 @@ import javax.validation {
 import org.springframework.validation.beanvalidation {
     LocalValidatorFactoryBean
 }
+import ceylon.logging {
+    Logger,
+    logger
+}
+import java.lang {
+    Class
+}
+import com.vasileff.csmpetstore.domain {
+    Language
+}
+import ceylon.collection {
+    HashMap
+}
+import com.vasileff.csmpetstore.domain.support {
+    createDomainObject
+}
+
+Logger log = logger(`package`);
 
 propertySource {
     ignoreResourceNotFound = true;
@@ -159,11 +178,20 @@ class AppConfig() {
         sqlSessionFactory.configuration.lazyLoadingEnabled = false;
         sqlSessionFactory.configuration.callSettersOnNulls = true;
 
+        // create our own domain objects
+        sqlSessionFactory.configuration.objectFactory = ObjectFactory(constructors());
+
         return sqlSessionFactory;
     }
 
     shared bean default
     SqlSession sqlSession(SqlSessionFactory ssf)
         =>  SqlSessionTemplate(ssf);
+    
+    shared bean default
+    Map<Class<out Object>, Object()> constructors() {
+        return HashMap {
+            javaClass<Language>() -> (() => createDomainObject(`Language`)) };
+    }
 
 }

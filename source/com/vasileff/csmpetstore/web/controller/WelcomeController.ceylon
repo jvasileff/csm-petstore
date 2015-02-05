@@ -41,6 +41,9 @@ import org.springframework.web.bind.annotation {
 import org.springframework.web.servlet {
     View
 }
+import com.vasileff.csmpetstore.domain.support {
+    createDomainObject
+}
 
 Logger log = logger(`package`);
 
@@ -55,7 +58,7 @@ class WelcomeController(
 
     shared modelAttribute
     Account emptyAccount {
-        value account = Account();
+        value account = createDomainObject(`Account`);
         account.username = "";
         account.country = "";
         return account;

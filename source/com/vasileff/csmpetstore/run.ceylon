@@ -37,7 +37,7 @@ void initializeLogger() {
     console.threshold = Level.\iINFO;
     console.activateOptions();
     JLog4jLogger.rootLogger.addAppender(console);
-    JLog4jLogger.rootLogger.setPriority(Level.\iDEBUG);
+    JLog4jLogger.rootLogger.setPriority(Level.\iTRACE);
     useLog4jLogger();
 }
 

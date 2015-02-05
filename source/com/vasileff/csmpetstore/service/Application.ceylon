@@ -28,6 +28,9 @@ import javax.validation {
 import com.vasileff.csmpetstore.domain {
     Account
 }
+import com.vasileff.csmpetstore.domain.support {
+    createDomainObject
+}
 
 Logger log = logger(`package`);
 
@@ -59,7 +62,7 @@ class Application(
         assert(0 == repository.selectRows().size);
         print ("deleteRows() was committed!");
 
-        value account = Account();
+        value account = createDomainObject(`Account`);
         account.username="#@jvasileff";
         account.fullName="name";
         account.email="john@vasileff.com";

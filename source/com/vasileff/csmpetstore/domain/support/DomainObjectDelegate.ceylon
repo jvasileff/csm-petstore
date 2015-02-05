@@ -26,7 +26,8 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         primaryKeyProperty = candidates.first;
     } else {
         throw Exception(
-            "Exactly one attribute must be annotated with `primaryKey`");
+            "Cannot initialize `` `DomainObjectType` ``: exactly one non-nullable " +
+            "attribute must be annotated with `primaryKey`");
     }
 
     shared

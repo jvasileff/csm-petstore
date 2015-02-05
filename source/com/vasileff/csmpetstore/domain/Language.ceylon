@@ -1,23 +1,47 @@
+import com.vasileff.csmpetstore.domain.support {
+    DomainObject,
+    field,
+    primaryKey,
+    createDomainObject
+}
+//shared
+//class Language satisfies PSDomainObject<Integer> {
+//
+//    late shared variable Integer? id;
+//    late shared variable String? name;
+//
+//    shared
+//    new Language() {}
+//
+//    shared
+//    new Of(Integer id, String name) {
+//        this.id = id;
+//        this.name = name;
+//    }
+//
+//    shared actual
+//    String string
+//        =>  "``id else "null"``, ``name else "null"``";
+//
+//    shared actual
+//    Integer? getPK()
+//        =>  id;
+//}
+
 shared
-class Language satisfies PSDomainObject<Integer> {
+interface Language satisfies DomainObject<Integer, Language> {
 
-    late shared variable Integer? id;
-    late shared variable String? name;
+    field primaryKey
+    shared formal variable Integer id;
 
-    shared
-    new Language() {}
+    field
+    shared formal variable String? name;
 
-    shared
-    new Of(Integer id, String name) {
-        this.id = id;
-        this.name = name;
-    }
+}
 
-    shared actual
-    String string
-        =>  "``id else "null"``, ``name else "null"``";
-
-    shared actual
-    Integer? getPK()
-        =>  id;
+shared Language languageOf(Integer id, String name) {
+    value result = createDomainObject(`Language`);
+    result.id = id;
+    result.name = name;
+    return result;
 }

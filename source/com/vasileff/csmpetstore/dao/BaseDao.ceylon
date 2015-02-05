@@ -1,26 +1,25 @@
-import com.vasileff.csmpetstore.domain {
-    PSDomainObject
+import com.vasileff.csmpetstore.domain.support {
+    DomainObject
 }
 import com.vasileff.csmpetstore.mapper {
     Mapper
 }
 
 abstract
-class BaseDao<DomainObject, PrimaryKey>(Mapper<DomainObject, PrimaryKey> mapper)
-        satisfies PSDao<DomainObject, PrimaryKey>
-        given DomainObject satisfies PSDomainObject<PrimaryKey>
-        given PrimaryKey satisfies Comparable<PrimaryKey> {
+class BaseDao<DomainObjectType, PrimaryKey>(Mapper<DomainObjectType, PrimaryKey> mapper)
+        satisfies PSDao<DomainObjectType, PrimaryKey>
+        given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
     shared actual
-    DomainObject? findByPK(PrimaryKey key)
+    DomainObjectType? findByPK(PrimaryKey key)
         =>  mapper.findByPK(key);
 
     shared actual
-    void insert(DomainObject obj)
+    void insert(DomainObjectType obj)
         =>  mapper.insert(obj);
 
     shared actual
-    void update(DomainObject obj)
+    void update(DomainObjectType obj)
         => mapper.update(obj);
 
     shared actual

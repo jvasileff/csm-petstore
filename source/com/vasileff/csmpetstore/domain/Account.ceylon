@@ -7,34 +7,37 @@ import javax.validation.constraints {
     notNull=notNull__GETTER,
     pattern=pattern__GETTER
 }
+import com.vasileff.csmpetstore.domain.support {
+    DomainObject,
+    field,
+    primaryKey
+}
 
-shared class Account satisfies PSDomainObject<String> {
+shared interface Account satisfies DomainObject<String, Account> {
 
-    shared
-    new Account() {}
 
+    field primaryKey notNull
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
-    notNull late shared variable
-    String username;
+    shared variable formal String username;
 
+    field
     size { min=1; max=75; }
-    late shared variable
-    String? email;
+    shared variable formal String? email;
 
+    field notNull
     size { min=1; max=50; }
-    notNull late shared variable
-    String fullName;
+    shared variable formal String fullName;
 
+    field
     size { max=50; }
-    late shared variable
-    String? country;
+    shared variable formal String? country;
 
-    late shared variable
-    Boolean testBoolean;
+    field
+    shared variable formal Boolean testBoolean;
 
-    late shared variable
-    Integer testInteger;
+    field
+    shared variable formal Integer testInteger;
 
     //late shared variable String? status;
     //late shared variable String? address1;
@@ -54,8 +57,8 @@ shared class Account satisfies PSDomainObject<String> {
     //String string
     //    =>  username else "null";
 
-    shared actual
-    String? getPK()
-        =>  username;
+    //shared actual
+    //String? getPK()
+    //    =>  username;
 
 }
