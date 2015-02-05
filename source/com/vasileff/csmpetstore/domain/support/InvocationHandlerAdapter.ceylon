@@ -44,7 +44,13 @@ class InvocationHandlerAdapter<Container>(
 
     for (method in containerInterface.getMethods<Container>()) {
         variable value methodName = method.declaration.name;
-        if (methodName.startsWith("get") || methodName.startsWith("set")) {
+        if (method.parameterTypes.size == 0 &&
+                (methodName.startsWith("get") ||
+                 methodName.startsWith("is"))) {
+            methodName = "$" + methodName;
+        }
+        else if (method.parameterTypes.size == 1 &&
+                 methodName.startsWith("set")) {
             methodName = "$" + methodName;
         }
         log.trace(() => "Adding method " + methodName);

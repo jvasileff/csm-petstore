@@ -14,15 +14,16 @@ import javax.validation.constraints {
     pattern=pattern__GETTER
 }
 
-shared interface DO2<DomainObject> {
+shared interface DO2<DomainObjectType> {
 
-    shared formal Boolean primaryKeySet();
+    shared formal Boolean isPrimaryKeySet();
 
-    shared formal Boolean isSet(Attribute<DomainObject>* property);
+    shared formal Boolean isSet(Attribute<DomainObjectType>* property);
 
-    shared formal Boolean isUpdated(Attribute<DomainObject>* property);
+    shared formal Boolean propertiesUpdated(Attribute<DomainObjectType>* property);
 
     shared formal void clearUpdated();
+
 }
 
 shared interface Account2 satisfies PSDomainObject<String>, DO2<Account2> {

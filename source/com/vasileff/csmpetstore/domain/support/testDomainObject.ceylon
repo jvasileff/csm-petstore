@@ -6,7 +6,7 @@ shared
 void testDomainObject() {
 
     Account2 account = createDomainObject(`Account2`);
-    print(account.primaryKeySet());
+    print(account.isPrimaryKeySet());
     account.username = "jvasileff";
     print(account.username);
     print(account.getPK());
@@ -14,10 +14,10 @@ void testDomainObject() {
     print(account.isSet(`Account2.username`, `Account2.email`));
     print(account.isSet(`Account2.email`));
     print(account.isSet());
-    print(account.isUpdated());
-    print(account.isUpdated(`Account2.username`));
-    print(account.isUpdated(`Account2.username`, `Account2.email`));
-    print(account.isUpdated(`Account2.email`));
+    print(account.propertiesUpdated());
+    print(account.propertiesUpdated(`Account2.username`));
+    print(account.propertiesUpdated(`Account2.username`, `Account2.email`));
+    print(account.propertiesUpdated(`Account2.email`));
     account.clearUpdated();
 
     List<Account2> list = ArrayList { createDomainObject(`Account2`) };

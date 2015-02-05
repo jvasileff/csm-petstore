@@ -6,8 +6,8 @@ import ceylon.language.meta.model {
 }
 
 shared
-DomainObject createDomainObject<DomainObject, PK>
-        (Interface<DomainObject> domainObjectInterface)
-        given DomainObject satisfies PSDomainObject<PK> & DO2<DomainObject>
+DomainObjectType createDomainObject<DomainObjectType, PK>
+        (Interface<DomainObjectType> domainObjectInterface)
+        given DomainObjectType satisfies PSDomainObject<PK> & DO2<DomainObjectType>
         given PK satisfies Comparable<PK>
-    =>  createProxyInstance(DomainObjectInvocationHandler<DomainObject, PK>());
+    =>  createProxyInstance(DomainObjectInvocationHandler<DomainObjectType, PK>());

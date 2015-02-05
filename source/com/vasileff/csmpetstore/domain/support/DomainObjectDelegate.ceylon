@@ -10,22 +10,22 @@ import ceylon.collection {
     HashSet
 }
 
-class DomainObjectDelegate<DomainObject, PK>(domainObjectInterface)
-        given DomainObject satisfies PSDomainObject<PK>
+class DomainObjectDelegate<DomainObjectType, PK>(domainObjectInterface)
+        given DomainObjectType satisfies PSDomainObject<PK>
         given PK satisfies Comparable<PK> {
 
-    shared alias Property => Attribute<DomainObject>;
+    shared alias Property => Attribute<DomainObjectType>;
 
-    Interface<DomainObject> domainObjectInterface;
+    Interface<DomainObjectType> domainObjectInterface;
 
     value propertyMap = HashMap<Property, Anything>();
 
     value updatedPropertySet = HashSet<Property>();
 
-    Attribute<DomainObject, PK, Nothing> primaryKeyProperty;
+    Attribute<DomainObjectType, PK, Nothing> primaryKeyProperty;
 
     if (nonempty candidates = domainObjectInterface
-            .getAttributes<DomainObject, PK, Nothing>
+            .getAttributes<DomainObjectType, PK, Nothing>
                 (`PrimaryKeyAnnotation`), candidates.size == 1) {
         primaryKeyProperty = candidates.first;
     } else {

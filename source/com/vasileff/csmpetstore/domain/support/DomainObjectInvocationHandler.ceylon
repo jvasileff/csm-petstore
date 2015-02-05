@@ -15,48 +15,48 @@ import com.vasileff.csmpetstore.domain {
 Logger log = logger(`package`);
 
 shared
-class DomainObjectInvocationHandler<DomainObject, PK>()
-        satisfies InvocationHandler<DomainObject>
-        given DomainObject satisfies PSDomainObject<PK> & DO2<DomainObject>
-        given PK satisfies Comparable<PK> {
+class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
+        satisfies InvocationHandler<DomainObjectType>
+        given DomainObjectType satisfies PSDomainObject<PrimaryKey> & DO2<DomainObjectType>
+        given PrimaryKey satisfies Comparable<PrimaryKey> {
 
-    assert (is Interface<DomainObject> domainObjectInterface = `DomainObject`);
-    value storage = DomainObjectDelegate<DomainObject,PK>(domainObjectInterface);
+    assert (is Interface<DomainObjectType> domainObjectInterface = `DomainObjectType`);
+    value storage = DomainObjectDelegate<DomainObjectType,PrimaryKey>(domainObjectInterface);
 
     shared actual
     Anything getAttribute(
-            DomainObject? proxy,
-            Attribute<DomainObject> attribute)
+            DomainObjectType? proxy,
+            Attribute<DomainObjectType> attribute)
         => storage.get(attribute);
 
     shared actual
     void setAttribute(
-            DomainObject? proxy,
-            Attribute<DomainObject> attribute,
+            DomainObjectType? proxy,
+            Attribute<DomainObjectType> attribute,
                 Anything val)
         =>  storage.set(attribute, val);
 
     shared actual
     Anything invoke(
-            DomainObject? proxy,
-            Method<DomainObject> method,
+            DomainObjectType? proxy,
+            Method<DomainObjectType> method,
             [Anything*] arguments) {
 
-        if (method == `DomainObject.getPK`) {
+        if (method == `DomainObjectType.getPK`) {
             return storage.primaryKey;
         }
-        else if (method == `DomainObject.primaryKeySet`) {
+        else if (method == `DomainObjectType.isPrimaryKeySet`) {
             return storage.primaryKeySet;
         }
-        else if (method == `DomainObject.isSet`) {
-            assert (is {Attribute<DomainObject>*} properties = arguments.first);
+        else if (method == `DomainObjectType.isSet`) {
+            assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
             return storage.isSet(*properties);
         }
-        else if (method == `DomainObject.isUpdated`) {
-            assert (is {Attribute<DomainObject>*} properties = arguments.first);
+        else if (method == `DomainObjectType.propertiesUpdated`) {
+            assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
             return storage.isUpdated(*properties);
         }
-        else if (method == `DomainObject.clearUpdated`) {
+        else if (method == `DomainObjectType.clearUpdated`) {
             storage.clearUpdated();
             return null;
         }
