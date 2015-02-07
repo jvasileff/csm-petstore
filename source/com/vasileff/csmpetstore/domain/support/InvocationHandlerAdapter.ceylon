@@ -66,7 +66,6 @@ class InvocationHandlerAdapter<Container>(
 
     shared actual
     Object? invoke(Object proxy, JMethod method, ObjectArray<Object>? args) {
-        // FIXME will this work? What about generic containers?
         assert(is Container proxy);
 
         value methodName = method.name;

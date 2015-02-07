@@ -43,6 +43,8 @@ componentScan({
 shared configuration enableWebMvc
 class MvcConfig() extends WebMvcConfigurerAdapter() {
 
+    // On using non-JDK collections: https://jira.spring.io/browse/SCALA-9
+
     shared actual
     void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")

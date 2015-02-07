@@ -3,6 +3,9 @@ import com.google.common.collect {
         listOf=\iof
     }
 }
+import com.vasileff.csmpetstore.config {
+    AppConfig
+}
 
 import javax.servlet {
     Filter
@@ -10,7 +13,8 @@ import javax.servlet {
 
 import org.springframework.context.annotation {
     configuration,
-    bean
+    bean,
+    importConfiguration=\iimport
 }
 import org.springframework.web.filter {
     HiddenHttpMethodFilter,
@@ -18,8 +22,8 @@ import org.springframework.web.filter {
     CompositeFilter
 }
 
-
 configuration shared
+importConfiguration({`AppConfig`})
 class WebAppConfig() {
 
     shared default bean {name={"webAppFilters"};}
