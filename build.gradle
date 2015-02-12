@@ -6,73 +6,64 @@ repositories {
 }
 
 ext.versions = [
-      aos_commons: "0.9.1",
-      aos_xp: "0.9-SNAPSHOT",
-      xalan: "2.7.1",
-      guava: "16.0.1",
+      javax_validation: "1.1.0.Final",
       hibernate_validator: "5.1.3.Final",
-      commons_codec: "1.9",
-      commons_fileupload: "1.3",
-      junit: "4.11",
       log4j: "1.2.17",
+      guava: "18.0",
       mybatis: "3.2.8",
       mybatis_spring: "1.2.2",
-      postgresql: "9.3-1101-jdbc41",
-      servlet_api: "3.0.1",
-      slf4j:  "1.7.6",
+      slf4j:  "1.7.10",
       spring: "4.1.4.RELEASE",
-      spring_security: "3.2.1.RELEASE",
-      aspectj: "1.7.4",
-      tomcat: "7.0.52",
-      watchmaker: "0.7.1"]
+      spring_security: "3.2.5.RELEASE",
+      aspectj: "1.8.5",
+      tomcat: "8.0.18"]
 
 configurations {
     all*.exclude group: 'commons-logging'        // replaced by org.slf4j:jcl-over-slf4j
     all*.exclude group: 'com.google.collections' // replaced by com.google.guava:guava
-    all*.exclude group: 'javax.servlet' // don't add to fat-jar
+    all*.exclude group: 'javax.servlet'          // don't add to fat-jar
+    all*.exclude group: 'com.google.guava'       // don't add to fat-jar
 }
 
 dependencies {
     compile \
-        "javax.el:el-api:2.2",
-        "org.glassfish.web:el-impl:2.2",
         "javax.inject:javax.inject:1",
-        "com.h2database:h2:1.4.185",
+        "javax.validation:validation-api:${versions.javax_validation}",
+        "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
+        "javax.el:el-api:2.2", // for hibernate-validator
+        "org.glassfish.web:el-impl:2.2", // for hibernate-validator
+
+        "log4j:log4j:${versions.log4j}",
+        "org.slf4j:slf4j-api:${versions.slf4j}",
         "org.slf4j:slf4j-log4j12:${versions.slf4j}",
         "org.slf4j:jcl-over-slf4j:${versions.slf4j}",
-        "log4j:log4j:${versions.log4j}",
+
+        "org.springframework:spring-core:${versions.spring}",
+        "org.springframework:spring-beans:${versions.spring}",
         "org.springframework:spring-aop:${versions.spring}",
         "org.springframework:spring-context:${versions.spring}",
-        "org.springframework:spring-context-support:${versions.spring}",
         "org.springframework:spring-tx:${versions.spring}",
         "org.springframework:spring-jdbc:${versions.spring}",
-        "org.springframework:spring-orm:${versions.spring}",
-        "org.springframework.security:spring-security-core:${versions.spring_security}",
-        "org.springframework.security:spring-security-config:${versions.spring_security}",
-        "org.aspectj:aspectjweaver:${versions.aspectj}",
-        "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
-        "org.slf4j:slf4j-api:${versions.slf4j}",
-        "commons-codec:commons-codec:${versions.commons_codec}",
-        "org.mybatis:mybatis:${versions.mybatis}",
-        "org.mybatis:mybatis-spring:${versions.mybatis_spring}",
-        "org.apache.tomcat:tomcat-jdbc:${versions.tomcat}",
-        "org.uncommons.watchmaker:watchmaker-framework:${versions.watchmaker}",
-        "org.postgresql:postgresql:${versions.postgresql}",
-        "org.slf4j:slf4j-log4j12:${versions.slf4j}",
-        "org.slf4j:jcl-over-slf4j:${versions.slf4j}",
-        "log4j:log4j:${versions.log4j}",
-        "javax.servlet:javax.servlet-api:${versions.servlet_api}",
-        "commons-fileupload:commons-fileupload:${versions.commons_fileupload}",
         "org.springframework:spring-web:${versions.spring}",
         "org.springframework:spring-webmvc:${versions.spring}",
-        "org.springframework.security:spring-security-web:${versions.spring_security}"
+
+        "org.springframework.security:spring-security-core:${versions.spring_security}",
+        "org.springframework.security:spring-security-config:${versions.spring_security}",
+        "org.springframework.security:spring-security-web:${versions.spring_security}",
+
+        "com.h2database:h2:1.4.185",
+        "org.aspectj:aspectjweaver:${versions.aspectj}",
+
+        "org.mybatis:mybatis:${versions.mybatis}",
+        "org.mybatis:mybatis-spring:${versions.mybatis_spring}",
+        "org.apache.tomcat:tomcat-jdbc:${versions.tomcat}"
 }
 
 task fatJar(type: Jar) {
     manifest {
         attributes 'Implementation-Title': 'Fat Jar for Ceylon',
                    'Implementation-Version': '1.0.0',
-                   'Main-Class': 'com.example.dummy'
+                   'Main-Class': 'com.example.main'
     }
     baseName = project.name + '-all'
     from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
