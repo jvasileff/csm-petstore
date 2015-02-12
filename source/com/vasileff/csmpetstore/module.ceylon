@@ -11,4 +11,5 @@ module com.vasileff.csmpetstore "0.0.1" {
     import java.base "7";
     import javax.servlet "3.1.0";
     import com.redhat.ceylon.war "1.1.1";
+    import com.vasileff.jl4c.guava "0.0.1";
 }

@@ -52,7 +52,6 @@ dependencies {
         "org.aspectj:aspectjweaver:${versions.aspectj}",
         "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
         "org.slf4j:slf4j-api:${versions.slf4j}",
-        "com.google.guava:guava:${versions.guava}",
         "commons-codec:commons-codec:${versions.commons_codec}",
         "org.mybatis:mybatis:${versions.mybatis}",
         "org.mybatis:mybatis-spring:${versions.mybatis_spring}",

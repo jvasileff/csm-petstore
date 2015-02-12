@@ -1,7 +1,5 @@
-import com.google.common.collect {
-    ImmutableList {
-        listOf=\iof
-    }
+import com.vasileff.jl4c.guava.collect {
+    javaList
 }
 
 import java.lang {
@@ -11,7 +9,7 @@ import java.nio.charset {
     Charset
 }
 import java.util {
-    List
+    JList=List
 }
 
 import org.springframework.context.annotation {
@@ -54,16 +52,16 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared actual
     void configureMessageConverters(
-            List<HttpMessageConverter<out Object>> list) {
+            JList<HttpMessageConverter<out Object>> list) {
 
         value textConverter = StringHttpMessageConverter();
-        textConverter.supportedMediaTypes = listOf(
-            MediaType("text", "plain", Charset.forName("UTF-8")));
+        textConverter.supportedMediaTypes = javaList {
+            MediaType("text", "plain", Charset.forName("UTF-8"))};
         list.add(textConverter);
 
         value htmlConverter = StringHttpMessageConverter();
-        htmlConverter.supportedMediaTypes = listOf(
-            MediaType("text", "html", Charset.forName("UTF-8")));
+        htmlConverter.supportedMediaTypes = javaList {
+            MediaType("text", "html", Charset.forName("UTF-8"))};
         list.add(htmlConverter);
     }
 
@@ -73,7 +71,7 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         =>  pathMatchConfigurer.setUseTrailingSlashMatch(JBoolean.\iFALSE);
 
     shared actual
-    void addArgumentResolvers(List<HandlerMethodArgumentResolver> list)
+    void addArgumentResolvers(JList<HandlerMethodArgumentResolver> list)
         =>  list.add(ceylonModelMapArgumentResolver());
 
     shared default bean

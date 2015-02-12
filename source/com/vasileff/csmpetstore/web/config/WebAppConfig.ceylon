@@ -1,10 +1,8 @@
-import com.google.common.collect {
-    ImmutableList {
-        listOf=\iof
-    }
-}
 import com.vasileff.csmpetstore.config {
     AppConfig
+}
+import com.vasileff.jl4c.guava.collect {
+    javaList
 }
 
 import javax.servlet {
@@ -30,8 +28,10 @@ class WebAppConfig() {
     Filter webAppFilters() {
         value compositeFilter = CompositeFilter();
         compositeFilter.setFilters(
-            listOf(characterEncodingFilter(),
-                   hiddenHttpMethodFilter()));
+            javaList {
+                characterEncodingFilter(),
+                hiddenHttpMethodFilter()
+            });
         return compositeFilter;
     }
 

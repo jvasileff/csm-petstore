@@ -4,3 +4,4 @@ encoding=UTF-8
 
 [repositories]
 lookup=./modules-deps
+remote=aether
