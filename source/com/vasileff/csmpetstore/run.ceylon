@@ -9,11 +9,11 @@ import ceylon.logging {
 import com.vasileff.csmpetstore.config {
     AppConfig
 }
-import com.vasileff.csmpetstore.logging {
-    useLog4jLogger
-}
 import com.vasileff.csmpetstore.service {
     Application
+}
+import com.vasileff.jl4c.log4j {
+    useLog4jLogging
 }
 
 import org.apache.log4j {
@@ -38,7 +38,7 @@ void initializeLogger() {
     console.activateOptions();
     JLog4jLogger.rootLogger.addAppender(console);
     JLog4jLogger.rootLogger.setPriority(Level.\iTRACE);
-    useLog4jLogger();
+    useLog4jLogging();
 }
 
 shared

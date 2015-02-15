@@ -11,6 +11,9 @@ import ceylon.logging {
 import com.redhat.ceylon.war {
     WarInitializer
 }
+import com.vasileff.jl4c.log4j {
+    useLog4jLogging
+}
 
 import java.lang {
     Class,
@@ -42,10 +45,6 @@ import org.springframework.web.filter {
 }
 import org.springframework.web.servlet.support {
     AbstractAnnotationConfigDispatcherServletInitializer
-}
-
-import com.vasileff.csmpetstore.logging {
-    useLog4jLogger
 }
 
 Logger log = logger(`package`);
@@ -111,7 +110,7 @@ void initializeLogger() {
     L4JLogger.rootLogger.addAppender(console);
     L4JLogger.rootLogger.setPriority(Level.\iINFO);
 
-    useLog4jLogger();
+    useLog4jLogging();
 }
 
 void initializeCeylon(ServletContext servletContext) {

@@ -23,6 +23,7 @@ configurations {
     all*.exclude group: 'com.google.collections' // replaced by com.google.guava:guava
     all*.exclude group: 'javax.servlet'          // don't add to fat-jar
     all*.exclude group: 'com.google.guava'       // don't add to fat-jar
+    all*.exclude group: 'log4j'                  // don't add to fat-jar
 }
 
 dependencies {
