@@ -6,6 +6,5 @@ ceylon war \
   --out build \
   --resource-root webapp \
   --exclude-module javax.servlet \
+  --exclude-module org.apache.openejb:javaee-api \
   com.vasileff.csmpetstore
-
-#  --rep aether \
