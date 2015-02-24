@@ -19,14 +19,16 @@ module com.vasileff.csmpetstore "0.0.1" {
     import com.vasileff.jl4c.log4j "0.0.1";
 
 /*
-    import "javax.inject:javax.inject" "1";
-    import "javax.validation:validation-api" "1.1.0.Final";
-    import "org.hibernate:hibernate-validator" "5.1.3.Final";
+    import "com.google.guava:guava" "18.0";
 
     import "log4j:log4j" "1.2.17";
     import "org.slf4j:slf4j-api" "1.7.6";
     import "org.slf4j:slf4j-log4j12" "1.7.6";
     import "org.slf4j:jcl-over-slf4j" "1.7.6";
+
+    import "javax.inject:javax.inject" "1";
+    import "javax.validation:validation-api" "1.1.0.Final";
+    import "org.hibernate:hibernate-validator" "5.1.3.Final";
 
     import "org.springframework:spring-core" "4.1.4.RELEASE";
     import "org.springframework:spring-beans" "4.1.4.RELEASE";
