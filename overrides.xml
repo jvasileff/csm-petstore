@@ -1,7 +1,97 @@
 <maven-overrides>
 
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~ VERSION RESOLUTION
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <artifact groupId="org.jboss.logging" artifactId="jboss-logging" version="3.1.3.GA">
+        <!-- transitive dependency of hibernate-validator -->
+        <add groupId="log4j" artifactId="log4j" version="1.2.17"/> <!-- replacing 1.2.16 -->
+        <add groupId="org.slf4j" artifactId="slf4j-api" version="1.7.6"/> <!-- replacing 1.6.1 -->
+    </artifact>
+
+    <artifact groupId="org.springframework.retry" artifactId="spring-retry" version="1.0.2.RELEASE">
+        <!-- transitive dependency path: "mybatis-spring" to "spring-batch-infrastructure" to "spring-retry" !!! -->
+        <add groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE"/> <!-- replacing 3.0.5.RELEASE -->
+    </artifact>
+
+    <artifact groupId="org.springframework.batch" artifactId="spring-batch-infrastructure" version="2.2.2.RELEASE">
+        <!-- "provided" import of "mybatis-spring" -->
+        <add groupId="org.springframework" artifactId="spring-core" version="4.1.4.RELEASE"/> <!-- replacing 3.2.0.RELEASE -->
+    </artifact>
+
+    <artifact groupId="org.mybatis" artifactId="mybatis-spring" version="1.2.2">
+        <add groupId="org.mybatis" artifactId="mybatis" version="3.2.8"/> <!-- replacing 3.2.3 -->
+        <add groupId="org.springframework" artifactId="spring-jdbc" version="4.1.4.RELEASE"/> <!-- replacing 3.1.4.RELEASE -->
+    </artifact>
+
+    <artifact groupId="org.springframework.security" artifactId="spring-security-config" version="3.2.5.RELEASE">
+        <add groupId="org.springframework" artifactId="spring-aop" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-beans" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-core" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+    </artifact>
+
+    <artifact groupId="org.springframework.security" artifactId="spring-security-core" version="3.2.5.RELEASE">
+        <add groupId="org.springframework" artifactId="spring-aop" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-beans" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-core" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-expression" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+    </artifact>
+
+    <artifact groupId="org.springframework.security" artifactId="spring-security-web" version="3.2.5.RELEASE">
+        <add groupId="org.springframework" artifactId="spring-beans" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-core" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-expression" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+        <add groupId="org.springframework" artifactId="spring-web" version="4.1.4.RELEASE"/> <!-- replacing 3.2.8.RELEASE -->
+    </artifact>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~ OPTIONAL DEPENDENCIES
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <artifact groupId="org.springframework" artifactId="spring-tx" version="4.1.4.RELEASE">
+        <add groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE"/> <!-- OPTIONAL DEPENDENCY -->
+    </artifact>
+
+    <artifact groupId="org.springframework" artifactId="spring-context" version="4.1.4.RELEASE">
+        <add groupId="javax.validation" artifactId="validation-api" version="1.1.0.Final"/> <!-- OPTIONAL DEPENDENCY -->
+    </artifact>
+
+    <artifact groupId="org.springframework" artifactId="spring-aop" version="4.1.4.RELEASE">
+        <add groupId="org.aspectj" artifactId="aspectjweaver" version="1.8.5"/> <!-- OPTIONAL DEPENDENCY -->
+    </artifact>
+
+    <artifact groupId="org.springframework" artifactId="spring-beans" version="4.1.4.RELEASE">
+        <add groupId="javax.inject" artifactId="javax.inject" version="1"/> <!-- OPTIONAL DEPENDENCY -->
+    </artifact>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~ JDBC DRIVER, MISC
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <artifact groupId="org.apache.tomcat" artifactId="tomcat-jdbc" version="7.0.52">
+        <add groupId="com.h2database" artifactId="h2" version="1.4.185"/> <!-- JDBC pool needs the db driver! -->
+    </artifact>
+
     <artifact groupId="log4j" artifactId="log4j" version="1.2.17">
         <remove groupId="org.apache.openejb" artifactId="javaee-api" version="5.0-2"/> <!-- MARKED PROVIDED, but we don't want it -->
+    </artifact>
+
+    <!--~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    ~~ LOGGING
+    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~-->
+
+    <artifact groupId="org.springframework" artifactId="spring-core" version="4.1.4.RELEASE">
+        <remove groupId="commons-logging" artifactId="commons-logging" version="1.2"/> <!-- we don't want commons-logging -->
+        <add groupId="org.slf4j" artifactId="slf4j-api" version="1.7.6" shared="true"/> <!-- we added all loggging deps to this -->
+    </artifact>
+
+    <artifact groupId="org.slf4j" artifactId="slf4j-api" version="1.7.6">
+        <add groupId="org.slf4j" artifactId="jcl-over-slf4j" version="1.7.6" shared="true"/> <!-- covers commons-logging -->
+        <add groupId="org.slf4j" artifactId="slf4j-log4j12" version="1.7.6" shared="true"/> <!-- directs to log4j, includes log4j -->
     </artifact>
 
 </maven-overrides>

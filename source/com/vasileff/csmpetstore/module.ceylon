@@ -1,5 +1,5 @@
 module com.vasileff.csmpetstore "0.0.1" {
-    import com.vasileff.csmpetstoredeps "1.0.0";
+    //import com.vasileff.csmpetstoredeps "1.0.0";
 
     import ceylon.interop.java "1.1.1";
     import ceylon.collection "1.1.1";
@@ -18,10 +18,6 @@ module com.vasileff.csmpetstore "0.0.1" {
     import com.vasileff.jl4c.guava "0.0.1";
     import com.vasileff.jl4c.log4j "0.0.1";
 
-/*
-    import "com.google.guava:guava" "18.0";
-
-    import "log4j:log4j" "1.2.17";
     import "org.slf4j:slf4j-api" "1.7.6";
     import "org.slf4j:slf4j-log4j12" "1.7.6";
     import "org.slf4j:jcl-over-slf4j" "1.7.6";
@@ -44,10 +40,9 @@ module com.vasileff.csmpetstore "0.0.1" {
     import "org.springframework.security:spring-security-web" "3.2.1.RELEASE";
 
     import "com.h2database:h2" "1.4.185";
-    import "org.aspectj:aspectjweaver" "1.7.4";
+    import "org.aspectj:aspectjweaver" "1.8.5";
 
     import "org.mybatis:mybatis" "3.2.8";
     import "org.mybatis:mybatis-spring" "1.2.2";
     import "org.apache.tomcat:tomcat-jdbc" "7.0.52";
-*/
 }
