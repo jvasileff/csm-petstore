@@ -9,6 +9,9 @@ import ceylon.language.meta.model {
 import java.lang.reflect {
     Proxy
 }
+import com.vasileff.csmpetstore.config {
+    UnsafeUtil
+}
 
 shared
 ProxyType createProxyInstance<ProxyType>
@@ -17,11 +20,14 @@ ProxyType createProxyInstance<ProxyType>
 
     assert (is Interface<ProxyType> interfaceModel = `ProxyType`);
     value clazz = javaClass<ProxyType>();
-    assert (is ProxyType instance = Proxy.newProxyInstance(
-        clazz.classLoader,
-        createJavaObjectArray { clazz },
-        InvocationHandlerAdapter(
-            interfaceModel,
-            invocationHandler)));
-    return instance;
+
+    // unsafe cast since assert(is ProxyType ...) results in
+    // com.redhat.ceylon.compiler.loader.ModelResolutionException: Failed to resolve com.sun.proxy.$Proxy109
+    return UnsafeUtil.cast<ProxyType>(
+        Proxy.newProxyInstance(
+            clazz.classLoader,
+            createJavaObjectArray { clazz },
+            InvocationHandlerAdapter(
+                interfaceModel,
+                invocationHandler)));
 }

@@ -23,6 +23,9 @@ import java.lang.reflect {
     JInvocationHandler=InvocationHandler,
     JMethod=Method
 }
+import com.vasileff.csmpetstore.config {
+    UnsafeUtil
+}
 
 shared
 class InvocationHandlerAdapter<Container>(
@@ -65,8 +68,13 @@ class InvocationHandlerAdapter<Container>(
     }
 
     shared actual
-    Object? invoke(Object proxy, JMethod method, ObjectArray<Object>? args) {
-        assert(is Container proxy);
+    Object? invoke(Object inProxy, JMethod method, ObjectArray<Object>? args) {
+        // TODO make Container non-nullable?
+
+        //assert(is Container proxy);
+        // results in:
+        // com.redhat.ceylon.compiler.loader.ModelResolutionException: Failed to resolve com.sun.proxy.$Proxy109
+        value proxy = UnsafeUtil.cast<Container & Object>(inProxy);
 
         value methodName = method.name;
         switch (model = models.get(methodName))

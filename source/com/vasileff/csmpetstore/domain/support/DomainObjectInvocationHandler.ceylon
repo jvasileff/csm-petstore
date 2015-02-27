@@ -66,6 +66,9 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
         else if (method == `DomainObjectType.equals`) {
             return delegate.equalTo(proxy, arguments.first);
         }
+        else if (method == `DomainObjectType.type`) {
+            return delegate.type();
+        }
         else {
             throw Exception ("Unhandled method ``method.string``.");
         }

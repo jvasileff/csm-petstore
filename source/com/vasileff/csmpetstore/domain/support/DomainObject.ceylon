@@ -1,5 +1,5 @@
 import ceylon.language.meta.model {
-    Attribute
+    Attribute, Type
 }
 
 shared interface DomainObject<out PrimaryKey, Other> of Other
@@ -29,4 +29,5 @@ shared interface DomainObject<out PrimaryKey, Other> of Other
 
     shared formal void updateFrom(Other that, {Attribute<Other>*} properties = {});
 
+    shared formal Type<DomainObject<PrimaryKey, Other>> type();
 }

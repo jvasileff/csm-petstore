@@ -4,7 +4,16 @@ import ceylon.collection {
 }
 import ceylon.language.meta.model {
     Interface,
-    Attribute
+    Attribute,
+    Type
+}
+
+import com.vasileff.csmpetstore.config {
+    UnsafeUtil
+}
+
+import java.lang {
+    ClassCastException
 }
 
 class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
@@ -97,14 +106,40 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
             else null;
 
     shared
-    Boolean equalTo(DomainObjectType thisProxy, Anything other)
-        =>  if (!is DomainObjectType other) then
-                false
-            else if (exists pk1 = primaryKeyOrNull(thisProxy),
-                     exists pk2 = primaryKeyOrNull(other)) then
-                pk1 == pk2
-            else
-                thisProxy === other;
+    Type<DomainObjectType> type()
+        =>  `DomainObjectType`;
+
+    shared
+    Boolean equalTo(DomainObjectType thisProxy, Anything other) {
+        // massive hack to work around:
+        // com.redhat.ceylon.compiler.loader.ModelResolutionException: Failed to resolve com.sun.proxy.$Proxy109
+        try {
+            if (exists other) {
+                value otherDO = UnsafeUtil.cast<DomainObjectType>(other);
+                return
+                if (type() == otherDO.type(),
+                    exists pk1 = primaryKeyOrNull(thisProxy),
+                    exists pk2 = primaryKeyOrNull(otherDO)) then
+                    pk1 == pk2
+                else
+                    thisProxy === otherDO;
+            }
+            else {
+                return false;
+            }
+        } catch (ClassCastException e) {
+            return false;
+        }
+
+        //return
+        //    if (!is DomainObjectType other) then
+        //        false
+        //    else if (exists pk1 = primaryKeyOrNull(thisProxy),
+        //             exists pk2 = primaryKeyOrNull(other)) then
+        //        pk1 == pk2
+        //    else
+        //        thisProxy === other;
+    }
 
     void checkField(Property property) {
         if (property.declaration.annotations<FieldAnnotation>().empty) {
