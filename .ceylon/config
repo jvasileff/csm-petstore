@@ -1,6 +1,6 @@
-
 [defaults]
 encoding=UTF-8
+mavenoverrides=./overrides.xml
 
 [repositories]
 lookup=./modules-deps
