@@ -8,8 +8,10 @@ module com.vasileff.csmpetstore "0.0.1" {
     import ceylon.html "1.1.1";
     import ceylon.io "1.1.1";
 
-    import com.redhat.ceylon.war "1.1.1";
-    import javax.servlet "3.1.0";
+    // FIXME commenting these lines avoids a dependency conflict
+    // but breaks the webapp
+    //import com.redhat.ceylon.war "1.1.1";
+    //import javax.servlet "3.1.0";
 
     import java.base "7";
     import java.jdbc "7";

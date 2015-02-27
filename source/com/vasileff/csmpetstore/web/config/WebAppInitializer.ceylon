@@ -8,9 +8,9 @@ import ceylon.logging {
     logger
 }
 
-import com.redhat.ceylon.war {
-    WarInitializer
-}
+//import com.redhat.ceylon.war {
+//    WarInitializer
+//}
 import com.vasileff.jl4c.log4j {
     useLog4jLogging
 }
@@ -114,7 +114,9 @@ void initializeLogger() {
 }
 
 void initializeCeylon(ServletContext servletContext) {
-    value warInitializer = WarInitializer();
-    warInitializer.initialize(servletContext);
-    servletContext.addListener(warInitializer);
+    // FIXME commenting these lines avoids a dependency conflict
+    // but breaks the webapp
+    //value warInitializer = WarInitializer();
+    //warInitializer.initialize(servletContext);
+    //servletContext.addListener(warInitializer);
 }
