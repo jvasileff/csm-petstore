@@ -43,7 +43,7 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
             [Anything*] arguments) {
 
         if (method == `DomainObjectType.primaryKey`) {
-            return delegate.primaryKey;
+            return delegate.primaryKey();
         }
         else if (method == `DomainObjectType.isPrimaryKeySet`) {
             return delegate.primaryKeySet;
