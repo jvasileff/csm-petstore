@@ -1,6 +1,4 @@
 module com.vasileff.csmpetstore "0.0.1" {
-    //import com.vasileff.csmpetstoredeps "1.0.0";
-
     import ceylon.interop.java "1.1.1";
     import ceylon.collection "1.1.1";
     import ceylon.logging "1.1.1";
