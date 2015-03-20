@@ -1,5 +1,8 @@
 apply plugin: 'base'
 apply plugin: 'java'
+apply plugin: 'ceylon'
+
+defaultTasks 'compileCeylon'
 
 repositories {
     mavenCentral()
@@ -19,15 +22,15 @@ ext.versions = [
       tomcat: "8.0.18"]
 
 configurations {
-    all*.exclude group: 'commons-logging'        // replaced by org.slf4j:jcl-over-slf4j
-    all*.exclude group: 'com.google.collections' // replaced by com.google.guava:guava
-    all*.exclude group: 'javax.servlet'          // don't add to fat-jar
-    all*.exclude group: 'com.google.guava'       // don't add to fat-jar
-    all*.exclude group: 'log4j'                  // don't add to fat-jar
+    fatJar.exclude group: 'commons-logging'        // replaced by org.slf4j:jcl-over-slf4j
+    fatJar.exclude group: 'com.google.collections' // replaced by com.google.guava:guava
+    fatJar.exclude group: 'javax.servlet'          // don't add to fat-jar
+    fatJar.exclude group: 'com.google.guava'       // don't add to fat-jar
+    fatJar.exclude group: 'log4j'                  // don't add to fat-jar
 }
 
 dependencies {
-    compile \
+    fatJar \
         "javax.inject:javax.inject:1",
         "javax.validation:validation-api:${versions.javax_validation}",
         "org.hibernate:hibernate-validator:${versions.hibernate_validator}",
@@ -67,7 +70,70 @@ task fatJar(type: Jar) {
                    'Main-Class': 'com.example.main'
     }
     baseName = project.name + '-all'
-    from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+    from { configurations.fatJar.collect { it.isDirectory() ? it : zipTree(it) } }
     with jar
+}
+
+task ceylonDeps(dependsOn: fatJar) {
+    ext.jarFile = file("build/libs/csm-petstore-all.jar")
+    ext.descriptorFile = file("csmpetstoredeps.properties")
+    ext.outPath = file("build/modules-deps")
+
+    inputs.file jarFile
+    inputs.file descriptorFile
+    outputs.dir outPath
+
+    doLast {
+        ant."ceylon-import-jar"(
+            jar: jarFile,
+            out: outPath,
+            descriptor: descriptorFile,
+            module: "com.vasileff.csmpetstoredeps/1.0.0",
+            force: true)
+    }
+}
+
+compileCeylon {
+    dependsOn "ceylonDeps"
+    module "com.vasileff.csmpetstore"
+    sourceDir file("source")
+}
+
+ceylonDoc {
+    dependsOn "ceylonDeps"
+    includeSource = true
+}
+
+task war(dependsOn: compileCeylon) {
+    ext.repoDeps = file("build/modules-deps")
+    ext.repoJVM = file("build/modules-jvm/main")
+    ext.resourceDir = file("webapp")
+    ext.outPath = file("build/libs")
+
+    inputs.dir repoDeps
+    inputs.dir repoJVM
+    inputs.dir resourceDir
+    outputs.dir outPath
+
+    doLast {
+        ant."ceylon-war"(
+              name: "csmPetstore.war",
+              out: outPath,
+              resourceRoot: resourceDir,
+              module: "com.vasileff.csmpetstore") {
+
+            exclude(module: "javax.servlet")
+            exclude(module: "org.apache.openejb:javaee-api")
+            exclude(module: "org.apache.commons.logging")
+            exclude(module: "org.slf4j.api")
+
+            rep(url: repoDeps)
+            rep(url: repoJVM)
+        }
+    }
+}
+
+wrapper {
+    jarFile 'buildSrc/wrapper/gradle-wrapper.jar'
 }
 

@@ -5,3 +5,5 @@
 /modules/
 /modules-deps/
 /build/
+/buildSrc/.gradle/
+/buildSrc/build/

@@ -1,7 +1,7 @@
 [defaults]
 encoding=UTF-8
-mavenoverrides=./overrides.xml
+overrides=./overrides.xml
 
 [repositories]
-lookup=./modules-deps
+lookup=./build/modules-deps
 remote=aether
