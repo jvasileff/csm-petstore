@@ -76,7 +76,7 @@ task fatJar(type: Jar) {
 
 task ceylonDeps(dependsOn: fatJar) {
     ext.jarFile = file("build/libs/csm-petstore-all.jar")
-    ext.descriptorFile = file("csmpetstoredeps.properties")
+    ext.descriptorFile = file("deps.properties")
     ext.outPath = file("build/modules-deps")
 
     inputs.file jarFile
