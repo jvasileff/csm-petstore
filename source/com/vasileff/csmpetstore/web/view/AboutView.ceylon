@@ -14,7 +14,7 @@ import com.vasileff.csmpetstore.domain {
 }
 
 shared component
-class AboutView() extends HtmlView() {
+class AboutView() extends BaseView() {
 
     shared actual
     Html generateHtml(Model model) {
@@ -32,7 +32,7 @@ class AboutView() extends HtmlView() {
                 },
                 Div {
                     H3{ "The Account Information"; },
-                    table {
+                    this.table {
                         header = ["Field", "Value"];
                         rows = [
                             ["Username", account.username],
@@ -45,5 +45,4 @@ class AboutView() extends HtmlView() {
                 }
             };
         }
-
 }

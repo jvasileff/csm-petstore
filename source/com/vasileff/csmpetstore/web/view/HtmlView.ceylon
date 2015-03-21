@@ -51,10 +51,9 @@ import org.springframework.context {
 }
 
 shared abstract
-class HtmlView()
-        satisfies View & WebApplicationContextAware {
+class HtmlView() satisfies View {
 
-    shared actual late inject
+    shared late inject
     WebApplicationContext webApplicationContext;
 
     shared actual default
@@ -96,12 +95,6 @@ class HtmlView()
             return "???``key``???";
         }
     }
-}
-
-shared
-interface WebApplicationContextAware {
-    shared formal
-    WebApplicationContext webApplicationContext;
 }
 
 //shared abstract

@@ -11,7 +11,7 @@ import org.springframework.stereotype {
 }
 
 shared component
-class ContactView() extends HtmlView() {
+class ContactView() extends BaseView() {
 
     shared actual
     Html generateHtml(Model model)
@@ -36,6 +36,4 @@ class ContactView() extends HtmlView() {
                     }
                 }
             };
-
 }
-

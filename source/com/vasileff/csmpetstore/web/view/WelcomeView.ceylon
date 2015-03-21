@@ -20,9 +20,7 @@ import org.springframework.stereotype {
 Logger log = logger(`package`);
 
 shared component
-class WelcomeView()
-        extends HtmlView()
-        satisfies HtmlForms {
+class WelcomeView() extends BaseView() {
 
     shared actual
     Html generateHtml(Model model) {
