@@ -5,7 +5,8 @@ import ceylon.html.serializer {
     NodeSerializer
 }
 import ceylon.interop.java {
-    createJavaByteArray
+    createJavaByteArray,
+    createJavaObjectArray
 }
 import ceylon.io.charset {
     utf8
@@ -36,9 +37,25 @@ import javax.servlet.http {
 import org.springframework.web.servlet {
     View
 }
+import org.springframework.validation {
+    BindingResult
+}
+import javax.inject {
+    inject=inject__SETTER
+}
+import org.springframework.web.context {
+    WebApplicationContext
+}
+import org.springframework.context {
+    NoSuchMessageException
+}
 
 shared abstract
-class HtmlView() satisfies View {
+class HtmlView()
+        satisfies View & WebApplicationContextAware {
+
+    shared actual late inject
+    WebApplicationContext webApplicationContext;
 
     shared actual default
     String contentType = "text/html;charset=UTF-8";
@@ -61,6 +78,30 @@ class HtmlView() satisfies View {
 
     shared formal
     Html generateHtml(Model model);
+
+    shared
+    BindingResult? bindingResult(Model model, String obj) {
+        assert (is BindingResult? bindingResult = model[
+            "org.springframework.validation.BindingResult." + obj]);
+        return bindingResult;
+    }
+
+    shared
+    String message(String key, {Object*} args = {}) {
+        try {
+            return webApplicationContext.getMessage(
+                key, createJavaObjectArray(args), null);
+        }
+        catch (NoSuchMessageException e) {
+            return "???``key``???";
+        }
+    }
+}
+
+shared
+interface WebApplicationContextAware {
+    shared formal
+    WebApplicationContext webApplicationContext;
 }
 
 //shared abstract

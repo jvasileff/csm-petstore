@@ -1,6 +1,10 @@
 import ceylon.html {
     ...
 }
+import ceylon.logging {
+    logger,
+    Logger
+}
 
 import com.vasileff.csmpetstore.domain {
     Account
@@ -13,12 +17,18 @@ import org.springframework.stereotype {
     component
 }
 
+Logger log = logger(`package`);
+
 shared component
-class WelcomeView() extends HtmlView() {
+class WelcomeView()
+        extends HtmlView()
+        satisfies HtmlForms {
 
     shared actual
     Html generateHtml(Model model) {
         assert (is Account account = model["account"]);
+        value bindingResult = super.bindingResult(model, "account");
+
         return page {
             currentPage = home;
             title = "Welcome";
@@ -35,51 +45,58 @@ class WelcomeView() extends HtmlView() {
                     action = "about";
                     method = "POST";
                     id = "account";
-                    formGroup {
+                    classNames = "form-horizontal";
+                    // FIXME https://github.com/ceylon/ceylon-compiler/issues/2099
+                    this.formGroup {
                         id = "username";
-                        labelText = "Username";
-                        placeholder = "Enter Username";
+                        labelText = message("account.username");
                         type = text;
                         valueOf = account.username;
+                        errors = bindingResult?.getFieldErrors("username");
                     },
-                    formGroup {
+                    this.formGroup {
                         id = "email";
-                        labelText = "Email Address";
-                        placeholder = "Enter Email";
+                        labelText = message("account.email");
                         type = text;
                         valueOf = account.email else "";
+                        errors = bindingResult?.getFieldErrors("email");
                     },
-                    formGroup {
+                    this.formGroup {
                         id = "fullName";
-                        labelText = "Full Name";
-                        placeholder = "Your Name";
+                        labelText = message("account.fullName");
                         type = text;
                         valueOf = account.fullName;
+                        errors = bindingResult?.getFieldErrors("fullName");
                     },
-                    formGroup {
+                    this.formGroup {
                         id = "testBoolean";
                         labelText = "Test Boolean";
                         placeholder = "true or false";
                         type = text;
                         valueOf = account.testBoolean.string;
+                        errors = bindingResult?.getFieldErrors("testBoolean");
                     },
-                    formGroup {
+                    this.formGroup {
                         id = "testInteger";
                         labelText = "Test Integer";
                         placeholder = "Enter Some Number";
                         type = text;
                         valueOf = account.testInteger.string;
+                        errors = bindingResult?.getFieldErrors("testInteger");
                     },
                     Div {
-                        Button {
-                            classNames = "btn btn-default";
-                            type = submit;
-                            text = "Submit";
+                        classNames = "form-group";
+                        Div {
+                            classNames = ["col-sm-offset-2", "col-sm-10"];
+                            Button {
+                                classNames = "btn btn-default";
+                                type = submit;
+                                text = "Submit";
+                            }
                         }
                     }
                 }
             }
         };
     }
-
 }

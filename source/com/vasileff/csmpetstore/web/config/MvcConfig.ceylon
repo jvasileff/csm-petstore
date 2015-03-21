@@ -33,6 +33,9 @@ import org.springframework.web.servlet.config.annotation {
     ResourceHandlerRegistry,
     PathMatchConfigurer
 }
+import org.springframework.context.support {
+    ResourceBundleMessageSource
+}
 
 componentScan({
     "com.vasileff.csmpetstore.web.view",
@@ -77,4 +80,11 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
     shared default bean
     HandlerMethodArgumentResolver ceylonModelMapArgumentResolver()
         =>  CeylonModelArgumentResolver();
+
+    shared default bean
+    ResourceBundleMessageSource messageSource() {
+        ResourceBundleMessageSource rbms = ResourceBundleMessageSource();
+        rbms.setBasename("com.vasileff.csmpetstore.terminology");
+        return rbms;
+    }
 }

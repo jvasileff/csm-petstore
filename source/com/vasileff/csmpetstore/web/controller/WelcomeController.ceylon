@@ -6,6 +6,9 @@ import ceylon.logging {
 import com.vasileff.csmpetstore.domain {
     Account
 }
+import com.vasileff.csmpetstore.domain.support {
+    createDomainObject
+}
 import com.vasileff.csmpetstore.web {
     Model
 }
@@ -38,11 +41,11 @@ import org.springframework.web.bind.annotation {
     },
     modelAttribute
 }
+import org.springframework.web.context {
+    WebApplicationContext
+}
 import org.springframework.web.servlet {
     View
-}
-import com.vasileff.csmpetstore.domain.support {
-    createDomainObject
 }
 
 Logger log = logger(`package`);
@@ -51,7 +54,8 @@ shared controller inject
 class WelcomeController(
         WelcomeView welcomeView,
         AboutView aboutView,
-        ContactView contactView) {
+        ContactView contactView,
+        WebApplicationContext webApplicationContext) {
 
     shared modelAttribute("dummyKey")
     String dummyKey => "dummyVal";
@@ -87,7 +91,6 @@ class WelcomeController(
     shared requestMapping {\ivalue={"/about"}; method={get, post};}
     View about(valid Account account, BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            log.warn(() => "binding errors: " + bindingResult.allErrors.string);
             return welcomeView;
         }
         return aboutView;
