@@ -133,6 +133,7 @@ class BaseView() extends HtmlView() {
     Div formGroup(
             String id, String labelText,
             InputType type, String valueOf,
+            String name = id,
             String placeholder = labelText,
             JList<FieldError>? errors = null,
             {String*} inputClassNames = {})
@@ -151,7 +152,7 @@ class BaseView() extends HtmlView() {
                         classNames = ["form-control", *inputClassNames];
                         type = type;
                         id = id;
-                        name = id;
+                        name = name;
                         placeholder = placeholder;
                         valueOf = valueOf;
                     },

@@ -1,3 +1,10 @@
+import com.vasileff.csmpetstore.support {
+    CeylonStringMap
+}
+import com.vasileff.csmpetstore.web {
+    Model
+}
+
 import org.springframework.core {
     MethodParameter
 }
@@ -7,22 +14,21 @@ import org.springframework.web.bind.support {
 import org.springframework.web.context.request {
     NativeWebRequest
 }
+import org.springframework.web.method.annotation {
+    ModelMethodProcessor
+}
 import org.springframework.web.method.support {
     HandlerMethodArgumentResolver,
-    ModelAndViewContainer
-}
-import com.vasileff.csmpetstore.support {
-    CeylonStringMap
-}
-import com.vasileff.csmpetstore.web {
-    Model
+    ModelAndViewContainer,
+    HandlerMethodReturnValueHandler
 }
 
+"Expose the model as a Ceylon `Map<String, Object>`."
+see(`function MvcConfig.ceylonModelMapArgumentResolver`,
+    `class ModelMethodProcessor`,
+    `interface HandlerMethodArgumentResolver`,
+    `interface HandlerMethodReturnValueHandler`)
 class CeylonModelArgumentResolver() satisfies HandlerMethodArgumentResolver {
-
-    // see Spring's ModelMethodProcessor implements
-    // HandlerMethodArgumentResolver & HandlerMethodReturnValueHandler
-
     // consider basing this on org.springframework.ui.Model instead of Map<>
 
     shared actual
@@ -35,11 +41,9 @@ class CeylonModelArgumentResolver() satisfies HandlerMethodArgumentResolver {
 
     shared actual
     Boolean supportsParameter(MethodParameter methodParameter)
-        // javaClass<Map<Nothing,Nothing>>()
-        // fails with "given type has type arguments"
-        //return javaClass<Map<Nothing,Nothing>>()
+        // fails with RuntimeException: given type has type arguments
+        //=>  javaClass<Map<Nothing, Nothing>>()
         //        .isAssignableFrom(methodParameter.parameterType);
         =>  methodParameter.parameterType.string ==
                 "interface ceylon.language.Map";
-
 }

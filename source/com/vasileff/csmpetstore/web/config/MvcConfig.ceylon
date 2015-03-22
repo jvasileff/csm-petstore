@@ -17,6 +17,9 @@ import org.springframework.context.annotation {
     componentScan,
     bean
 }
+import org.springframework.context.support {
+    ResourceBundleMessageSource
+}
 import org.springframework.http {
     MediaType
 }
@@ -33,8 +36,8 @@ import org.springframework.web.servlet.config.annotation {
     ResourceHandlerRegistry,
     PathMatchConfigurer
 }
-import org.springframework.context.support {
-    ResourceBundleMessageSource
+import com.vasileff.csmpetstore.web {
+    Model
 }
 
 componentScan({
@@ -77,6 +80,8 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
     void addArgumentResolvers(JList<HandlerMethodArgumentResolver> list)
         =>  list.add(ceylonModelMapArgumentResolver());
 
+    "Expose the model as a Ceylon `Map<String, Object>`."
+    see(`alias Model`, `class CeylonModelArgumentResolver`)
     shared default bean
     HandlerMethodArgumentResolver ceylonModelMapArgumentResolver()
         =>  CeylonModelArgumentResolver();
@@ -87,4 +92,14 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         rbms.setBasename("com.vasileff.csmpetstore.terminology");
         return rbms;
     }
+
+    /*
+        Not sure if spring mvc support for non j.u.Collection
+        collections is possible, but these may help:
+
+        http://docs.spring.io/spring/docs/4.0.x/spring-framework-reference/html/validation.html#core-convert
+        http://docs.spring.io/spring/docs/4.0.x/javadoc-api/org/springframework/beans/propertyeditors/CustomCollectionEditor.html
+        http://forum.spring.io/forum/spring-projects/container/52265-custom-property-editor-with-generic-types
+        https://github.com/spring-projects/spring-scala/wiki/Wiring-up-Scala-Collections-in-Spring-XML
+     */
 }

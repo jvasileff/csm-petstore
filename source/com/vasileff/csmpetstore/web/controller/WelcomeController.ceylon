@@ -16,7 +16,12 @@ import com.vasileff.csmpetstore.web.view {
     WelcomeView,
     AboutView,
     ContactView,
-    home
+    home,
+    TestFormView
+}
+
+import java.util {
+    JList=List
 }
 
 import javax.inject {
@@ -55,6 +60,7 @@ class WelcomeController(
         WelcomeView welcomeView,
         AboutView aboutView,
         ContactView contactView,
+        TestFormView testFormView,
         WebApplicationContext webApplicationContext) {
 
     shared modelAttribute("dummyKey")
@@ -100,4 +106,27 @@ class WelcomeController(
     View contact()
         =>  contactView;
 
+    shared requestMapping {\ivalue={"/testForm"}; method={get};}
+    View testForm(Model model) {
+        return testFormView;
+    }
+
+    shared requestMapping {\ivalue={"/testForm"}; method={post};}
+    View testFormPost(Model model, StringsHolder stringsHolder) {
+        log.info(model.string);
+        log.info(stringsHolder.strings?.string else "null");
+        return testFormView;
+    }
+}
+
+shared
+class StringsHolder() {
+    variable JList<String>? _strings = null;
+
+    shared JList<String>? strings => _strings;
+
+    assign strings {
+        _strings = strings;
+        log.info("Assigning value '``strings else "null"``'");
+    }
 }
