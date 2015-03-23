@@ -35,14 +35,14 @@ class TestFormView() extends BaseView() {
                     method = "POST";
                     id = "stringsHolder";
                     classNames = "form-horizontal";
-                    this.formGroup {
+                    formGroup {
                         id = "cb_one";
                         name = "strings";
                         labelText = "One";
                         type = checkbox;
                         valueOf = "one";
                     },
-                    this.formGroup {
+                    formGroup {
                         id = "cb_two";
                         name = "strings";
                         labelText = "Two";

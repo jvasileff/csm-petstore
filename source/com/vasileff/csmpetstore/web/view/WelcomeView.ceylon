@@ -44,29 +44,28 @@ class WelcomeView() extends BaseView() {
                     method = "POST";
                     id = "account";
                     classNames = "form-horizontal";
-                    // FIXME https://github.com/ceylon/ceylon-compiler/issues/2099
-                    this.formGroup {
+                    formGroup {
                         id = "username";
                         labelText = message("account.username");
                         type = text;
                         valueOf = account.username;
                         errors = bindingResult?.getFieldErrors("username");
                     },
-                    this.formGroup {
+                    formGroup {
                         id = "email";
                         labelText = message("account.email");
                         type = text;
                         valueOf = account.email else "";
                         errors = bindingResult?.getFieldErrors("email");
                     },
-                    this.formGroup {
+                    formGroup {
                         id = "fullName";
                         labelText = message("account.fullName");
                         type = text;
                         valueOf = account.fullName;
                         errors = bindingResult?.getFieldErrors("fullName");
                     },
-                    this.formGroup {
+                    formGroup {
                         id = "testBoolean";
                         labelText = "Test Boolean";
                         placeholder = "true or false";
@@ -74,7 +73,7 @@ class WelcomeView() extends BaseView() {
                         valueOf = account.testBoolean.string;
                         errors = bindingResult?.getFieldErrors("testBoolean");
                     },
-                    this.formGroup {
+                    formGroup {
                         id = "testInteger";
                         labelText = "Test Integer";
                         placeholder = "Enter Some Number";

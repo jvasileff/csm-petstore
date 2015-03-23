@@ -32,7 +32,7 @@ class AboutView() extends BaseView() {
                 },
                 Div {
                     H3{ "The Account Information"; },
-                    this.table {
+                    table {
                         header = ["Field", "Value"];
                         rows = [
                             ["Username", account.username],
