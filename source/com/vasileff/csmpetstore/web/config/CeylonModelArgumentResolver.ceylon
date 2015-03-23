@@ -1,4 +1,5 @@
 import com.vasileff.csmpetstore.support {
+    CeylonStringMutableMap,
     CeylonStringMap
 }
 import com.vasileff.csmpetstore.web {
@@ -22,6 +23,10 @@ import org.springframework.web.method.support {
     ModelAndViewContainer,
     HandlerMethodReturnValueHandler
 }
+import ceylon.interop.java {
+    CeylonMutableMap,
+    CeylonMap
+}
 
 "Expose the model as a Ceylon `Map<String, Object>`."
 see(`function MvcConfig.ceylonModelMapArgumentResolver`,
@@ -32,12 +37,14 @@ class CeylonModelArgumentResolver() satisfies HandlerMethodArgumentResolver {
     // consider basing this on org.springframework.ui.Model instead of Map<>
 
     shared actual
-    Model resolveArgument(
+    Object resolveArgument(
                 MethodParameter methodParameter,
                 ModelAndViewContainer modelAndViewContainer,
                 NativeWebRequest nativeWebRequest,
                 WebDataBinderFactory webDataBinderFactory)
-        =>  CeylonStringMap(modelAndViewContainer.model);
+        =>  if (methodParameter.parameterType.string == "interface ceylon.language.Map")
+            then CeylonStringMap(CeylonMap(modelAndViewContainer.model))
+            else CeylonStringMutableMap(CeylonMutableMap(modelAndViewContainer.model));
 
     shared actual
     Boolean supportsParameter(MethodParameter methodParameter)
@@ -45,5 +52,7 @@ class CeylonModelArgumentResolver() satisfies HandlerMethodArgumentResolver {
         //=>  javaClass<Map<Nothing, Nothing>>()
         //        .isAssignableFrom(methodParameter.parameterType);
         =>  methodParameter.parameterType.string ==
-                "interface ceylon.language.Map";
+                "interface ceylon.language.Map" ||
+            methodParameter.parameterType.string ==
+                "interface ceylon.collection.MutableMap";
 }

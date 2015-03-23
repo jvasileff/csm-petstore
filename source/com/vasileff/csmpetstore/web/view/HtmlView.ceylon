@@ -6,7 +6,8 @@ import ceylon.html.serializer {
 }
 import ceylon.interop.java {
     createJavaByteArray,
-    createJavaObjectArray
+    createJavaObjectArray,
+    CeylonMap
 }
 import ceylon.io.charset {
     utf8
@@ -67,7 +68,8 @@ class HtmlView() satisfies View {
         value baos = ByteArrayOutputStream(1024);
         void writeBytes(String string)
             =>  baos.write(createJavaByteArray(utf8.encode(string)));
-        NodeSerializer(writeBytes).serialize(generateHtml(CeylonStringMap(model)));
+        NodeSerializer(writeBytes).serialize(generateHtml(
+                CeylonStringMap(CeylonMap(model))));
 
         httpServletResponse.contentType = contentType;
         httpServletResponse.setContentLength(baos.size());

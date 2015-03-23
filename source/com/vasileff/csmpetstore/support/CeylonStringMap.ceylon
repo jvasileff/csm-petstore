@@ -1,39 +1,42 @@
 import ceylon.interop.java {
-    CeylonIterable,
     javaString
 }
 
 import java.lang {
     JString=String
 }
-import java.util {
-    JMap=Map,
-    JHashMap=HashMap
-}
 
 shared
-class CeylonStringMap<out Item>(JMap<JString, out Item> map)
+class CeylonStringMap<out Item>(Map<JString, Item> delegate)
         satisfies Map<String, Item> {
 
-    get(Object key)
+    shared actual default
+    CeylonStringMap<Item> clone()
+        =>  CeylonStringMap(delegate.clone());
+
+    shared actual
+    Boolean defines(Object key)
         =>  if (is String key)
-            then map.get(javaString(key))
-            else map.get(key);
+            then delegate.defines(javaString(key))
+            else delegate.defines(key);
 
-    defines(Object key)
+    shared actual
+    Item? get(Object key)
         =>  if (is String key)
-            then map.containsKey(javaString(key))
-            else map.containsKey(key);
+            then delegate.get(javaString(key))
+            else delegate.get(key);
 
-    iterator()
-        =>  CeylonIterable(map.entrySet())
-                .map((entry) => entry.key.string->entry.\ivalue)
-                .iterator();
+    shared actual
+    Iterator<String->Item> iterator()
+        =>  { for (key->item in delegate)
+                key.string->item
+            }.iterator();
 
-    clone() => CeylonStringMap(JHashMap(map));
+    shared actual
+    Boolean equals(Object that)
+        =>  (super of Map<String, Item>).equals(that);
 
-    equals(Object that) => (super of Map<String,Item>).equals(that);
-
-    hash => (super of Map<String,Item>).hash;
-
+    shared actual
+    Integer hash
+        =>  (super of Map<String, Item>).hash;
 }

@@ -37,7 +37,8 @@ import org.springframework.web.servlet.config.annotation {
     PathMatchConfigurer
 }
 import com.vasileff.csmpetstore.web {
-    Model
+    Model,
+    MutableModel
 }
 
 componentScan({
@@ -81,7 +82,7 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         =>  list.add(ceylonModelMapArgumentResolver());
 
     "Expose the model as a Ceylon `Map<String, Object>`."
-    see(`alias Model`, `class CeylonModelArgumentResolver`)
+    see(`alias Model`, `alias MutableModel`, `class CeylonModelArgumentResolver`)
     shared default bean
     HandlerMethodArgumentResolver ceylonModelMapArgumentResolver()
         =>  CeylonModelArgumentResolver();
