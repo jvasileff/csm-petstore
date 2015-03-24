@@ -18,7 +18,8 @@ import com.vasileff.jl4c.log4j {
 import java.lang {
     Class,
     ObjectArray,
-    JString=String
+    JString=String,
+    JInteger=Integer
 }
 import java.util {
     EnumSet {
@@ -49,12 +50,13 @@ import org.springframework.web.servlet.support {
 
 Logger log = logger(`package`);
 
-// FIXME interop - in java we can do Integer.MIN_VALUE
-shared order(-1000) // process first so that our filters will run first
+shared
+order(JInteger.\iMIN_VALUE) // so our filters run first
 class WebAppInitializer()
-extends AbstractAnnotationConfigDispatcherServletInitializer() {
+        extends AbstractAnnotationConfigDispatcherServletInitializer() {
 
-    shared actual String servletName = "csmPetstore";
+    shared actual
+    String servletName = "csmPetstore";
 
     shared actual
     void onStartup(ServletContext servletContext) {
@@ -66,7 +68,7 @@ extends AbstractAnnotationConfigDispatcherServletInitializer() {
         initializeLogger();
         log.info("Logging Initialized");
 
-        // configure filters that should run before Sring Security filter
+        // configure filters that should run before Spring Security filter
         value dfp = DelegatingFilterProxy();
         dfp.setTargetFilterLifecycle(false); // emphasizing the default
         value reg = servletContext.addFilter("webAppFilters", dfp);
