@@ -5,7 +5,8 @@ import ceylon.interop.java {
 }
 import ceylon.logging {
     Logger,
-    logger
+    logger,
+    debug
 }
 
 import com.redhat.ceylon.war {
@@ -113,6 +114,8 @@ void initializeLogger() {
     L4JLogger.rootLogger.setPriority(Level.\iINFO);
 
     useLog4jLogging();
+
+    logger(`module`).priority = debug;
 }
 
 void initializeCeylon(ServletContext servletContext) {

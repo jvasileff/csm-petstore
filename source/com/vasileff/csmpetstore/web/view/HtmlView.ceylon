@@ -30,25 +30,25 @@ import java.util {
     JMap=Map
 }
 
+import javax.inject {
+    inject=inject__SETTER
+}
 import javax.servlet.http {
     HttpServletRequest,
     HttpServletResponse
 }
 
-import org.springframework.web.servlet {
-    View
+import org.springframework.context {
+    NoSuchMessageException
 }
 import org.springframework.validation {
     BindingResult
 }
-import javax.inject {
-    inject=inject__SETTER
-}
 import org.springframework.web.context {
     WebApplicationContext
 }
-import org.springframework.context {
-    NoSuchMessageException
+import org.springframework.web.servlet {
+    View
 }
 
 shared abstract
@@ -88,7 +88,7 @@ class HtmlView() satisfies View {
     }
 
     shared
-    String message(String key, {Object*} args = {}) {
+    String message(String key, Object* args) {
         try {
             return webApplicationContext.getMessage(
                 key, createJavaObjectArray(args), null);

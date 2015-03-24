@@ -107,26 +107,19 @@ class WelcomeController(
         =>  contactView;
 
     shared requestMapping {\ivalue={"/testForm"}; method={get};}
-    View testForm(Model model) {
-        return testFormView;
-    }
+    View testForm()
+        =>  testFormView;
 
     shared requestMapping {\ivalue={"/testForm"}; method={post};}
     View testFormPost(Model model, StringsHolder stringsHolder) {
-        log.info(model.string);
-        log.info(stringsHolder.strings?.string else "null");
+        log.debug(model.string);
+        log.debug(stringsHolder.strings?.string else "null");
         return testFormView;
     }
 }
 
 shared
 class StringsHolder() {
-    variable JList<String>? _strings = null;
-
-    shared JList<String>? strings => _strings;
-
-    assign strings {
-        _strings = strings;
-        log.info("Assigning value '``strings else "null"``'");
-    }
+    shared variable
+    JList<String>? strings = null;
 }

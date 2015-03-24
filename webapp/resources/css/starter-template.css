@@ -1,7 +1,17 @@
 body {
     padding-top: 50px;
 }
+
 .starter-template {
     padding: 40px 15px;
-      text-align: center;
+    text-align: center;
 }
+
+pre.stackTrace {
+    font-size:12px;
+    overflow:scroll;
+    word-break:normal;
+    word-wrap:normal;
+    white-space:pre;
+}
+

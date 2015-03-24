@@ -8,20 +8,13 @@
     version="3.0"
     metadata-complete="true">
 
-  <display-name>Ceylon Spring MyBatis Petstore</display-name>
-  <description>Ceylon Spring MyBatis Petstore</description>
-
-  <!--
-  <listener>
-    <listener-class>com.redhat.ceylon.war.WarInitializer</listener-class>
-  </listener>
-  -->
+  <display-name>Ceylon/Spring/MyBatis Petstore</display-name>
+  <description>Ceylon/Spring/MyBatis Petstore</description>
 
   <session-config>
     <session-timeout>30</session-timeout>
   </session-config>
 
-  <!--
   <error-page>
     <location>/999</location>
   </error-page>
@@ -45,6 +38,5 @@
     <exception-type>java.lang.Throwable</exception-type>
     <location>/500</location>
   </error-page>
-  -->
 
 </web-app>

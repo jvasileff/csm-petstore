@@ -1,9 +1,11 @@
+import ceylon.interop.java {
+    CeylonMutableMap,
+    CeylonMap
+}
+
 import com.vasileff.csmpetstore.support {
     CeylonStringMutableMap,
     CeylonStringMap
-}
-import com.vasileff.csmpetstore.web {
-    Model
 }
 
 import org.springframework.core {
@@ -22,10 +24,6 @@ import org.springframework.web.method.support {
     HandlerMethodArgumentResolver,
     ModelAndViewContainer,
     HandlerMethodReturnValueHandler
-}
-import ceylon.interop.java {
-    CeylonMutableMap,
-    CeylonMap
 }
 
 "Expose the model as a Ceylon `Map<String, Object>`."
