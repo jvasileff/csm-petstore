@@ -1,3 +1,10 @@
+import ceylon.language.meta.model {
+    ClassOrInterface
+}
+import ceylon.collection {
+    HashMap
+}
+
 shared
 object urls {
     shared String login = "/login";
@@ -43,6 +50,9 @@ shared
 object loginSuspicious extends LoginError("suspicious") {}
 
 shared
-LoginError? loginErrorFor(String error)
-    =>  `LoginError`.caseValues.find((e)
-        =>  e.string == error);
+LoginError?(String) loginError = enumLookup(`LoginError`);
+
+Enum?(String) enumLookup<Enum>(ClassOrInterface<Enum> enum)
+        given Enum satisfies Object
+    =>  let (table = HashMap { for (e in enum.caseValues) e.string -> e })
+        ((String s) => table[s]);

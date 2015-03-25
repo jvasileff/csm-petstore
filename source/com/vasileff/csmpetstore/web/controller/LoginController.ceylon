@@ -7,7 +7,7 @@ import com.vasileff.csmpetstore.web {
     roles,
     loginBadCredentials,
     loginDisabled,
-    loginErrorFor
+    loginError
 }
 import com.vasileff.csmpetstore.web.view {
     LoginView
@@ -81,11 +81,11 @@ class LoginController(
 
     shared
     requestMapping { \ivalue={"/login/{error}"}; method={get}; }
-    View loginError(
+    View loginErrorHandler(
             RedirectAttributes attributes,
             pathVariable String error) {
         // TODO actually support errors in the view
-        if (exists loginError = loginErrorFor(error)) {
+        if (exists loginError = loginError(error)) {
             attributes.addFlashAttribute("loginError", loginError);
         }
         return RedirectView(urls.login, true);
