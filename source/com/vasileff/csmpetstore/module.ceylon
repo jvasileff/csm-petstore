@@ -5,7 +5,6 @@ module com.vasileff.csmpetstore "0.0.1" {
     import ceylon.collection "1.1.1";
     import ceylon.logging "1.1.1";
     import ceylon.time "1.1.1";
-    import ceylon.html "1.1.1";
     import ceylon.io "1.1.1";
 
     import com.redhat.ceylon.war "1.1.1";
@@ -15,6 +14,7 @@ module com.vasileff.csmpetstore "0.0.1" {
     import java.jdbc "7";
     import javax.annotation "7";
 
+    import com.vasileff.ceylon.html "0.0.1";
     import com.vasileff.jl4c.guava "0.0.1";
     import com.vasileff.jl4c.log4j "0.0.1";
 

@@ -1,7 +1,7 @@
-import ceylon.html {
+import com.vasileff.ceylon.html {
     Html
 }
-import ceylon.html.serializer {
+import com.vasileff.ceylon.html.serializer {
     NodeSerializer
 }
 import ceylon.interop.java {

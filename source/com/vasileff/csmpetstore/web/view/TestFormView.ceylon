@@ -1,4 +1,4 @@
-import ceylon.html {
+import com.vasileff.ceylon.html {
     ...
 }
 
