@@ -83,6 +83,7 @@ class WelcomeView() extends BaseView() {
                     },
                     Div {
                         classNames = "form-group";
+                        extraHiddenFields(),
                         Div {
                             classNames = ["col-sm-offset-2", "col-sm-10"];
                             Button {

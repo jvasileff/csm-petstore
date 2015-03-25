@@ -6,56 +6,50 @@ import com.vasileff.csmpetstore.web {
     Model
 }
 
+import javax.inject {
+    inject
+}
+import javax.servlet.http {
+    HttpServletRequest
+}
+
 import org.springframework.stereotype {
     component
 }
 
-shared component
-class TestFormView() extends BaseView() {
+shared component inject
+class LoginView(HttpServletRequest request) extends BaseView() {
 
     shared actual
     Html generateHtml(Model model) {
-        //assert (is Account account = model["account"]);
-        //value bindingResult = super.bindingResult(model, "account");
-
         return page {
-            currentPage = home;
-            title = "Welcome";
+            currentPage = login;
+            title = "CSM Petstore";
             Div {
                 classNames="starter-template";
-                H1 { "Hello from Ceylon"; },
-                P {
-                    classNames="lead";
-                    text="This is a paragraph with some text.";
-                }
+                H1 { "Please Sign In"; }
             },
             Div {
                 Form {
-                    action = "testForm";
+                    action = "security-check";
                     method = "POST";
-                    id = "stringsHolder";
+                    id = "login";
                     classNames = "form-horizontal";
                     formGroup {
-                        id = "cb_one";
-                        name = "strings";
-                        labelText = "One";
-                        type = checkbox;
-                        valueOf = "one";
+                        id = "username";
+                        labelText = message("screen.login.username");
+                        type = text;
+                        valueOf = "";
                     },
                     formGroup {
-                        id = "cb_two";
-                        name = "strings";
-                        labelText = "Two";
-                        type = checkbox;
-                        valueOf = "two";
+                        id = "password";
+                        labelText = message("screen.login.password");
+                        type = password;
+                        valueOf = "";
                     },
                     Div {
                         classNames = "form-group";
                         extraHiddenFields(),
-                        HiddenInput {
-                            name="_strings";
-                            valueOf="on";
-                        },
                         Div {
                             classNames = ["col-sm-offset-2", "col-sm-10"];
                             Button {

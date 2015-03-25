@@ -21,10 +21,12 @@ import ceylon.html {
     Head,
     Input,
     Label,
-    InputType
+    InputType,
+    HiddenInput
 }
 import ceylon.interop.java {
-    CeylonIterable
+    CeylonIterable,
+    CeylonMap
 }
 
 import java.util {
@@ -33,6 +35,9 @@ import java.util {
 
 import org.springframework.validation {
     FieldError
+}
+import org.springframework.web.servlet.support {
+    RequestContext
 }
 
 shared abstract
@@ -170,4 +175,21 @@ class BaseView() extends HtmlView() {
                     }
                 }
             else {};
+
+    // FIXME incorporate into a new "form()" template function
+    shared
+    {HiddenInput*} extraHiddenFields() {
+        // for csrf token
+        value requestContext = RequestContext(httpServletRequest);
+        if (exists rdvp = requestContext.requestDataValueProcessor,
+            exists fields = rdvp.getExtraHiddenFields(httpServletRequest)) {
+            return { for (key->item in CeylonMap(fields))
+                HiddenInput {
+                    name = key.string;
+                    valueOf = item.string;
+                }
+            };
+        }
+        return {};
+    }
 }

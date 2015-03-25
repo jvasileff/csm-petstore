@@ -57,6 +57,9 @@ class HtmlView() satisfies View {
     shared late inject
     WebApplicationContext webApplicationContext;
 
+    shared late inject
+    HttpServletRequest httpServletRequest;
+
     shared actual default
     String contentType = "text/html;charset=UTF-8";
 
@@ -68,6 +71,7 @@ class HtmlView() satisfies View {
         value baos = ByteArrayOutputStream(1024);
         void writeBytes(String string)
             =>  baos.write(createJavaByteArray(utf8.encode(string)));
+
         NodeSerializer(writeBytes).serialize(generateHtml(
                 CeylonStringMap(CeylonMap(model))));
 
