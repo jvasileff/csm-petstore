@@ -4,6 +4,7 @@ module com.vasileff.csmpetstore "0.0.1" {
     import ceylon.interop.java "1.1.1";
     import ceylon.collection "1.1.1";
     import ceylon.logging "1.1.1";
+    import ceylon.unicode "1.1.1";
     import ceylon.time "1.1.1";
     import ceylon.io "1.1.1";
 

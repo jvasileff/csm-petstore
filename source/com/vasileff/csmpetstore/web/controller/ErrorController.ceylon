@@ -62,8 +62,8 @@ class ErrorController(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        // TODO sanitize input
-        log.error("Error while serving request for '``requestPath``', " +
+        log.error("Error while serving request for " +
+                  "'``sanitizeForLog(requestPath)``', " +
                   "HTTP Status code ``httpStatusCode``", throwable);
 
         value mav = ModelAndView(errorView);
@@ -131,8 +131,8 @@ class ErrorControllerAdvice(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        // TODO sanitize input
-        log.error("Error while serving request for '``requestPath``', " +
+        log.error("Error while serving request for " +
+                  "'``sanitizeForLog(requestPath)``', " +
                   "sending INTERNAL_SERVER_ERROR to the client", throwable);
 
         value mav = ModelAndView(exceptionView);
@@ -153,8 +153,8 @@ class ErrorControllerAdvice(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        // TODO sanitize input
-        log.info("Access Denied while serving request for '``requestPath``', " +
+        log.info("Access Denied while serving request for " +
+                 "'``sanitizeForLog(requestPath)``', " +
                  "sending FORBIDDEN to the client", throwable);
 
         value mav = ModelAndView(exceptionView);
@@ -176,8 +176,8 @@ class ErrorControllerAdvice(
 
         value requestPath = requestPathFor(request) else "unknown path";
 
-        log.debug("Returning error-not-found for '``requestPath``'", throwable);
-
+        log.debug("Returning error-not-found for " +
+                  "'``sanitizeForLog(requestPath)``'", throwable);
         return ModelAndView(notFoundView);
     }
 }
