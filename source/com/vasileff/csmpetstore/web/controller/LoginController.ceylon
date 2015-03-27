@@ -43,9 +43,6 @@ import org.springframework.web.servlet {
 import org.springframework.web.servlet.mvc.support {
     RedirectAttributes
 }
-import org.springframework.web.servlet.view {
-    RedirectView
-}
 
 shared controller inject
 class LoginController(
@@ -56,7 +53,7 @@ class LoginController(
     requestMapping { \ivalue={"/login"}; method={get}; }
     View login(MutableModel model, HttpSession? session) {
         if (subject.authenticated && subject.hasAuthorization(roles.user)) {
-            return RedirectView("/", true);
+            return redirect("/");
         }
         else if (exists session) {
             if (is Throwable throwable = session.getAttribute) {
@@ -88,6 +85,6 @@ class LoginController(
         if (exists loginError = loginError(error)) {
             attributes.addFlashAttribute("loginError", loginError);
         }
-        return RedirectView(urls.login, true);
+        return redirect(urls.login);
     }
 }

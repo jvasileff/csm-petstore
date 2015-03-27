@@ -1,6 +1,3 @@
-import com.google.common.base {
-    Throwables
-}
 import com.vasileff.csmpetstore.web {
     ModelAndView,
     NotFoundException
@@ -186,26 +183,26 @@ class ErrorControllerAdvice(
 }
 
 shared controller
-class ErrorControllerTests() {
+class ErrorControllerTestPages() {
 
     shared requestMapping({"/test-exception"})
     void testException() {
-        throw Exception("Just Testing...");
+        throw Exception("Testing...");
     }
 
     shared requestMapping({"/test-access-denied-exception"})
     void testAccessDeniedException() {
-        throw AccessDeniedException("Just Testing...");
+        throw AccessDeniedException("Testing...");
     }
 
     shared requestMapping({"/test-not-found-exception"})
     void testNotFoundException() {
-        throw NotFoundException("Just Testing...");
+        throw NotFoundException("Testing...");
     }
 
     shared requestMapping({"/test-assertion-error"})
     void testAssertionError() {
-        throw AssertionError("Just Testing");
+        throw AssertionError("Testing...");
     }
 
     shared requestMapping({"/test-forbidden-response"})
@@ -228,29 +225,3 @@ class ErrorControllerTests() {
         response.sendError(HttpServletResponse.\iSC_EXPECTATION_FAILED);
     }
 }
-
-String? requestPathFor(HttpServletRequest? request) {
-    if (exists request) {
-        String servletPath;
-        String pathInfo;
-        if (is String path = request.getAttribute(
-                RequestDispatcher.\iFORWARD_SERVLET_PATH)) {
-            servletPath = path;
-            pathInfo = request.getAttribute(
-                RequestDispatcher.\iFORWARD_PATH_INFO)?.string else "";
-        }
-        else {
-            servletPath = request.servletPath;
-            pathInfo = request.pathInfo else "";
-        }
-        return servletPath + pathInfo;
-    }
-    else {
-        return null;
-    }
-}
-
-String? stackTraceAsString(Throwable? throwable)
-    =>  if (exists throwable)
-        then Throwables.getStackTraceAsString(throwable)
-        else null;

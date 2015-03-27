@@ -55,10 +55,14 @@ import org.springframework.web.servlet.mvc.annotation {
     ResponseStatusExceptionResolver
 }
 import org.springframework.web.servlet.mvc.method.annotation {
-    ExceptionHandlerExceptionResolver
+    ExceptionHandlerExceptionResolver,
+    RequestMappingHandlerAdapter
 }
 import org.springframework.web.servlet.mvc.support {
     DefaultHandlerExceptionResolver
+}
+import javax.annotation {
+    postConstruct
 }
 
 componentScan({
@@ -69,8 +73,19 @@ shared configuration enableWebMvc
 class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     late inject
-    ContentNegotiationManager mvcContentNegotiationManager;
+    ContentNegotiationManager contentNegotiationManager;
 
+    late inject
+    RequestMappingHandlerAdapter requestMappingHandlerAdapter;
+
+    shared postConstruct
+    void init() {
+        // don't include model attributes on redirects
+        // "However, for new applications we recommend setting it to true"
+        requestMappingHandlerAdapter.setIgnoreDefaultModelOnRedirect(true);
+    }
+
+    "Static resources, not secured."
     shared actual
     void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/resources/**")
@@ -78,6 +93,8 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         registry.setOrder(-1);
     }
 
+    "Only support UTF-8 text and html for
+     [[org.springframework.web.bind.annotation::responseBody]]"
     shared actual
     void configureMessageConverters(
             JList<HttpMessageConverter<out Object>> list) {
@@ -95,9 +112,11 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared actual
     void configurePathMatch(PathMatchConfigurer pathMatchConfigurer)
-        // FIXME Ceylon integration problem for Booleans!
         =>  pathMatchConfigurer.setUseTrailingSlashMatch(JBoolean.\iFALSE);
 
+    "Expose the model as a Ceylon `Map<String, Object>`.
+     for [[org.springframework.web.bind.annotation::RequestMapping]]
+     handler methods."
     shared actual
     void addArgumentResolvers(JList<HandlerMethodArgumentResolver> list)
         =>  list.add(ceylonModelMapArgumentResolver());
@@ -108,6 +127,9 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
     HandlerMethodArgumentResolver ceylonModelMapArgumentResolver()
         =>  CeylonModelArgumentResolver();
 
+    "Support return of [[com.vasileff.csmpetstore.web::ModelAndView]]
+     for [[org.springframework.web.bind.annotation::RequestMapping]]
+     handler methods."
     shared actual
     void addReturnValueHandlers(JList<HandlerMethodReturnValueHandler> list)
         =>  list.add(ceylonModelAndViewReturnValueHandler());
@@ -117,6 +139,9 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
     HandlerMethodReturnValueHandler ceylonModelAndViewReturnValueHandler()
         =>  CeylonModelAndViewReturnValueHandler();
 
+    "Support return of [[com.vasileff.csmpetstore.web::ModelAndView]]
+     for [[org.springframework.web.bind.annotation::ExceptionHandler]]
+     handler methods."
     shared actual
     void configureHandlerExceptionResolvers(
             JList<HandlerExceptionResolver> list) {
@@ -129,12 +154,15 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         list.add(DefaultHandlerExceptionResolver());
     }
 
+    "Support return of [[com.vasileff.csmpetstore.web::ModelAndView]]
+     for [[org.springframework.web.bind.annotation::ExceptionHandler]]
+     handler methods."
     shared default bean
     ExceptionHandlerExceptionResolver exceptionHandlerExceptionResolver() {
         // WebMvcConfigurationSupport.addDefaultHandlerExceptionResolvers
         // resolver.messageConverters ?
         value resolver = ExceptionHandlerExceptionResolver();
-        resolver.contentNegotiationManager = mvcContentNegotiationManager;
+        resolver.contentNegotiationManager = contentNegotiationManager;
         resolver.customReturnValueHandlers = javaList {
             ceylonModelAndViewReturnValueHandler()
         };

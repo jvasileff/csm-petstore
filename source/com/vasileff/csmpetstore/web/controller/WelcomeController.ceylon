@@ -63,9 +63,6 @@ class WelcomeController(
         TestFormView testFormView,
         WebApplicationContext webApplicationContext) {
 
-    shared modelAttribute("dummyKey")
-    String dummyKey => "dummyVal";
-
     shared modelAttribute
     Account emptyAccount {
         value account = createDomainObject(`Account`);
@@ -85,6 +82,11 @@ class WelcomeController(
 
     shared requestMapping {\ivalue={"/welcome"}; method={get};}
     View welcome(Model model, Account account) {
+        // initialize with default values.
+        // another option would be to have domain
+        // objects implement Correspondence
+        // and return null on uninitialized fields, and
+        // provide default values in the template
         account.country = null;
         account.email = null;
         account.fullName = "";
@@ -95,12 +97,10 @@ class WelcomeController(
     }
 
     shared requestMapping {\ivalue={"/about"}; method={get, post};}
-    View about(valid Account account, BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return welcomeView;
-        }
-        return aboutView;
-    }
+    View about(valid Account account, BindingResult bindingResult)
+        =>  if (bindingResult.hasErrors())
+            then welcomeView
+            else aboutView;
 
     shared requestMapping {\ivalue={"/contact"}; method={get};}
     View contact()
