@@ -22,7 +22,7 @@ interface Account satisfies DomainObject<String, Account> {
     size { min=3; max=75; }
     pattern { regexp="(?U)[\\p{Alnum}\\p{gc=Pc}]*"; }
     shared variable formal
-    String username;
+    String? username;
 
     field
     toString(2)
@@ -34,20 +34,20 @@ interface Account satisfies DomainObject<String, Account> {
     toString(3)
     size { min=1; max=50; }
     shared variable formal
-    String fullName;
+    String? fullName;
 
     field
     size { max=50; }
     shared variable formal
     String? country;
 
-    field
+    field notNull
     shared variable formal
-    Boolean testBoolean;
+    Boolean? testBoolean;
 
-    field
+    field notNull
     shared variable formal
-    Integer testInteger;
+    Integer? testInteger;
 
     //late shared variable String? status;
     //late shared variable String? address1;

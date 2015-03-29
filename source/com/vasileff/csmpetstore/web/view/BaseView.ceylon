@@ -137,7 +137,7 @@ class BaseView() extends HtmlView() {
     shared default
     Div formGroup(
             String id, String labelText,
-            InputType type, String valueOf,
+            InputType type, String? valueOf,
             String name = id,
             String placeholder = labelText,
             JList<FieldError>? errors = null,

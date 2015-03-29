@@ -38,8 +38,8 @@ class AboutView() extends BaseView() {
                             ["Username", account.username],
                             ["Full Name", account.fullName],
                             ["Email", account.email],
-                            ["Test Boolean", account.testBoolean.string],
-                            ["Test Integer", account.testInteger.string]
+                            ["Test Boolean", account.testBoolean?.string],
+                            ["Test Integer", account.testInteger?.string]
                         ];
                     }
                 }

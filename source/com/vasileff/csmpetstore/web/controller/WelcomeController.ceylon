@@ -87,6 +87,9 @@ class WelcomeController(
         // objects implement Correspondence
         // and return null on uninitialized fields, and
         // provide default values in the template
+
+        // additional note: all are now nullable and can be read, even
+        // when not set. So this can definitely be moved to the view.
         account.country = null;
         account.email = null;
         account.fullName = "";

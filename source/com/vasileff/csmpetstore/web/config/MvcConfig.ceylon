@@ -16,6 +16,9 @@ import java.util {
     JList=List
 }
 
+import javax.annotation {
+    postConstruct
+}
 import javax.inject {
     inject=inject__SETTER
 }
@@ -27,6 +30,9 @@ import org.springframework.context.annotation {
 }
 import org.springframework.context.support {
     ResourceBundleMessageSource
+}
+import org.springframework.format {
+    FormatterRegistry
 }
 import org.springframework.http {
     MediaType
@@ -61,9 +67,6 @@ import org.springframework.web.servlet.mvc.method.annotation {
 import org.springframework.web.servlet.mvc.support {
     DefaultHandlerExceptionResolver
 }
-import javax.annotation {
-    postConstruct
-}
 
 componentScan({
     "com.vasileff.csmpetstore.web.view",
@@ -80,7 +83,7 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
 
     shared postConstruct
     void init() {
-        // don't include model attributes on redirects
+        // don't include model attributes on redirects. Per Spring docs:
         // "However, for new applications we recommend setting it to true"
         requestMappingHandlerAdapter.setIgnoreDefaultModelOnRedirect(true);
     }
@@ -91,6 +94,13 @@ class MvcConfig() extends WebMvcConfigurerAdapter() {
         registry.addResourceHandler("/resources/**")
                 .addResourceLocations("/resources/");
         registry.setOrder(-1);
+    }
+
+    "Support web data binding to Ceylon types."
+    shared actual
+    void addFormatters(FormatterRegistry formatterRegistry) {
+        formatterRegistry.addConverter(CeylonBooleanConverter());
+        formatterRegistry.addConverter(CeylonIntegerConverter());
     }
 
     "Only support UTF-8 text and html for

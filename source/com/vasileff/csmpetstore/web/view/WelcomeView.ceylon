@@ -70,7 +70,7 @@ class WelcomeView() extends BaseView() {
                         labelText = "Test Boolean";
                         placeholder = "true or false";
                         type = text;
-                        valueOf = account.testBoolean.string;
+                        valueOf = account.testBoolean?.string;
                         errors = bindingResult?.getFieldErrors("testBoolean");
                     },
                     formGroup {
@@ -78,7 +78,7 @@ class WelcomeView() extends BaseView() {
                         labelText = "Test Integer";
                         placeholder = "Enter Some Number";
                         type = text;
-                        valueOf = account.testInteger.string;
+                        valueOf = account.testInteger?.string;
                         errors = bindingResult?.getFieldErrors("testInteger");
                     },
                     Div {

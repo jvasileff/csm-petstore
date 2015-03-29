@@ -27,10 +27,10 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
 
     value updatedPropertySet = HashSet<Property>();
 
-    Attribute<DomainObjectType, PrimaryKey, Nothing> primaryKeyProperty;
+    Attribute<DomainObjectType, PrimaryKey|Null, Nothing> primaryKeyProperty;
 
     if (nonempty candidates = domainObjectInterface
-            .getAttributes<DomainObjectType, PrimaryKey, Nothing>
+            .getAttributes<DomainObjectType, PrimaryKey|Null, Nothing>
                 (`PrimaryKeyAnnotation`), candidates.size == 1) {
         primaryKeyProperty = candidates.first;
     } else {
@@ -54,7 +54,10 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
     Anything get(Property property) {
         log.trace(() => "getting property " + property.string);
         checkField(property);
-        checkDefined(property);
+        // FIXME JSR 303 validation needs to read potentially
+        // uninitialized properties, so for now, making all
+        // properties nullable and disabling defined check...
+        //checkDefined(property);
         return propertyMap[property];
     }
 
@@ -147,6 +150,7 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         }
     }
 
+    suppressWarnings("unusedDeclaration")
     void checkDefined(Property property) {
         if (!propertyMap.defines(property)) {
             throw Exception(property.declaration.name + " has not been set.");
