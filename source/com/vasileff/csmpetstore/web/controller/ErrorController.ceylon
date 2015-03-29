@@ -40,6 +40,9 @@ import org.springframework.web.bind.annotation {
 import org.springframework.web.servlet.mvc.multiaction {
     NoSuchRequestHandlingMethodException
 }
+import com.vasileff.csmpetstore.support {
+    log
+}
 
 shared controller inject
 class ErrorController(
@@ -62,9 +65,8 @@ class ErrorController(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        log.error("Error while serving request for " +
-                  "'``sanitizeForLog(requestPath)``', " +
-                  "HTTP Status code ``httpStatusCode``", throwable);
+        log.error("Error while serving request for '{}', HTTP Status code {}",
+                  sanitizeForLog(requestPath), throwable);
 
         value mav = ModelAndView(errorView);
         mav.model.put("httpStatus", httpStatusCode);
@@ -131,9 +133,9 @@ class ErrorControllerAdvice(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        log.error("Error while serving request for " +
-                  "'``sanitizeForLog(requestPath)``', " +
-                  "sending INTERNAL_SERVER_ERROR to the client", throwable);
+        log.error("Error while serving request for '{}'; " +
+                  "sending INTERNAL_SERVER_ERROR to the client",
+                  sanitizeForLog(requestPath), throwable);
 
         value mav = ModelAndView(exceptionView);
         mav.model.put("errorMessageKey", "screen.exception.500");
@@ -153,9 +155,9 @@ class ErrorControllerAdvice(
         value requestPath = requestPathFor(request) else "unknown path";
         value stackTrace = stackTraceAsString(throwable);
 
-        log.info("Access Denied while serving request for " +
-                 "'``sanitizeForLog(requestPath)``', " +
-                 "sending FORBIDDEN to the client", throwable);
+        log.info("Access Denied while serving request for '{}'; " +
+                 "sending FORBIDDEN to the client",
+                 sanitizeForLog(requestPath), throwable);
 
         value mav = ModelAndView(exceptionView);
         mav.model.put("errorMessageKey", "screen.exception.403");
@@ -176,8 +178,8 @@ class ErrorControllerAdvice(
 
         value requestPath = requestPathFor(request) else "unknown path";
 
-        log.debug("Returning error-not-found for " +
-                  "'``sanitizeForLog(requestPath)``'", throwable);
+        log.debug("Returning error-not-found for '{}'",
+                  sanitizeForLog(requestPath), throwable);
         return ModelAndView(notFoundView);
     }
 }

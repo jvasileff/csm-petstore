@@ -1,3 +1,6 @@
+import ceylon.collection {
+    HashMap
+}
 import ceylon.interop.java {
     createJavaObjectArray,
     javaClass
@@ -7,10 +10,21 @@ import ceylon.time {
     Instant
 }
 
+import com.vasileff.csmpetstore.domain {
+    Language,
+    Account
+}
+import com.vasileff.csmpetstore.domain.support {
+    createDomainObject
+}
 import com.vasileff.csmpetstore.mapper.support {
     InstantTypeHandler,
     StringTypeHandler,
     IntegerTypeHandler
+}
+
+import java.lang {
+    Class
 }
 
 import javax.inject {
@@ -18,6 +32,9 @@ import javax.inject {
 }
 import javax.sql {
     DataSource
+}
+import javax.validation {
+    Validator
 }
 
 import org.apache.ibatis.session {
@@ -64,31 +81,9 @@ import org.springframework.transaction {
 import org.springframework.transaction.annotation {
     enableTransactionManagement
 }
-import javax.validation {
-    Validator
-}
 import org.springframework.validation.beanvalidation {
     LocalValidatorFactoryBean
 }
-import ceylon.logging {
-    Logger,
-    logger
-}
-import java.lang {
-    Class
-}
-import com.vasileff.csmpetstore.domain {
-    Language,
-    Account
-}
-import ceylon.collection {
-    HashMap
-}
-import com.vasileff.csmpetstore.domain.support {
-    createDomainObject
-}
-
-Logger log = logger(`package`);
 
 propertySource {
     ignoreResourceNotFound = true;

@@ -1,7 +1,3 @@
-import ceylon.logging {
-    Logger,
-    logger
-}
 import ceylon.time {
     Instant
 }
@@ -14,6 +10,9 @@ import com.vasileff.csmpetstore.domain.support {
 }
 import com.vasileff.csmpetstore.mapper {
     LanguageMapper
+}
+import com.vasileff.csmpetstore.support {
+    log
 }
 
 import javax.inject {
@@ -34,8 +33,6 @@ import org.springframework.stereotype {
     service,
     component
 }
-
-Logger log = logger(`package`);
 
 service inject shared
 class Application(
@@ -82,6 +79,7 @@ class Application(
 
 shared component aspect
 class AspectConfigs() {
+
     shared around("execution(* Repository.*(..))")
     Anything profile(ProceedingJoinPoint pjp) {
         value start = system.nanoseconds;
@@ -89,8 +87,8 @@ class AspectConfigs() {
             Anything result = pjp.proceed();
             return result;
         } finally {
-            log.info("elapsed time for ``pjp.string``: " +
-                     "``system.nanoseconds - start``ns");
+            log.info("Elapsed time for '{}': {}ns",
+                     pjp, system.nanoseconds - start);
         }
     }
 }

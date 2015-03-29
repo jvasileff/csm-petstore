@@ -1,11 +1,6 @@
 import com.vasileff.ceylon.html {
     ...
 }
-import ceylon.logging {
-    logger,
-    Logger
-}
-
 import com.vasileff.csmpetstore.domain {
     Account
 }
@@ -16,8 +11,6 @@ import com.vasileff.csmpetstore.web {
 import org.springframework.stereotype {
     component
 }
-
-Logger log = logger(`package`);
 
 shared component
 class WelcomeView() extends BaseView() {

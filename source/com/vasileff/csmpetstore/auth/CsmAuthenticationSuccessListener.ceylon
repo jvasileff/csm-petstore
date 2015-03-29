@@ -1,3 +1,7 @@
+import com.vasileff.csmpetstore.support {
+    log
+}
+
 import org.springframework.context {
     ApplicationListener
 }
@@ -15,8 +19,7 @@ class CsmAuthenticationSuccessListener()
     shared actual
     void onApplicationEvent(InteractiveAuthenticationSuccessEvent event) {
         assert (is User details = event.authentication.principal);
-        log.info("Authentication success for " +
-                 "username='``details.username``, " +
-                 "authorities='``details.authorities``'");
+        log.info("Authentication failure for username='{}', authorities='{}'",
+                 details.username, details.authorities);
     }
 }

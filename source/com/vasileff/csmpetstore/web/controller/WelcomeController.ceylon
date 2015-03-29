@@ -1,13 +1,11 @@
-import ceylon.logging {
-    Logger,
-    logger
-}
-
 import com.vasileff.csmpetstore.domain {
     Account
 }
 import com.vasileff.csmpetstore.domain.support {
     createDomainObject
+}
+import com.vasileff.csmpetstore.support {
+    log
 }
 import com.vasileff.csmpetstore.web {
     Model
@@ -52,8 +50,6 @@ import org.springframework.web.context {
 import org.springframework.web.servlet {
     View
 }
-
-Logger log = logger(`package`);
 
 shared controller inject
 class WelcomeController(

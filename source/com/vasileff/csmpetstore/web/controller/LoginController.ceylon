@@ -1,6 +1,9 @@
 import com.vasileff.csmpetstore.auth {
     Subject
 }
+import com.vasileff.csmpetstore.support {
+    log
+}
 import com.vasileff.csmpetstore.web {
     MutableModel,
     urls,

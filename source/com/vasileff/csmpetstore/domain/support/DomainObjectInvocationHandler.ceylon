@@ -3,12 +3,6 @@ import ceylon.language.meta.model {
     Method,
     Interface
 }
-import ceylon.logging {
-    Logger,
-    logger
-}
-
-Logger log = logger(`package`);
 
 shared
 class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()

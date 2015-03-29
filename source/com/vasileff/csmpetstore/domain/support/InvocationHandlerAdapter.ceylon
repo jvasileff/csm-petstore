@@ -12,6 +12,13 @@ import ceylon.language.meta.model {
     Type
 }
 
+import com.vasileff.csmpetstore.config {
+    UnsafeUtil
+}
+import com.vasileff.csmpetstore.support {
+    log
+}
+
 import java.lang {
     JString=String,
     JInteger=Integer,
@@ -22,9 +29,6 @@ import java.lang {
 import java.lang.reflect {
     JInvocationHandler=InvocationHandler,
     JMethod=Method
-}
-import com.vasileff.csmpetstore.config {
-    UnsafeUtil
 }
 
 shared
@@ -63,7 +67,7 @@ class InvocationHandlerAdapter<Container>(
                  methodName.startsWith("set")) {
             methodName = "$" + methodName;
         }
-        log.trace(() => "Adding method " + methodName);
+        log.trace("Adding method '{}'", methodName);
         models.put(methodName, method);
     }
 

@@ -2,6 +2,10 @@ import ceylon.interop.java {
     CeylonIterable
 }
 
+import com.vasileff.csmpetstore.support {
+    log
+}
+
 import org.springframework.context {
     ApplicationListener
 }
@@ -23,9 +27,8 @@ class CsmSessionDestroyedListener()
     void onApplicationEvent(HttpSessionDestroyedEvent event) {
         for (context in CeylonIterable(event.securityContexts)) {
             assert (is User details = context.authentication.principal);
-            log.info("Session destroyed for " +
-                     "username='``details.username``, " +
-                     "authorities='``details.authorities``'");
+            log.info("Session destroyed for username='{}', authorities='{}'",
+                     details.username, details.authorities);
         }
     }
 

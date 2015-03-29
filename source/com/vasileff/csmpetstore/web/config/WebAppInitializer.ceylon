@@ -4,13 +4,15 @@ import ceylon.interop.java {
     createJavaStringArray
 }
 import ceylon.logging {
-    Logger,
     logger,
     debug
 }
 
 import com.redhat.ceylon.war {
     WarInitializer
+}
+import com.vasileff.csmpetstore.support {
+    log
 }
 import com.vasileff.jl4c.log4j {
     useLog4jLogging
@@ -49,8 +51,6 @@ import org.springframework.web.servlet.support {
     AbstractAnnotationConfigDispatcherServletInitializer
 }
 
-Logger log = logger(`package`);
-
 shared
 order(JInteger.\iMIN_VALUE) // so our filters run first
 class WebAppInitializer()
@@ -82,7 +82,7 @@ class WebAppInitializer()
         // Spring context, dispatcher servlet, and dispatcher servlet filters
         super.onStartup(servletContext);
 
-        log.info(() => "Initialization Complete");
+        log.info("Initialization Complete");
     }
 
     shared actual

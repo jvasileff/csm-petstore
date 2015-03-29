@@ -1,10 +1,6 @@
 import ceylon.interop.java {
     javaClass
 }
-import ceylon.logging {
-    logger,
-    Logger
-}
 
 import com.vasileff.csmpetstore.config {
     AppConfig
@@ -25,8 +21,6 @@ import org.apache.log4j {
 import org.springframework.context.annotation {
     AnnotationConfigApplicationContext
 }
-
-Logger log = logger(`package`);
 
 shared
 void initializeLogger() {

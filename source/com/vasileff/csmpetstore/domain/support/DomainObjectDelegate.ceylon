@@ -11,6 +11,9 @@ import ceylon.language.meta.model {
 import com.vasileff.csmpetstore.config {
     UnsafeUtil
 }
+import com.vasileff.csmpetstore.support {
+    log
+}
 
 import java.lang {
     ClassCastException
@@ -19,7 +22,8 @@ import java.lang {
 class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
         given DomainObjectType satisfies DomainObject<PrimaryKey, DomainObjectType> {
 
-    shared alias Property => Attribute<DomainObjectType>;
+    shared
+    alias Property => Attribute<DomainObjectType>;
 
     Interface<DomainObjectType> domainObjectInterface;
 
@@ -44,7 +48,7 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
 
     shared
     void set(Property property, Anything newValue) {
-        log.trace(() => "setting property " + property.string);
+        log.trace("Setting property '{}'", property);
         checkField(property);
         updatedPropertySet.add(property);
         propertyMap.put(property, newValue);
@@ -52,7 +56,7 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
 
     shared
     Anything get(Property property) {
-        log.trace(() => "getting property " + property.string);
+        log.trace("Getting property '{}'", property);
         checkField(property);
         // FIXME JSR 303 validation needs to read potentially
         // uninitialized properties, so for now, making all
@@ -130,7 +134,8 @@ class DomainObjectDelegate<DomainObjectType, PrimaryKey>(domainObjectInterface)
             else {
                 return false;
             }
-        } catch (ClassCastException e) {
+        }
+        catch (ClassCastException e) {
             return false;
         }
 
