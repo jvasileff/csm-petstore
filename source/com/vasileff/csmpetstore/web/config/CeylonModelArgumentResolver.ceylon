@@ -46,9 +46,9 @@ class CeylonModelArgumentResolver() satisfies HandlerMethodArgumentResolver {
 
     shared actual
     Boolean supportsParameter(MethodParameter methodParameter)
-        // fails with RuntimeException: given type has type arguments
-        //=>  javaClass<Map<Nothing, Nothing>>()
-        //        .isAssignableFrom(methodParameter.parameterType);
+        //fails with RuntimeException: given type has type arguments
+        //=>  methodParameter.parameterType
+        //        .isAssignableFrom(javaClass<MutableMap<String, Object>>());
         =>  methodParameter.parameterType.string ==
                 "interface ceylon.language.Map" ||
             methodParameter.parameterType.string ==
