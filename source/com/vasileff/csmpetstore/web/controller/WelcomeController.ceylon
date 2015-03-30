@@ -72,11 +72,11 @@ class WelcomeController(
     String robotsTxt()
         =>  "User-agent: *\nDisallow: /\n";
 
-    shared requestMapping {\ivalue={"/"}; method={get}; }
+    shared requestMapping { {"/"}; method={get}; }
     View rootRequest()
         =>  redirect(home.url);
 
-    shared requestMapping {\ivalue={"/welcome"}; method={get};}
+    shared requestMapping { {"/welcome"}; method={get};}
     View welcome(Model model, Account account) {
         // initialize with default values.
         // another option would be to have domain
@@ -95,21 +95,21 @@ class WelcomeController(
         return welcomeView;
     }
 
-    shared requestMapping {\ivalue={"/about"}; method={get, post};}
+    shared requestMapping { {"/about"}; method={get, post};}
     View about(valid Account account, BindingResult bindingResult)
         =>  if (bindingResult.hasErrors())
             then welcomeView
             else aboutView;
 
-    shared requestMapping {\ivalue={"/contact"}; method={get};}
+    shared requestMapping { {"/contact"}; method={get};}
     View contact()
         =>  contactView;
 
-    shared requestMapping {\ivalue={"/testForm"}; method={get};}
+    shared requestMapping { {"/testForm"}; method={get};}
     View testForm()
         =>  testFormView;
 
-    shared requestMapping {\ivalue={"/testForm"}; method={post};}
+    shared requestMapping { {"/testForm"}; method={post};}
     View testFormPost(Model model, StringsHolder stringsHolder) {
         log.debug(model.string);
         log.debug(stringsHolder.strings?.string else "null");

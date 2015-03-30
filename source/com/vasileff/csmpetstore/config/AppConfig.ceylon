@@ -86,8 +86,8 @@ import org.springframework.validation.beanvalidation {
 }
 
 propertySource {
+    {"classpath:/application.properties"};
     ignoreResourceNotFound = true;
-    \ivalue = {"classpath:/application.properties"};
 }
 componentScan({
     "com.vasileff.csmpetstore.dao",

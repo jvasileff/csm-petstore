@@ -53,7 +53,7 @@ class LoginController(
         LoginView loginView) {
 
     shared
-    requestMapping { \ivalue={"/login"}; method={get}; }
+    requestMapping { {"/login"}; method={get}; }
     View login(MutableModel model, HttpSession? session) {
         if (subject.authenticated && subject.hasAuthorization(roles.user)) {
             return redirect("/");
@@ -80,7 +80,7 @@ class LoginController(
     }
 
     shared
-    requestMapping { \ivalue={"/login/{error}"}; method={get}; }
+    requestMapping { {"/login/{error}"}; method={get}; }
     View loginErrorHandler(
             RedirectAttributes attributes,
             pathVariable String error) {
