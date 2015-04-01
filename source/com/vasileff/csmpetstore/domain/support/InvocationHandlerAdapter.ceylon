@@ -22,6 +22,7 @@ import com.vasileff.csmpetstore.support {
 import java.lang {
     JString=String,
     JInteger=Integer,
+    JLong=Long,
     JBoolean=Boolean,
     JClass=Class,
     ObjectArray
@@ -31,11 +32,16 @@ import java.lang.reflect {
     JMethod=Method
 }
 
+import com.vasileff.proxy {
+    InvocationHandler
+}
+
 shared
 class InvocationHandlerAdapter<Container>(
         Interface<Container> containerInterface,
         InvocationHandler<Container> handler)
-        satisfies JInvocationHandler {
+        satisfies JInvocationHandler
+        given Container satisfies Object {
 
     value models = HashMap<String, Attribute<Container>|Method<Container>>();
 
@@ -86,19 +92,22 @@ class InvocationHandlerAdapter<Container>(
             if (methodName.startsWith("get") ||
                     methodName == "hashCode" ||
                     methodName == "toString") {
-                value rawResult = handler.getAttribute(proxy, model);
+                //value rawResult = handler.getAttribute(proxy, model);
+                Anything rawResult = TypeHack.trustMeGet(handler, model, proxy);
                 return coerceToJava(method.returnType, rawResult);
             }
             else {
                 assert (exists args);
                 value newValue = coerceToCeylon(model.type, args.get(0));
-                handler.setAttribute(proxy, model, newValue);
+                //handler.setAttribute(proxy, model, newValue);
+                TypeHack.trustMeSet(handler, model, proxy, newValue);
                 return null;
             }
         }
         case (is Method<Container>) {
             value ceylonArgs = coerceArgumentsToCeylon(model.parameterTypes, args);
-            value rawResult = handler.invoke(proxy, model, ceylonArgs);
+            //value rawResult = handler.invoke(proxy, model, ceylonArgs);
+            Anything rawResult = TypeHack.trustMeInvoke(handler, model, proxy, ceylonArgs);
             return coerceToJava(method.returnType, rawResult);
         }
         case (is Null) {
@@ -116,7 +125,7 @@ class InvocationHandlerAdapter<Container>(
                 is JString item) then
                 item.string
             else if (is Type<Integer> expectedType,
-                     is JInteger item) then
+                     is JInteger|JLong item) then
                 item.longValue()
             else if (is Type<Boolean> expectedType,
                      is JBoolean item) then
@@ -135,6 +144,10 @@ class InvocationHandlerAdapter<Container>(
                      expectedType == JInteger.\iTYPE,
                      is Integer item) then
                 JInteger.valueOf(item)
+            else if (expectedType == javaClass<JLong>() ||
+                     expectedType == JLong.\iTYPE,
+                     is Integer item) then
+                JLong.valueOf(item)
             else if (expectedType == javaClass<JBoolean>() ||
                      expectedType == JBoolean.\iTYPE,
                      is Boolean item) then

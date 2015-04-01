@@ -4,6 +4,10 @@ import ceylon.language.meta.model {
     Interface
 }
 
+import com.vasileff.proxy {
+    InvocationHandler
+}
+
 shared
 class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
         satisfies InvocationHandler<DomainObjectType>
@@ -12,56 +16,62 @@ class DomainObjectInvocationHandler<DomainObjectType, PrimaryKey>()
     assert (is Interface<DomainObjectType> domainObjectInterface = `DomainObjectType`);
     value delegate = DomainObjectDelegate<DomainObjectType,PrimaryKey>(domainObjectInterface);
 
-    shared actual
-    Anything getAttribute(
-            DomainObjectType proxy,
-            Attribute<DomainObjectType> attribute)
-        =>  if (attribute == `DomainObjectType.string`) then
-                delegate.string
-            else if (attribute == `DomainObjectType.hash`) then
-                delegate.hash
-            else
-                delegate.get(attribute);
+    T assertType<T>(Anything o) {
+        assert(is T o);
+        return o;
+    }
 
     shared actual
-    void setAttribute(
+    Get getAttribute<Get, Set>(
             DomainObjectType proxy,
-            Attribute<DomainObjectType> attribute,
-                Anything val)
+            Attribute<DomainObjectType, Get, Set> attribute)
+        =>  if (attribute == `DomainObjectType.string`) then
+                assertType<Get>(delegate.string)
+            else if (attribute == `DomainObjectType.hash`) then
+                assertType<Get>(delegate.hash)
+            else
+                assertType<Get>(delegate.get(attribute));
+
+    shared actual
+    void setAttribute<Get, Set>(
+            DomainObjectType proxy,
+            Attribute<DomainObjectType, Get, Set> attribute,
+            Set val)
         =>  delegate.set(attribute, val);
 
     shared actual
-    Anything invoke(
+    Type invoke<Type, Arguments>(
             DomainObjectType proxy,
-            Method<DomainObjectType> method,
-            [Anything*] arguments) {
+            Method<DomainObjectType, Type, Arguments> method,
+            Arguments arguments)
+            given Arguments satisfies Anything[] {
 
         if (method == `DomainObjectType.primaryKey`) {
-            return delegate.primaryKey();
+            return assertType<Type>(delegate.primaryKey());
         }
         else if (method == `DomainObjectType.isPrimaryKeySet`) {
-            return delegate.primaryKeySet;
+            return assertType<Type>(delegate.primaryKeySet);
         }
         else if (method == `DomainObjectType.isSet`) {
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
-            return delegate.isSet(*properties);
+            return assertType<Type>(delegate.isSet(*properties));
         }
         else if (method == `DomainObjectType.isUpdated`) {
             assert (is {Attribute<DomainObjectType>*} properties = arguments.first);
-            return delegate.isUpdated(*properties);
+            return assertType<Type>(delegate.isUpdated(*properties));
         }
         else if (method == `DomainObjectType.clearUpdated`) {
             delegate.clearUpdated();
-            return null;
+            return assertType<Type>(null);
         }
         else if (method == `DomainObjectType.hash`) {
-            return delegate.hashCode(proxy);
+            return assertType<Type>(delegate.hashCode(proxy));
         }
         else if (method == `DomainObjectType.equals`) {
-            return delegate.equalTo(proxy, arguments.first);
+            return assertType<Type>(delegate.equalTo(proxy, arguments.first));
         }
         else if (method == `DomainObjectType.type`) {
-            return delegate.type();
+            return assertType<Type>(delegate.type());
         }
         else {
             throw Exception ("Unhandled method ``method.string``.");

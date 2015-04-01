@@ -19,6 +19,7 @@ module com.vasileff.csmpetstore "0.0.1" {
     import com.vasileff.jl4c.guava "0.0.1";
     import com.vasileff.jl4c.log4j "0.0.1";
 
+    import com.vasileff.proxy "0.0.1";
 /*
     import "com.google.guava:guava" "18.0";
 

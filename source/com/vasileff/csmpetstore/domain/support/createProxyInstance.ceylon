@@ -12,10 +12,13 @@ import java.lang.reflect {
 import com.vasileff.csmpetstore.config {
     UnsafeUtil
 }
+import com.vasileff.proxy {
+    InvocationHandler
+}
 
 shared
 ProxyType createProxyInstance<ProxyType>
-        (InvocationHandler<ProxyType> invocationHandler) 
+        (InvocationHandler<ProxyType> invocationHandler)
         given ProxyType satisfies Object {
 
     assert (is Interface<ProxyType> interfaceModel = `ProxyType`);
