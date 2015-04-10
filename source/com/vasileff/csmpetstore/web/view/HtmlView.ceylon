@@ -1,20 +1,18 @@
-import com.vasileff.ceylon.html {
-    Html
-}
-import com.vasileff.ceylon.html.serializer {
-    NodeSerializer
-}
 import ceylon.interop.java {
     createJavaByteArray,
     createJavaObjectArray,
-    CeylonMap
+    CeylonMap,
+    CeylonStringMap
 }
 import ceylon.io.charset {
     utf8
 }
 
-import com.vasileff.csmpetstore.support {
-    CeylonStringMap
+import com.vasileff.ceylon.html {
+    Html
+}
+import com.vasileff.ceylon.html.serializer {
+    NodeSerializer
 }
 import com.vasileff.csmpetstore.web {
     Model

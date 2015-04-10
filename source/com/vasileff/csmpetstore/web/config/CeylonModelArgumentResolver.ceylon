@@ -1,11 +1,8 @@
 import ceylon.interop.java {
     CeylonMutableMap,
-    CeylonMap
-}
-
-import com.vasileff.csmpetstore.support {
-    CeylonStringMutableMap,
-    CeylonStringMap
+    CeylonMap,
+    CeylonStringMap,
+    CeylonStringMutableMap
 }
 
 import org.springframework.core {
