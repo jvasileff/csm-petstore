@@ -4,4 +4,5 @@ overrides=./overrides.xml
 
 [repositories]
 lookup=./build/modules-deps
+lookup=./build/modules-jvm/ih
 remote=aether

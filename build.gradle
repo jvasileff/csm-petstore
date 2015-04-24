@@ -93,8 +93,18 @@ task ceylonDeps(dependsOn: fatJar) {
     }
 }
 
+task compileInvocationHandler(type: CompileCeylonTask) {
+    module "com.vasileff.proxy"
+    // TODO consider alternate mechanism that auto-configures a destination dir
+    sourceDir file("source-ih")
+    destinationDir = file("build/modules-jvm/ih")
+}
+
 compileCeylon {
     dependsOn "ceylonDeps"
+    // TODO compile task should automatically pickup repos of dependencies
+    // and by default disable .ceylon/config?
+    dependsOn "compileInvocationHandler"
     module "com.vasileff.csmpetstore"
     sourceDir file("source")
 }
@@ -112,6 +122,7 @@ ceylonDoc {
 task war(dependsOn: compileCeylon) {
     ext.repoDeps = file("build/modules-deps")
     ext.repoJVM = file("build/modules-jvm/main")
+    ext.repoJVMIH = file("build/modules-jvm/ih")
     ext.resourceDir = file("webapp")
     ext.outPath = file("build/libs")
 
@@ -134,6 +145,7 @@ task war(dependsOn: compileCeylon) {
 
             rep(url: repoDeps)
             rep(url: repoJVM)
+            rep(url: repoJVMIH)
         }
     }
 }
