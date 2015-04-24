@@ -98,7 +98,9 @@ mapperScan {
     sqlSessionFactoryRef = "sqlSessionFactory";
     annotationClass = `Component`;
 }
-enableAspectJAutoProxy(false)
+enableAspectJAutoProxy {
+    proxyTargetClass = false;
+}
 enableTransactionManagement
 configuration shared
 class AppConfig() {

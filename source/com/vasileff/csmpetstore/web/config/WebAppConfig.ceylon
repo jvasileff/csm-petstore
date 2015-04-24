@@ -96,7 +96,10 @@ class WebAppConfig() {
         =>  DefaultAuthenticationEventPublisher();
 
     shared default bean
-    scope(WebApplicationContext.\iSCOPE_REQUEST, ScopedProxyMode.\iINTERFACES)
+    scope {
+        WebApplicationContext.\iSCOPE_REQUEST;
+        proxyMode = ScopedProxyMode.\iINTERFACES;
+    }
     Subject subject()
         =>  AuthenticationSubjectAdapter();
 }
