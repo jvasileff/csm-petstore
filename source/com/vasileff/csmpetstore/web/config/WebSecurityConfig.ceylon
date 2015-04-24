@@ -56,22 +56,17 @@ class WebSecurityConfig()
     shared actual
     void configure(HttpSecurity httpSecurity) {
         // TODO additional csrf configs
-        // TODO remove non-fluent workaround for
-        // https://github.com/ceylon/ceylon-spec/issues/1266
-
-        httpSecurity.authorizeRequests()
-            .filterSecurityInterceptorOncePerRequest(true);
-
-        httpSecurity.authorizeRequests()
-            .antMatchers(urls.login).permitAll()
-            .antMatchers(urls.login + "/**").permitAll()
-            .antMatchers(urls.status403Forbidden).permitAll()
-            .antMatchers(urls.status404NotFound).permitAll()
-            .antMatchers(urls.status500InternalServerError).permitAll()
-            .antMatchers(urls.status999Default).permitAll()
-            .anyRequest().hasAuthority(roles.user);
-
         httpSecurity
+            .authorizeRequests()
+                .filterSecurityInterceptorOncePerRequest(true)
+                .antMatchers(urls.login).permitAll()
+                .antMatchers(urls.login + "/**").permitAll()
+                .antMatchers(urls.status403Forbidden).permitAll()
+                .antMatchers(urls.status404NotFound).permitAll()
+                .antMatchers(urls.status500InternalServerError).permitAll()
+                .antMatchers(urls.status999Default).permitAll()
+                .anyRequest().hasAuthority(roles.user)
+                .and()
             .sessionManagement()
                 .sessionFixation().newSession() // don't migrateSessionAttributes
                 .maximumSessions(1) // one session per user
