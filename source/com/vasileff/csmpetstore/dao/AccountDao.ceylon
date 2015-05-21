@@ -26,10 +26,19 @@ interface AccountDao satisfies PSDao<Account, String> {
     List<Account> findAll();
 }
 
-transactional component inject
-class AccountDaoImpl(AccountMapper mapper)
-        extends BaseDao<Account, String>(mapper)
+transactional component
+class AccountDaoImpl
+        extends BaseDao<Account, String>
         satisfies AccountDao {
+
+    AccountMapper mapper;
+
+    // PITA: have to use explicit constructor in order to use 'inject'
+    shared inject
+    new(AccountMapper mapper)
+            extends BaseDao<Account, String>(mapper) {
+        this.mapper = mapper;
+    }
 
     shared actual
     List<Account> findAll()

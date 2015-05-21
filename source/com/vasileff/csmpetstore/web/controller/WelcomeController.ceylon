@@ -51,13 +51,31 @@ import org.springframework.web.servlet {
     View
 }
 
-shared controller inject
-class WelcomeController(
-        WelcomeView welcomeView,
-        AboutView aboutView,
-        ContactView contactView,
-        TestFormView testFormView,
-        WebApplicationContext webApplicationContext) {
+shared controller
+class WelcomeController {
+
+    WelcomeView welcomeView;
+    AboutView aboutView;
+    ContactView contactView;
+    TestFormView testFormView;
+    WebApplicationContext webApplicationContext;
+
+    // example of using constructor injection
+    // - preserves encapsulation by not making attributes public
+    // - allows, if necessary, initialization on injected items
+    shared inject new (
+            WelcomeView welcomeView,
+            AboutView aboutView,
+            ContactView contactView,
+            TestFormView testFormView,
+            WebApplicationContext webApplicationContext) {
+
+        this.welcomeView = welcomeView;
+        this.aboutView = aboutView;
+        this.contactView = contactView;
+        this.testFormView = testFormView;
+        this.webApplicationContext = webApplicationContext;
+    }
 
     shared modelAttribute
     Account emptyAccount {

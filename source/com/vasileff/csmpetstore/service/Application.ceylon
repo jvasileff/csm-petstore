@@ -8,9 +8,6 @@ import com.vasileff.csmpetstore.domain {
 import com.vasileff.csmpetstore.domain.support {
     createDomainObject
 }
-import com.vasileff.csmpetstore.mapper {
-    LanguageMapper
-}
 import com.vasileff.csmpetstore.support {
     log
 }
@@ -34,12 +31,17 @@ import org.springframework.stereotype {
     component
 }
 
-service inject shared
-class Application(
-        Repository repository,
-        Instant startupTime,
-        LanguageMapper languageMapper,
-        Validator validator) {
+shared service
+class Application() {
+
+    shared late inject
+    Repository repository;
+
+    shared late inject
+    Instant startupTime;
+
+    shared late inject
+    Validator validator;
 
     shared
     void main() {

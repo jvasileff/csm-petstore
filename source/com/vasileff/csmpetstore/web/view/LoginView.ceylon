@@ -7,7 +7,7 @@ import com.vasileff.csmpetstore.web {
 }
 
 import javax.inject {
-    inject
+    inject=inject__SETTER
 }
 import javax.servlet.http {
     HttpServletRequest
@@ -17,8 +17,11 @@ import org.springframework.stereotype {
     component
 }
 
-shared component inject
-class LoginView(HttpServletRequest request) extends BaseView() {
+shared component
+class LoginView() extends BaseView() {
+
+    shared late inject
+    HttpServletRequest request;
 
     shared actual
     Html generateHtml(Model model) {
