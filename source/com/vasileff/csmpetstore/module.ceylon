@@ -1,3 +1,4 @@
+native("jvm")
 module com.vasileff.csmpetstore "0.0.1" {
     import com.vasileff.csmpetstoredeps "1.0.0";
 
