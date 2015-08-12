@@ -13,7 +13,7 @@ import com.vasileff.csmpetstore.support {
 }
 
 import javax.inject {
-    inject
+    inject=inject__SETTER
 }
 import javax.validation {
     Validator
