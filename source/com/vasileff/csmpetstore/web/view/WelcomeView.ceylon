@@ -1,4 +1,4 @@
-import com.vasileff.ceylon.html {
+import ceylon.html {
     ...
 }
 import com.vasileff.csmpetstore.domain {

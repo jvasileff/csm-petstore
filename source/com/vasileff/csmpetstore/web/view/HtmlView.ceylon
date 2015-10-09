@@ -8,10 +8,10 @@ import ceylon.io.charset {
     utf8
 }
 
-import com.vasileff.ceylon.html {
+import ceylon.html {
     Html
 }
-import com.vasileff.ceylon.html.serializer {
+import ceylon.html.serializer {
     NodeSerializer
 }
 import com.vasileff.csmpetstore.web {
