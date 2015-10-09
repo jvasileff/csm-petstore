@@ -14,7 +14,7 @@ import javax.annotation {
     postConstruct
 }
 import javax.inject {
-    inject=inject__SETTER
+    inject
 }
 
 import org.springframework.stereotype {
@@ -31,13 +31,12 @@ interface Repository {
     shared formal List<Language> selectRows();
 }
 
-shared transactional repository
-class RepositoryDefault() satisfies Repository {
+transactional repository inject shared
+class RepositoryDefault(
+        LanguageMapper languageMapper)
+        satisfies Repository {
 
-    shared late inject
-    LanguageMapper languageMapper;
-
-    shared postConstruct
+    postConstruct shared
     void initialize()
         =>  languageMapper.initialize();
 

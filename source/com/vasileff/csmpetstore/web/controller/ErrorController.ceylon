@@ -9,7 +9,7 @@ import com.vasileff.csmpetstore.web.view {
 }
 
 import javax.inject {
-    inject=inject__SETTER
+    inject=inject__CONSTRUCTOR
 }
 import javax.servlet {
     RequestDispatcher
@@ -44,17 +44,11 @@ import com.vasileff.csmpetstore.support {
     log
 }
 
-shared controller
-class ErrorController() {
-
-    shared late inject
-    ExceptionView exceptionView;
-
-    shared late inject
-    ErrorView errorView;
-
-    shared late inject
-    ErrorControllerAdvice errorControllerAdvice;
+shared controller inject
+class ErrorController(
+        ExceptionView exceptionView,
+        ErrorView errorView,
+        ErrorControllerAdvice errorControllerAdvice) {
 
     "Serve default error page configured in `web.xml`."
     shared requestMapping({"/999"})
@@ -125,14 +119,10 @@ class ErrorController() {
     }
 }
 
-shared controllerAdvice
-class ErrorControllerAdvice() {
-
-    shared late inject
-    ExceptionView exceptionView;
-
-    shared late inject
-    NotFoundView notFoundView;
+shared controllerAdvice inject
+class ErrorControllerAdvice(
+        ExceptionView exceptionView,
+        NotFoundView notFoundView) {
 
     shared exceptionHandler
     responseStatus(HttpStatus.\iINTERNAL_SERVER_ERROR)

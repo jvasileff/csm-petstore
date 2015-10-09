@@ -17,7 +17,7 @@ import com.vasileff.csmpetstore.web.view {
 }
 
 import javax.inject {
-    inject=inject__SETTER
+    inject
 }
 import javax.servlet.http {
     HttpSession
@@ -47,14 +47,10 @@ import org.springframework.web.servlet.mvc.support {
     RedirectAttributes
 }
 
-shared controller
-class LoginController() {
-
-    shared late inject
-    Subject subject;
-
-    shared late inject
-    LoginView loginView;
+shared controller inject
+class LoginController(
+        Subject subject,
+        LoginView loginView) {
 
     shared
     requestMapping { {"/login"}; method={get}; }

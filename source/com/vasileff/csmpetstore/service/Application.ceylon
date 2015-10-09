@@ -8,12 +8,15 @@ import com.vasileff.csmpetstore.domain {
 import com.vasileff.csmpetstore.domain.support {
     createDomainObject
 }
+import com.vasileff.csmpetstore.mapper {
+    LanguageMapper
+}
 import com.vasileff.csmpetstore.support {
     log
 }
 
 import javax.inject {
-    inject=inject__SETTER
+    inject
 }
 import javax.validation {
     Validator
@@ -31,17 +34,12 @@ import org.springframework.stereotype {
     component
 }
 
-shared service
-class Application() {
-
-    shared late inject
-    Repository repository;
-
-    shared late inject
-    Instant startupTime;
-
-    shared late inject
-    Validator validator;
+service inject shared
+class Application(
+        Repository repository,
+        Instant startupTime,
+        LanguageMapper languageMapper,
+        Validator validator) {
 
     shared
     void main() {
@@ -70,10 +68,10 @@ class Application() {
         account.fullName="name";
         account.email="john@vasileff.com";
         account.country="US";
-        
+
         print(account);
         print(account.hash);
-        
+
         value result = validator.validate(account);
         print(result);
     }

@@ -26,18 +26,10 @@ interface LanguageDao satisfies PSDao<Language, Integer> {
     List<Language> findAll();
 }
 
-transactional component
-class LanguageDaoImpl
-        extends BaseDao<Language, Integer>
+transactional component inject
+class LanguageDaoImpl(LanguageMapper mapper)
+        extends BaseDao<Language, Integer>(mapper)
         satisfies LanguageDao {
-
-    LanguageMapper mapper;
-
-    shared inject
-    new(LanguageMapper mapper)
-            extends BaseDao<Language, Integer>(mapper) {
-        this.mapper = mapper;
-    }
 
     shared actual
     List<Language> findAll()
